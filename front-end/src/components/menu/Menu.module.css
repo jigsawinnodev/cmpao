@@ -1,0 +1,35 @@
+.BoxImg {
+  position: relative;
+}
+.setColorBtn {
+  background-color: #075a7e;
+  color: white;
+  border: 0;
+}
+/*  */
+
+/* .ContentMenu {
+  background-color: #065375;
+  height: 100vh;
+} */
+
+.ImgBall {
+  position: absolute;
+  right: 10px;
+  top: -10px;
+}
+.ImgBall {
+  display: none;
+}
+.Navigate:active .ImgBall {
+  display: block;
+}
+.Navigate:active .setBGLink {
+    background-color: #9e9ea7;
+  }
+.setBGLink {
+  background-color: #075a7e;
+}
+.setBGLink:hover {
+  background-color: #9e9ea7;
+}
