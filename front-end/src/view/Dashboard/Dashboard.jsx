@@ -33,7 +33,7 @@ function Dashboard() {
               return (
                 <NavLink
                   to={value.adm_link}
-                  className="LinkItem"
+                  className="LinkItem mx-auto"
                   key={value.adm_id}
                 >
                   {({ isActive, isPending }) => {
@@ -41,7 +41,7 @@ function Dashboard() {
                     if (isActive) {
                       return (
                         <li className="SetHover shadow rounded-2 mb-2">
-                          <div className="mx-4">
+                          <div className="px-3 px-md-4">
                             <i
                               className={
                                 value.adm_icon_active + " rounded shadow px-1 "
@@ -53,7 +53,7 @@ function Dashboard() {
                             ></i>
                           </div>
                           <span
-                            className="links_name"
+                            className="links_name px-1"
                             style={{ color: "black", fontSize: "14.5px" }}
                           >
                             {value.adm_name}
@@ -63,7 +63,7 @@ function Dashboard() {
                     } else {
                       return (
                         <li className="SetHover mb-2">
-                          <div className="px-4">
+                          <div className="mx-md-4 mx-4">
                             <i
                               className={
                                 value.adm_icon_nactive + " rounded shadow px-1 "
@@ -72,7 +72,7 @@ function Dashboard() {
                             ></i>
                           </div>
                           <span
-                            className="links_name"
+                            className="links_name px-1"
                             style={{ color: "#7B8FA1", fontSize: "14.5px" }}
                           >
                             {value.adm_name}
@@ -551,9 +551,9 @@ function Dashboard() {
             </NavLink> */}
           </ul>
         </div>
-        <section className="home-section ">
+        <div className="home-section ">
           <Outlet />
-        </section>
+        </div>
       </div>
     </>
   );

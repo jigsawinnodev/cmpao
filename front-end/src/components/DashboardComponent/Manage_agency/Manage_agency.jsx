@@ -1,17 +1,17 @@
 import React from "react";
-
-function Manage_typeUserRegister() {
+import { Link } from "react-router-dom";
+function Manage_agency() {
   return (
     <>
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
             <div className="row w-100 my-auto py-3">
-              <div className="col-md-12 px-5">
-                <div className="text-start">
-                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+              <div className="col-md-12">
+                <div className="text-center">
+                  <h2 className="dashboard m-0" style={{ color: "#655DBB" }}>
                     จัดการข้อมูลหน่วยงาน
-                  </h4>
+                  </h2>
                 </div>
               </div>
               {/* <div className="col-md-5">
@@ -42,4 +42,4 @@ function Manage_typeUserRegister() {
   );
 }
 
-export default Manage_typeUserRegister;
+export default Manage_agency;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "./Manage_register.css";
+import { Link } from "react-router-dom";
 function Manage_register() {
   const columns = [
     {
@@ -54,9 +55,11 @@ function Manage_register() {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <button type="button" class="btn btn-outline-secondary">
-            Secondary
-          </button>
+          <Link to={"apply_check/" + row.id}>
+            <button type="button" className="btn btn-outline-secondary">
+              Secondary
+            </button>
+          </Link>
         </div>
       ),
       sortable: true,
@@ -92,50 +95,47 @@ function Manage_register() {
       }
     });
   };
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "72px",
-      },
-    },
-    headCells: {
-      style: {
-        // paddingLeft: "8px", // override the cell padding for head cells
-        // paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
 
   useEffect(() => {
-    // GetData();
+    GetData();
   }, []);
   return (
     <>
       <div className="px-3 py-4">
-        <div className="shadow-lg h-50 rounded-3">
+        <div className="shadow-lg h-100 rounded-3">
           <nav>
             <div className="nav px-3 pt-4 pb-2">
-              <div className="d-flex justify-content-between w-100 flex-column flex-md-row">
-                <h3 className="dashboard">จัดการใบสมัคร</h3>
-                <div className="input-wrapper px-3 py-1">
-                  <button className="icon">
-                    <i className="bi bi-search" style={{ color: "white" }}></i>
-                  </button>
-                  <input
-                    placeholder="ค้นหา"
-                    className="input"
-                    name="text"
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
+              <div className="row w-100 my-auto">
+                <div className="col-md-7">
+                  <div className="text-end">
+                    <h2 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                      จัดการใบสมัคร
+                    </h2>
+                  </div>
                 </div>
+                <div className="col-md-5">
+                  <div className="float-end">
+                    <Link to="edit">
+                      <button className="btn btn-outline-primary">
+                        เพิ่มใบสมัคร
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div>from</div>
+              <div className="input-wrapper px-3 py-1 w-100 float-end">
+                <button className="icon">
+                  <i className="bi bi-search" style={{ color: "white" }}></i>
+                </button>
+                <input
+                  placeholder="ค้นหา"
+                  className="input"
+                  name="text"
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
             </div>
           </nav>
