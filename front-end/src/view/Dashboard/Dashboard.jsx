@@ -14,7 +14,7 @@ function Dashboard() {
   const GetMenu = () => {
     axios.get("http://localhost:9500/api/GetMenu").then((res) => {
       SetMenu(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     });
   };
   useEffect(() => {
@@ -86,7 +86,7 @@ function Dashboard() {
             })}
             <NavLink to="/" className="LinkItem">
               {({ isActive, isPending }) => {
-                console.log(isActive);
+                // console.log(isActive);
                 if (isActive) {
                   return (
                     <li className="SetHover shadow rounded px-1 mb-2">

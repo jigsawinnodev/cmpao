@@ -6,7 +6,13 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 function Add_register() {
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectDateStart, SetSelectDateStart] = useState("");
+  const [selectDateEnd, SetSelectDateEnd] = useState("");
+  const [positionType, SetpositionType] = useState([]);
   const days = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
+  const mockData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const months = [
     "มกราคม",
     "กุมภาพันธ์",
@@ -83,6 +89,17 @@ function Add_register() {
     },
   ];
 
+  const GetType_Position = () => {
+    axios
+      .get("http://localhost:9500/api/GetType_position")
+      .then((res) => {
+        SetpositionType(res.data);
+        // console.log(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  };
   const GetData = async () => {
     await axios
       .get("https://dummyjson.com/products")
@@ -92,7 +109,7 @@ function Add_register() {
         // $("#example").DataTable();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   const handleSearch = (rows) => {
@@ -110,13 +127,10 @@ function Add_register() {
       }
     });
   };
-  const [data, setData] = useState([]);
-  const [search, setSearch] = useState("");
-  const [selectDateStart, SetSelectDateStart] = useState("");
-  const [selectDateEnd, SetSelectDateEnd] = useState("");
 
   useEffect(() => {
     GetData();
+    GetType_Position();
   }, []);
   return (
     <>
@@ -136,9 +150,6 @@ function Add_register() {
                   aria-label="Default select example"
                 >
                   <option>เลือก</option>
-                  <option defaultValue="1">One</option>
-                  <option defaultValue="2">Two</option>
-                  <option defaultValue="3">Three</option>
                 </select>
               </div>
             </div>

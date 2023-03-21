@@ -25,6 +25,8 @@ import Add_register from "./components/DashboardComponent/Manage_register/Add_re
 import Apply_check from "./components/DashboardComponent/Manage_register/apply_check/Apply_check";
 import UserRegister_Add from "./components/DashboardComponent/Manage_userRegister/userRegister_Add/userRegister_Add";
 import Manage_users_add from "./components/DashboardComponent/Manage_users/Manage_users_add/Manage_users_add";
+import Detail_Manage_money from "./components/DashboardComponent/Manage_money/detail_Manage_money/detail_Manage_money";
+import Manage_ducument_add from "./components/DashboardComponent/Manage_document/Manage_ducument_add/Manage_ducument_add";
 
 function App() {
   return (
@@ -58,7 +60,11 @@ function App() {
         <Route path="TypePosition" element={<Manage_typeUserRegister />} />
 
         <Route path="Payment" element={<Manage_money />} />
+        <Route path="Payment/payment_check" element={<Detail_Manage_money />} />
+
         <Route path="Document" element={<Manage_document />} />
+        <Route path="Document/add" element={<Manage_ducument_add />} />
+
         <Route path="Information" element={<Manage_search />} />
       </Route>
       {/* <Route path="*" element={<NotFound />} /> */}

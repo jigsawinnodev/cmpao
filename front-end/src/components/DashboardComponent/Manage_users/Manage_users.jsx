@@ -103,7 +103,7 @@ function Manage_users() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="row w-100  pt-3 pb-4 m-0">
+            <div className="row w-100 py-3 my-auto m-0">
               <div className="col-md-10 my-auto">
                 <div className="text-start px-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
