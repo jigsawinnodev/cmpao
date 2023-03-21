@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import { Link } from "react-router-dom";
 function Manage_userRegister() {
   const columns = [
     {
@@ -55,25 +56,8 @@ function Manage_userRegister() {
     },
   ];
   const [data, setData] = useState([]);
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "72px",
-      },
-    },
-    headCells: {
-      style: {
-        // paddingLeft: "8px", // override the cell padding for head cells
-        // paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
+  const [search, setSearch] = useState("");
+
   const GetData = async () => {
     await axios
       .get("https://dummyjson.com/products")
@@ -94,9 +78,22 @@ function Manage_userRegister() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="nav px-3 pt-4 pb-2">
-              <div>
-                <h3 className="dashboard">จัดการใบสมัคร</h3>
+            <div className="row w-100  pt-3 pb-4 m-0">
+              <div className="col-md-10 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการข้อมูลหน่วยงาน
+                  </h4>
+                </div>
+              </div>
+              <div className="col-md-2">
+                <div className="float-end">
+                  <Link to="add">
+                    <button className="btn btn-outline-primary">
+                      เพิ่มใบสมัคร
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </nav>
@@ -104,6 +101,24 @@ function Manage_userRegister() {
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
+                  <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                  </div>
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}

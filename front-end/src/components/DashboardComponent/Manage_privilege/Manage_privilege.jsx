@@ -6,7 +6,7 @@ function Manage_privilege() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="nav px-3 pt-4 pb-2">
+            <div className="nav px-3 pt-4 pb-2 my-auto">
               <div>
                 <h3 className="dashboard">จัดการสิทธิ์</h3>
               </div>
@@ -22,33 +22,21 @@ function Manage_privilege() {
                         style={{ backgroundColor: "#eaecf4", color: "#6e707e" }}
                       >
                         <tr>
-                          <th scope="col" className="text-center">
-                            ลำดับ
-                          </th>
-                          <th scope="col" className="text-start">
-                            ชื่อเมนู
-                          </th>
-                          <th scope="col" className="text-center">
-                            ผู้บริหาร
-                          </th>
-                          <th scope="col" className="text-center">
-                            การเงิน
-                          </th>
-                          <th scope="col" className="text-center">
-                            บุคคล
-                          </th>
-                          <th scope="col" className="text-center">
-                            ผู้ดูแลระบบ
-                          </th>
+                          <th className="text-center">ลำดับ</th>
+                          <th className="text-start">ชื่อเมนู</th>
+                          <th className="text-center">ผู้บริหาร</th>
+                          <th className="text-center">การเงิน</th>
+                          <th className="text-center">บุคคล</th>
+                          <th className="text-center">ผู้ดูแลระบบ</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <th scope="row" className="text-center">
-                            1
-                          </th>
-                          <td>
-                            <div className="m-0">Mark</div>
+                          <td className="text-center align-middle">1</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">Mark</p>
+                            </div>
                           </td>
                           <td>
                             <div className="text-center">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Manage_users() {
   const columns = [
@@ -102,9 +103,22 @@ function Manage_users() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="nav px-3 pt-4 pb-2">
-              <div>
-                <h3 className="dashboard">จัดการใบสมัคร</h3>
+            <div className="row w-100 py-3 my-auto m-0">
+              <div className="col-md-10 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการผู้ใช้งาน
+                  </h4>
+                </div>
+              </div>
+              <div className="col-md-2">
+                <div className="float-end">
+                  <Link to="add">
+                    <button className="btn btn-outline-primary">
+                      เพิ่มข้อมูล
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </nav>

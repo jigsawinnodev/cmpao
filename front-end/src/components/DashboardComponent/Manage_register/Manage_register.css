@@ -1,15 +1,25 @@
  .rdt_TableHeadRow {
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 400;
 }
 .rdt_TableCol{
-  /* background-color: #eaecf4; */
+  background-color: #655DBB;
+  color: white;
+  
+  /* border-radius: ; */
   /* justify-content: center; */
   /* margin-left: auto;
   margin-right: auto; */
+/* เเก้หัวตาราง */
+}
+.rdt_TableCol:first-of-type{
+  border-radius: 10px 0 0 0 ;
+}
+.rdt_TableCol:last-of-type{
+  border-radius: 0 10px 0 0 ;
 }
 .rdt_TableCell{
-  font-size: 15px;
+  font-size: 18px;
     /* justify-content: stretch; */
   /* padding-right: 10px;
   padding-left: 10px;   */
@@ -38,7 +48,7 @@
 
 .input::placeholder,
 .input {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
   font-size: 17px;
 }
 
@@ -62,6 +72,8 @@
   background-color: transparent;
   transition: .2s linear;
 }
+
+
 
 .icon:focus ~ .input,
 .input:focus {
