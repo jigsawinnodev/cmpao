@@ -5,6 +5,13 @@ const GetMenuAdmin = (req, res) => {
         res.json(result)
     })
 }
+const GetType_position = (req, res) => {
+    let sql = "SELECT * FROM type_position";
+    mysqlConnection.query(sql, function (err, result) {
+        res.json(result)
+    })
+}
 module.exports = {
-    GetMenuAdmin
+    GetMenuAdmin,
+    GetType_position
 }

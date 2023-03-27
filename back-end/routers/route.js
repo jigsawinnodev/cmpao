@@ -6,6 +6,6 @@ const Admin = require('../controllers/GetMenuAdmin');
 
 router.get('/', RootController.getTest);
 router.get('/GetMenu', Admin.GetMenuAdmin);
-
+router.get('/GetType_position', Admin.GetType_position);
 
 module.exports = router;
