@@ -189,9 +189,14 @@ function Manage_position() {
   const [typePosition, setTypePosition] = useState("");
   const [statusPosition, setStatusPosition] = useState("1");
   const [filePdf, setFilePdf] = useState([]);
-
+  const [fileNamePDF, setFileNamePDF] = useState("");
   const AddorEditPosition = (id = "") => {
-    Add_edit_position(id, namePosition, typePosition, statusPosition, filePdf);
+    // Add_edit_position(id, namePosition, typePosition, statusPosition, filePdf);
+    // console.log(fileNamePDF);
+    console.log(filePdf);
+    // const formData = new FormData();
+    // formData.append("file", filePdf);
+    // Add_edit_position(formData);
   };
 
   const GetType_Position = () => {
@@ -335,10 +340,8 @@ function Manage_position() {
                                   เเนบไฟล์
                                 </label>
                                 <input
-                                  multiple
                                   className="form-control"
                                   type="file"
-                                  id="formFile"
                                   accept="application/pdf"
                                   onChange={(e) => {
                                     setFilePdf(e.target.files[0]);

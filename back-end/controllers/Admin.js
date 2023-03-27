@@ -95,6 +95,9 @@ const GetAllPosition = (req, res) => {
     })
 }
 const Edit_Add_Position = (req, res, next) => {
+    // console.log(req.file);
+    // console.log(req.body);
+    // res.json(req.body);
     console.log(req.body);
     // // console.log(req.body);
     // // console.log(req.file);

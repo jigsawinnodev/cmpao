@@ -153,12 +153,14 @@ export function GetAllPosition() {
     // console.log(response);
     return response;
 }
-export function Add_edit_position(p_name, p_id = '', p_type, p_active, file = '') {
-    axios.post(`${BaseUrl}/api/Edit_Add_Position`, {
-        p_id: p_id,
-        p_name: p_name,
-        p_type: p_type,
-        p_active: p_active
-    })
+// export function Add_edit_position(p_name, p_id = '', p_type, p_active, file = '') {
+export function Add_edit_position(data) {
+
+    // console.log(data);
+    axios.post(`${BaseUrl}/api/Edit_Add_Position`,
+        data,
+    ).then(function (response) {
+        console.log(response);
+    });
 }
 
