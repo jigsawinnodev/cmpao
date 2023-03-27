@@ -6,8 +6,9 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // console.log(file.mimetype);
-        if (file.mimetype === 'application/pdf') {
+        // res.json(req.file)
+        // console.log(file);
+        if (file.type === 'application/pdf') {
             cb(null, 'file/pdf');
         } else if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
             cb(null, 'file/img');
