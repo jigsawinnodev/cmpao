@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Boy from "../../../../assets/img/boy.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
+import { useParams } from "react-router-dom";
+import {
+  GetpreName,
+  GetBloodType,
+  GetStatus_relationship,
+  GetTbl_country,
+  GetTbl_district,
+  GetTbl_subdistrict,
+  CreateMember,
+  GetTbl_religion,
+} from "../../../../service/api";
 function UserRegister_Add() {
+  let { id } = useParams();
   const navigate = useNavigate();
   const days = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
   const months = [
@@ -33,7 +47,172 @@ function UserRegister_Add() {
     // history.push("Member");
     navigate("/Dashboard/Member");
   }
-  const [birthday, Setbirthday] = useState("");
+  // call_api
+  const [preName, SetpreName] = useState([]);
+  const [bloodtype, setBloodtype] = useState([]);
+  const [relationship, Setrelationship] = useState([]);
+  const [country, setCountry] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [Subdistrict, setSubDistrict] = useState([]);
+  const [get_religion, set_religion] = useState([]);
+  //use ตัวเเปร
+
+  const [S_idCard, setIdCard] = useState(""); //บัตรประชาชน
+  const [S_titlename, setTitlename] = useState(""); //คำนำหน้าชื่อ
+  const [S_name, setName] = useState(""); // ชื่อ
+  const [S_lname, setLname] = useState(""); // นามสกุล
+  const [S_birthday, Setbirthday] = useState(""); // วันเกิด
+  const [S_bloodtype, setBloodtypeS] = useState(""); // หมู่โลหิต
+  const [S_ethnicity, setEthnicityS] = useState(""); // เชื้อชาติ
+  const [S_nationality, setNationalityS] = useState(""); // สัญชาติ
+  const [S_religion, setReligionS] = useState(""); //ศาสนา
+  const [S_family_status, setFamilyStatusS] = useState(""); //สถานภาพทางครอบครัว
+  const [S_Name_spouse, setName_spouse] = useState(""); // ชื่อคู่สมรส(กรณีสมรส) house_number
+  const [S_house_number, setHouse_number] = useState(""); // บ้านเลขที่
+  const [S_village, setVillage] = useState(""); // หมู่ที่
+  const [S_alleyway, setAlleyway] = useState(""); //ซอยตรอก
+  const [S_road, setRoad] = useState(""); //ถนน
+  const [S_province, setProvinceS] = useState(""); // จังหวัด
+  const [S_district, setDistrictS] = useState(""); // อำเภอ
+  const [S_Sub_district, setSub_DistrictS] = useState(""); // ตำบล
+  const [S_postal_code, setPostalCode] = useState(""); //  รหัสไปรษณีย์
+  const [S_phone, setPhone] = useState(""); //เบอร์โทรศํพ
+  const [S_email, setEmail] = useState(""); //email
+  const [S_Job_Father, setJobFather] = useState(""); // อาชีพพ่อ
+  const [S_name_Father, set_name_Father] = useState(""); //ชื่อพ่อ
+  const [S_Job_Mather, setJobMather] = useState(""); // อาชีพเเม่
+  const [S_name_Mather, set_name_Mather] = useState(""); //ชื่อเเม่
+  const [S_imgUser, set_imgUser] = useState(); // รูปผู้ใช้
+  const [S_nameUser, setNameUser] = useState(""); // ชื่อผู้ใช้งาน
+  const [S_passwordUser, setpasswordUser] = useState(""); // รหัสผ่าน
+  const [S_ConpasswordUser, setConpasswordUser] = useState(""); // ยืนยันรหัสผ่าน
+
+  const [S_activeUser, setActiveUser] = useState(""); //สถานนะการใช้งาน
+  // filter
+  const [filtterDistrict, setFiltterDistrict] = useState([]);
+  const [filtterSub_district, setSub_district] = useState([]);
+  const InsertNewMember = () => {
+    if (
+      S_idCard &&
+      S_titlename &&
+      S_name &&
+      S_lname &&
+      S_birthday &&
+      S_bloodtype &&
+      S_ethnicity &&
+      S_nationality &&
+      S_religion &&
+      S_family_status &&
+      S_Name_spouse &&
+      S_house_number &&
+      S_village &&
+      S_alleyway &&
+      S_road &&
+      S_province &&
+      S_district &&
+      S_Sub_district &&
+      S_postal_code &&
+      S_phone &&
+      S_email &&
+      S_Job_Father &&
+      S_name_Father &&
+      S_Job_Mather &&
+      S_name_Mather &&
+      S_imgUser &&
+      S_nameUser != ""
+    ) {
+      if (S_passwordUser == S_ConpasswordUser) {
+        CreateMember(
+          S_idCard,
+          S_titlename,
+          S_name,
+          S_lname,
+          S_birthday,
+          S_bloodtype,
+          S_ethnicity,
+          S_nationality,
+          S_religion,
+          S_family_status,
+          S_Name_spouse,
+          S_house_number,
+          S_village,
+          S_alleyway,
+          S_road,
+          S_province,
+          S_district,
+          S_Sub_district,
+          S_postal_code,
+          S_phone,
+          S_email,
+          S_Job_Father,
+          S_name_Father,
+          S_Job_Mather,
+          S_name_Mather,
+          S_imgUser,
+          S_nameUser,
+          S_passwordUser
+        );
+      }
+    } else {
+      alert("bad");
+    }
+  };
+  const handleSelectProvince = (e) => {
+    const getValue = e.target.value;
+    setProvinceS(getValue);
+    if (getValue != "") {
+      const Data = district.filter((value) => value.province_id == getValue);
+      setFiltterDistrict(Data);
+    }
+  };
+  const handleSelectDistrict = (e) => {
+    const getDistrict = e.target.value;
+    setDistrictS(getDistrict);
+    // console.log(Subdistrict);
+    if (getDistrict != "") {
+      const Data = Subdistrict.filter(
+        (value) => value.district_id == getDistrict
+      );
+      setSub_district(Data);
+    }
+  };
+
+  const handleSelectSubDistrict = (e) => {
+    const getSubDistrict = e.target.value;
+    console.log(getSubDistrict);
+    setSub_DistrictS(getSubDistrict);
+    if (getSubDistrict != "") {
+      const Data = Subdistrict.find((value) => value.id == getSubDistrict);
+      console.log(Data);
+      setPostalCode(Data.zipcode);
+    }
+  };
+
+  const GetMenmberFindOne = ()=>{
+    
+  }
+  const GetDataFromApi = async () => {
+    const preName = await GetpreName();
+    const BloodType = await GetBloodType();
+    const relationship = await GetStatus_relationship();
+    const country = await GetTbl_country();
+    const district = await GetTbl_district();
+    const subDistrict = await GetTbl_subdistrict();
+    const religion = await GetTbl_religion();
+    // console.log(BloodType);
+    // console.log(district);
+    SetpreName(preName); // คำนำหน้า
+    setBloodtype(BloodType); //เลือด
+    Setrelationship(relationship); //ความสัมพัน
+    setCountry(country); // จังหวัด
+    setDistrict(district); // อำเภอ
+    setSubDistrict(subDistrict); // ตำบล
+    set_religion(religion);
+  };
+
+  useEffect(() => {
+    GetDataFromApi();
+  }, []);
   return (
     <>
       <div className="px-3 py-4">
@@ -49,575 +228,700 @@ function UserRegister_Add() {
               </div>
             </div>
           </nav>
-          <div className="row">
-            <div className="col-md-8">
-              <div className="row px-4">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      รหัสประจำตัวประชาชน
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="รหัสประจำตัวประชาชน"
-                    />
-                  </div>
-                </div>
-                <div className="row">
+
+          <form>
+            <div className="row">
+              <div className="col-md-8">
+                <div className="row px-4">
                   <div className="col-md-6">
-                    <div className="row">
-                      <div className="col-md-4">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
-                          คำนำหน้าชื่อ
-                        </label>
-                        <select
-                          className="form-select"
-                          aria-label="Default select example"
-                        >
-                          <option>เลือก</option>
-                          <option value={1}>One</option>
-                          <option value={2}>Two</option>
-                          <option value={3}>Three</option>
-                        </select>
-                      </div>
-                      <div className="col-md-8">
-                        <div className="mb-3">
+                    <div className="mb-3">
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label"
+                      >
+                        รหัสประจำตัวประชาชน
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        className="form-control"
+                        placeholder="รหัสประจำตัวประชาชน"
+                        value={S_idCard}
+                        onChange={(e) => {
+                          setIdCard(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="row">
+                        <div className="col-md-4">
                           <label
                             htmlFor="exampleInputEmail1"
                             className="form-label"
                           >
-                            ชื่อ
+                            คำนำหน้าชื่อ
                           </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
-                            placeholder="ชื่อ"
-                          />
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            required
+                            value={S_titlename}
+                            onChange={(e) => {
+                              setTitlename(e.target.value);
+                            }}
+                          >
+                            <option defaultValue="">เลือก</option>
+                            {preName.map((val, idx) => {
+                              return (
+                                <option value={val.prename_id} key={idx}>
+                                  {val.prename_name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="exampleInputName"
+                              className="form-label"
+                            >
+                              ชื่อ
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="ชื่อ"
+                              value={S_name}
+                              onChange={(e) => {
+                                setName(e.target.value);
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          นามสกุล
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="นามสกุล"
+                          name="lname"
+                          value={S_lname}
+                          onChange={(e) => {
+                            setLname(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        นามสกุล
+                        วันเดือนปีเกิด
                       </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="นามสกุล"
+                      <DatePicker
+                        selected={S_birthday}
+                        className="w-100 form-control"
+                        onChange={(date) => Setbirthday(date)}
+                        showIcon
+                        showYearDropdown
+                        showMonthDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={50}
+                        locale={locale}
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          หมู่โลหิต
+                        </label>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          name="Bloodtype"
+                          value={S_bloodtype}
+                          onChange={(e) => {
+                            setBloodtypeS(e.target.value);
+                          }}
+                        >
+                          <option>เลือก</option>
+                          {bloodtype.map((value, index) => {
+                            return (
+                              <option key={index} value={value.blood_id}>
+                                {value.blood_name}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          เชื้อชาติ
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="เชื้อชาติ"
+                          value={S_ethnicity}
+                          onChange={(e) => {
+                            setEthnicityS(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          สัญชาติ
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="สัญชาติ"
+                          name="nationality"
+                          value={S_nationality}
+                          onChange={(e) => {
+                            setNationalityS(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ศาสนา
+                        </label>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          value={S_religion}
+                          onChange={(e) => {
+                            setReligionS(e.target.value);
+                          }}
+                        >
+                          <option>เลือก</option>
+                          {get_religion.map((value, index) => {
+                            // console.log(value);
+                            return (
+                              <option key={index} value={value.religion_id}>
+                                {value.religion_name}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div className="mb-3">
+                        <div className="d-flex">
+                          <label
+                            htmlFor="exampleInputEmail1"
+                            className="form-label"
+                          >
+                            สถานภาพทางครอบครัว
+                          </label>
+                          {relationship.map((value, index) => {
+                            return (
+                              <div className="form-check mx-3" key={index}>
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  value={S_family_status}
+                                  onChange={(e) => {
+                                    setFamilyStatusS(e.target.value);
+                                  }}
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor={"flexRadioDefault" + index}
+                                >
+                                  {value.relationship_name}
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ชื่อคู่สมรส(กรณีสมรส)
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="ชื่อคู่สมรส(กรณีสมรส)"
+                          name="Name_spouse"
+                          value={S_Name_spouse}
+                          onChange={(e) => {
+                            setName_spouse(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          บ้านเลขที่
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="บ้านเลขที่"
+                          name="house_number"
+                          value={S_house_number}
+                          onChange={(e) => {
+                            setHouse_number(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          หมู่ที่
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="หมู่ที่"
+                          name="village"
+                          value={S_village}
+                          onChange={(e) => {
+                            setVillage(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ตรอก/ซอย
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="ตรอก/ซอย"
+                          name="alleyway"
+                          value={S_alleyway}
+                          onChange={(e) => {
+                            setAlleyway(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ถนน
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="ถนน"
+                          value={S_road}
+                          onChange={(e) => {
+                            setRoad(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          จังหวัด
+                        </label>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          value={S_province}
+                          onChange={handleSelectProvince}
+                        >
+                          <option>เลือก</option>
+                          {country.map((value, index) => {
+                            return (
+                              <option key={index} value={value.id}>
+                                {value.province_th}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          อำเภอ/แขวง
+                        </label>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          name="district"
+                          value={S_district}
+                          onChange={handleSelectDistrict}
+                        >
+                          <option>เลือก</option>
+                          {filtterDistrict.map((value, index) => {
+                            return (
+                              <option key={index} value={value.id}>
+                                {value.district_th}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ตำบล/แขวง
+                        </label>
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          name="Subdistrict"
+                          value={S_Sub_district}
+                          onChange={handleSelectSubDistrict}
+                        >
+                          <option>เลือก</option>
+                          {filtterSub_district.map((value, idx) => {
+                            // console.log(value);
+                            return (
+                              <option key={idx} value={value.id}>
+                                {value.subdistrict_th}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          รหัสไปรษณีย์
+                        </label>
+                        <input
+                          disabled
+                          type="text"
+                          className="form-control"
+                          placeholder="รหัสไปรษณีย์"
+                          name="postal_code"
+                          value={S_postal_code}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          เบอร์โทรศัพท์
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="เบอร์โทรศัพท์"
+                          name="phone"
+                          value={S_phone}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          อีเมล
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="อีเมล"
+                          name="email"
+                          value={S_email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6"></div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          อาชีพ
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="อาชีพ"
+                          name="jobFather"
+                          value={S_Job_Father}
+                          onChange={(e) => {
+                            setJobFather(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ชื่อบิดา
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="ชื่อบิดา"
+                          name="name_Father"
+                          value={S_name_Father}
+                          onChange={(e) => {
+                            set_name_Father(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          อาชีพ
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="อาชีพ"
+                          name="jobMather"
+                          value={S_Job_Mather}
+                          onChange={(e) => {
+                            setJobMather(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          ชื่อมารดา
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="ชื่อมารดา"
+                          name="name_Mather"
+                          value={S_name_Mather}
+                          onChange={(e) => {
+                            set_name_Mather(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="row m-0">
+                  <div className="col-md-12">
+                    <div className="text-center">
+                      <img
+                        src={Boy}
+                        alt=""
+                        className="rounded-circle"
+                        style={{ width: "170px", height: "170px" }}
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      Email address
-                    </label>
-                    <DatePicker
-                      selected={birthday}
-                      className="w-100 form-control"
-                      onChange={(date) => Setbirthday(date)}
-                      showIcon
-                      showYearDropdown
-                      showMonthDropdown
-                      scrollableYearDropdown
-                      yearDropdownItemNumber={50}
-                      locale={locale}
-                      dateFormat="dd/MM/yyyy"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        หมู่โลหิต
-                      </label>
-                      <select
-                        className="form-select"
-                        aria-label="Default select example"
-                      >
-                        <option>เลือก</option>
-                        <option value={1}>One</option>
-                        <option value={2}>Two</option>
-                        <option value={3}>Three</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        เชื้อชาติ
-                      </label>
+                  <div className="col-md-12" style={{ paddingTop: "33px" }}>
+                    <div className="">
                       <input
-                        type="email"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="เชื้อชาติ"
+                        type="file"
+                        id="formFile"
+                        accept="image/png, image/jpeg"
+                        onChange={(e) => {
+                          set_imgUser(e.target.value[0]);
+                        }}
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-12 pt-3">
                     <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        สัญชาติ
+                        ชื่อผู้ใช้งาน
                       </label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="สัญชาติ"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ศาสนา
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ศาสนา"
+                        placeholder="ชื่อผู้ใช้งาน"
+                        value={S_nameUser}
+                        onChange={(e) => {
+                          setNameUser(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
                   <div className="col-md-12">
                     <div className="mb-3">
-                      <div className="d-flex">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
-                          สถานภาพทางครอบครัว
-                        </label>
-                        <div className="form-check mx-3">
-                          <input
-                            className="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexRadioDefault1"
-                          >
-                            โสด
-                          </label>
-                        </div>
-                        <div className="form-check mx-3">
-                          <input
-                            className="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexRadioDefault1"
-                          >
-                            สมรส
-                          </label>
-                        </div>
-                        <div className="form-check mx-3">
-                          <input
-                            className="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexRadioDefault1"
-                          >
-                            หย่า
-                          </label>
-                        </div>
-                        <div className="form-check mx-3">
-                          <input
-                            className="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexRadioDefault1"
-                          >
-                            หม้าย
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        ชื่อคู่สมรส(กรณีสมรส)
+                        รหัสผ่าน
                       </label>
                       <input
-                        type="email"
+                        type="password"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ชื่อคู่สมรส(กรณีสมรส)"
+                        placeholder="รหัสผ่าน"
+                        value={S_passwordUser}
+                        onChange={(e) => {
+                          setpasswordUser(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        บ้านเลขที่
+                        ยืนยันรหัสผ่าน
                       </label>
                       <input
-                        type="email"
+                        type="password"
                         className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="บ้านเลขที่"
+                        placeholder="ยืนยันรหัสผ่าน"
+                        value={S_ConpasswordUser}
+                        onChange={(e) => {
+                          setConpasswordUser(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
-
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        หมู่ที่
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="หมู่ที่"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ตรอก/ซอย
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ตรอก/ซอย"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ถนน
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ถนน"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        จังหวัด
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="จังหวัด"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        อำเภอ/แขวง
+                        สถานนะการใช้งาน
                       </label>
                       <select
                         className="form-select"
                         aria-label="Default select example"
+                        value={S_activeUser}
+                        onChange={(e) => {
+                          setActiveUser(e.target.value);
+                        }}
                       >
-                        <option selected>เลือก</option>
-                        <option value={1}>One</option>
-                        <option value={2}>Two</option>
-                        <option value={3}>Three</option>
+                        <option value={0}>ไม่ใช้งาน</option>
+                        <option value={1}>ใช้งาน</option>
                       </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ตำบล/แขวง
-                      </label>
-                      <select
-                        className="form-select"
-                        aria-label="Default select example"
-                      >
-                        <option selected>เลือก</option>
-                        <option value={1}>One</option>
-                        <option value={2}>Two</option>
-                        <option value={3}>Three</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        รหัสไปรษณีย์
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="รหัสไปรษณีย์"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        เบอร์โทรศัพท์
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="เบอร์โทรศัพท์"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        อีเมล
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="อีเมล"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ชื่อบิดา
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ชื่อบิดา"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        อาชีพ
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="อาชีพ"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="exampleInputEmail1"
-                        className="form-label"
-                      >
-                        ชื่อมารดา
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        placeholder="ชื่อมารดา"
-                      />
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-4">
-              <div className="row m-0">
-                <div className="col-md-12">
-                  <div className="text-center">
-                    <img
-                      src={Boy}
-                      alt=""
-                      className="rounded-circle"
-                      style={{ width: "170px", height: "170px" }}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-12" style={{ paddingTop: "33px" }}>
-                  <div className="">
-                    <input className="form-control" type="file" id="formFile" />
-                  </div>
-                </div>
-                <div className="col-md-12 pt-3">
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      ชื่อผู้ใช้งาน
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="ชื่อผู้ใช้งาน"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-12">
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      รหัสผ่าน
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="รหัสผ่าน"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-12">
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      ยืนยันรหัสผ่าน
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="ยืนยันรหัสผ่าน"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-12">
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      สถานนะการใช้งาน
-                    </label>
-                    <select
-                      className="form-select"
-                      aria-label="Default select example"
-                    >
-                      <option selected>ไม่ใช้งาน</option>
-                      <option value={1}>ใช้งาน</option>
-                    </select>
-                  </div>
-                </div>
+              <div className="py-4 text-end px-4">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary mx-1"
+                  onClick={() => {
+                    InsertNewMember();
+                  }}
+                >
+                  บันทึก
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-danger mx-1"
+                  onClick={() => {
+                    handleBacktoPage();
+                  }}
+                >
+                  ยกเลิก
+                </button>
               </div>
             </div>
-            <div className="py-4 text-end px-4">
-              <button type="button" className="btn btn-outline-primary mx-1">
-                บันทึก
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-danger mx-1"
-                onClick={() => {
-                  handleBacktoPage();
-                }}
-              >
-                ยกเลิก
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </>

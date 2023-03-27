@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import Loadding from "../../../loadding/loadding";
+import { Apply_Applycheck, ConvertTypeDate } from "../../../../service/api";
 function Apply_check() {
   let { id } = useParams();
   const columns = [
@@ -58,6 +59,15 @@ function Apply_check() {
     },
   ];
 
+  const Get_Apply_Applycheck = async () => {
+    console.log(id);
+    if (id != "" || id != undefined || id != null) {
+      const Data = await Apply_Applycheck(id);
+      console.log(Data);
+      setApply_Applycheck(Data[0]);
+    }
+  };
+
   const GetData = async () => {
     Setloadding(true);
     await axios
@@ -72,6 +82,7 @@ function Apply_check() {
         console.log(err);
       });
   };
+
   const handleSearch = (rows) => {
     return rows.filter((row) => {
       // if (!search) return true;
@@ -90,11 +101,28 @@ function Apply_check() {
   const [data, setData] = useState([]);
   const [loadding, Setloadding] = useState(true);
   const [search, setSearch] = useState("");
+  const [C_Apply_Applycheck, setApply_Applycheck] = useState({
+    jc_id: "",
+    jc_start: "",
+    jc_end: "",
+    jc_type: "",
+    updated_date: "",
+    name: "",
+    count_applicant_all: "",
+    count_person_pay: "",
+    count_person_pay_no: "",
+    count_success: "",
+    count_wait: "",
+    count_warm: "",
+    count_cancel: "",
+  });
   useEffect(() => {
+    Get_Apply_Applycheck();
     GetData();
   }, []);
   return (
     <>
+      {/* {JSON.stringify(C_Apply_Applycheck)} */}
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
@@ -109,7 +137,7 @@ function Apply_check() {
               <div className="col-md-2">
                 <div>
                   <p className="">ประเภท</p>
-                  <p className="">พนักงานจ้างทั่วไป</p>
+                  <p className="">{C_Apply_Applycheck.name}</p>
                 </div>
               </div>
               <div className="col-md-10 py-2">
@@ -117,55 +145,73 @@ function Apply_check() {
                   <div className="col-md-2">
                     <div>
                       <p className="">วันที่เริ่มต้น</p>
-                      <p className="">4 ม.ค. 2566</p>
+                      <p className="">
+                        {ConvertTypeDate(C_Apply_Applycheck.jc_start)}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">วันที่สิ้นสุด</p>
-                      <p className="">5 ม.ค. 2566</p>
+                      <p className="">
+                        {ConvertTypeDate(C_Apply_Applycheck.jc_end)}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">จำนวนทั้งหมด</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_applicant_all + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">ชำระเงินแล้ว</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_person_pay + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">รอชำระเงิน</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_person_pay_no + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">เอกสารสมบูรณ์</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_success + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">รออนุมัติ</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_wait + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">แจ้งให้แก้ไข</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_warm + " คน"}
+                      </p>
                     </div>
                   </div>
                   <div className="col-md-2">
                     <div>
                       <p className="">ยกเลิกการสมัคร</p>
-                      <p className="">0 คน</p>
+                      <p className="">
+                        {C_Apply_Applycheck.count_cancel + " คน"}
+                      </p>
                     </div>
                   </div>
                 </div>

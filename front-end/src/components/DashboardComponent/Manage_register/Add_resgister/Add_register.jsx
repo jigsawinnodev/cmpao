@@ -8,8 +8,8 @@ import axios from "axios";
 function Add_register() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectDateStart, SetSelectDateStart] = useState("");
-  const [selectDateEnd, SetSelectDateEnd] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [positionType, SetpositionType] = useState([]);
   const days = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
   const mockData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -94,7 +94,7 @@ function Add_register() {
       .get("http://localhost:9500/api/GetType_position")
       .then((res) => {
         SetpositionType(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         // console.log(err);
@@ -150,6 +150,11 @@ function Add_register() {
                   aria-label="Default select example"
                 >
                   <option>เลือก</option>
+                  {positionType.map((val, idx) => (
+                    <option key={idx} value={val.id}>
+                      {val.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -158,9 +163,11 @@ function Add_register() {
                 วันที่เริ่ม
               </label>
               <DatePicker
-                selected={selectDateStart}
-                className="w-100 form-control"
-                onChange={(date) => SetSelectDateStart(date)}
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
                 showIcon
                 showYearDropdown
                 showMonthDropdown
@@ -168,6 +175,7 @@ function Add_register() {
                 yearDropdownItemNumber={50}
                 locale={locale}
                 dateFormat="dd/MM/yyyy"
+                className="w-100 form-control"
               />
             </div>
             <div className="col-md-4">
@@ -175,9 +183,12 @@ function Add_register() {
                 วันที่สิ้นสุด
               </label>
               <DatePicker
-                selected={selectDateEnd}
-                className="w-100 form-control"
-                onChange={(date) => SetSelectDateEnd(date)}
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
                 showIcon
                 showYearDropdown
                 showMonthDropdown
@@ -185,6 +196,7 @@ function Add_register() {
                 yearDropdownItemNumber={50}
                 locale={locale}
                 dateFormat="dd/MM/yyyy"
+                className="w-100 form-control"
               />
             </div>
             <div className="col-md-12 pb-4">
