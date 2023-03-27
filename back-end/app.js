@@ -9,7 +9,8 @@ const DB = require('./Config/DB')
 
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '50mb' }));
 app.use(cors('*'));
 
 
