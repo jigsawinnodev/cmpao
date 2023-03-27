@@ -3,51 +3,92 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "./Manage_register.css";
 import { Link } from "react-router-dom";
+import { GetAllApply } from "../../../service/api";
+import moment from "moment";
 function Manage_register() {
+  var monthNames = [
+    "ม.ค",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+  ];
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row) => row.id,
+      selector: (row, index) => index + 1,
       width: "130px",
-      cell: (row) => row.id,
+      cell: (row, index) => index + 1,
       sortable: true,
       center: true,
     },
     {
       name: "ประเภท",
-      selector: (row) => row.category,
-      width: "150px",
-      cell: (row) => row.category,
+      selector: (row) => row.position_name,
+      width: "15%",
+      cell: (row) => row.position_name,
       sortable: true,
     },
     {
       name: "วันที่เริ่มต้น",
-      selector: (row) => row.brand,
+      selector: (row) => {
+        let date = new Date(row.jc_start);
+        let y = date.getFullYear() + 543;
+        let month = monthNames[date.getMonth()];
+        let numOfDay = date.getDate();
+        return `${numOfDay} ${month} ${y} `;
+      },
       width: "auto",
-      cell: (row) => row.brand,
+      cell: (row) => {
+        let date = new Date(row.jc_start);
+        let y = date.getFullYear() + 543;
+        let month = monthNames[date.getMonth()];
+        let numOfDay = date.getDate();
+        return `${numOfDay} ${month} ${y} `;
+      },
       sortable: true,
       center: true,
     },
     {
       name: "วันที่สิ้นสุด",
-      selector: (row) => row.description,
+      selector: (row) => {
+        let date = new Date(row.jc_end);
+        let y = date.getFullYear() + 543;
+        let month = monthNames[date.getMonth()];
+        let numOfDay = date.getDate();
+        return `${numOfDay} ${month} ${y} `;
+      },
+      cell: (row) => {
+        let date = new Date(row.jc_end);
+        let y = date.getFullYear() + 543;
+        let month = monthNames[date.getMonth()];
+        let numOfDay = date.getDate();
+        return `${numOfDay} ${month} ${y} `;
+      },
       width: "180px",
       sortable: true,
       center: true,
     },
     {
       name: "จำนวนตำเเหน่ง",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => (row.count_position ? row.count_position : "0"),
       sortable: true,
-      cell: (row) => row.discountPercentage,
+      cell: (row) => (row.count_position ? row.count_position : "0"),
       width: "auto",
       center: true,
     },
     {
       name: "จำนวนผู้สมัคร",
-      selector: (row) => row.price,
+      selector: (row) => (row.count_apply ? row.count_apply : "0"),
       sortable: true,
-      cell: (row) => row.price,
+      cell: (row) => (row.count_apply ? row.count_apply : "0"),
       width: "auto",
       center: true,
     },
@@ -55,9 +96,9 @@ function Manage_register() {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <Link to={"apply_check/" + row.id}>
+          <Link to={"apply_check/" + row.jc_id}>
             <button type="button" className="btn btn-outline-secondary">
-              Secondary
+              จัดการข้อมูลผู้สมัคร
             </button>
           </Link>
         </div>
@@ -66,29 +107,22 @@ function Manage_register() {
       width: "15%",
     },
   ];
-  const [data, setData] = useState([]);
+  const [apply, setGetAllApply] = useState([]);
   const [search, setSearch] = useState("");
   const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const data = await GetAllApply();
+    setGetAllApply(data);
   };
   const handleSearch = (rows) => {
+    // console.log(rows);
     return rows.filter((row) => {
-      // if (!search) return true;
+      console.log(row);
       if (
-        row.id.toString().toLowerCase().indexOf(search) > -1 ||
-        row.category.toLowerCase().indexOf(search) > -1 ||
-        row.brand.toLowerCase().indexOf(search) > -1 ||
-        row.description.toLowerCase().indexOf(search) > -1 ||
-        row.discountPercentage.toString().toLowerCase().indexOf(search) > -1 ||
+        row.position_name.toString().toLowerCase().indexOf(search) > -1 ||
+        row.jc_start.toLowerCase().indexOf(search) > -1 ||
+        row.jc_end.toLowerCase().indexOf(search) > -1 ||
+        row.count_position.toLowerCase().indexOf(search) > -1 ||
+        row.count_apply.toString().toLowerCase().indexOf(search) > -1 ||
         row.price.toString().toLowerCase().indexOf(search) > -1
       ) {
         return true;
@@ -123,8 +157,7 @@ function Manage_register() {
                   </div>
                 </div>
               </div>
-              <div>from</div>
-              <div className="input-wrapper px-3 py-1 w-100 float-end">
+              <div className="input-wrapper px-3 w-100 float-end">
                 <button className="icon">
                   <i className="bi bi-search" style={{ color: "white" }}></i>
                 </button>
@@ -140,13 +173,13 @@ function Manage_register() {
             </div>
           </nav>
           <div className="">
-            <div className="px-3 py-2">
-              <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
+            <div className="px-3">
+              <div className="rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={handleSearch(data)}
+                      data={handleSearch(apply)}
                       pagination
                       responsive
                     />

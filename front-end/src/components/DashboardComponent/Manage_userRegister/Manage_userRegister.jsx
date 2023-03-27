@@ -2,33 +2,39 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { DeleteMember, GetMemberAll } from "../../../service/api";
+import Swal from "sweetalert2";
 function Manage_userRegister() {
   const columns = [
     {
       name: "ลำดับ",
-      selector: "ลำดับ",
+      selector: (index) => index + 1,
       width: "120px",
-      cell: (row) => row.id,
+      cell: (row, index) => index + 1,
       sortable: true,
+      center: true,
     },
     {
       name: "ชื่อ-นามสกุล",
-      selector: (row) => row.category,
+      selector: (row) =>
+        row.prename + " " + row.m_firstname + " " + row.m_lastname,
       width: "200px",
-      cell: (row) => row.category,
+      cell: (row) => row.prename + " " + row.m_firstname + " " + row.m_lastname,
       sortable: true,
     },
     {
       name: "หมายเลขโทรศัพท์",
-      selector: (row) => row.brand,
+      selector: (row) => row.m_phone,
       width: "250px",
-      cell: (row) => row.brand,
+      cell: (row) => row.m_phone,
       sortable: true,
     },
     {
       name: "อีเมล",
-      selector: (row) => row.description,
-      width: "250px",
+      selector: (row) => row.m_email,
+      width: "15%",
+      cell: (row) => (row.m_email ? row.m_email : "-"),
       sortable: true,
     },
     {
@@ -42,12 +48,19 @@ function Manage_userRegister() {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
+          <Link to={"add/" + row.m_id}>
+            <button type="button" className="btn btn-outline-warning mx-1">
+              เเก้ไขข้อมูล
+            </button>
+          </Link>
           <button
             type="button"
-            className="btn"
-            style={{ backgroundColor: "#7B8FA1", color: "white" }}
+            className="btn btn-outline-danger mx-1"
+            onClick={() => {
+              Delete_Members(row.m_id);
+            }}
           >
-            Info
+            ลบข้อมูล
           </button>
         </div>
       ),
@@ -55,23 +68,39 @@ function Manage_userRegister() {
       width: "auto",
     },
   ];
-  const [data, setData] = useState([]);
+  const [member, setMember] = useState([]);
   const [search, setSearch] = useState("");
 
-  const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const Delete_Members = (id) => {
+    Swal.fire({
+      title: "ยืนยันการลบข้อมูล?",
+      text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        const DeleteData = DeleteMember(id);
+        Get_tbl_Member();
+      }
+    });
+  };
+  const Get_tbl_Member = async () => {
+    const GetMember = await GetMemberAll();
+    let result = [];
+    GetMember.forEach((element) => {
+      if (element.m_active == 1) {
+        result.push(element);
+      }
+      setMember(result);
+    });
   };
   useEffect(() => {
-    GetData();
+    Get_tbl_Member();
   }, []);
   return (
     <>
@@ -122,7 +151,7 @@ function Manage_userRegister() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={data}
+                      data={member}
                       pagination
                       responsive
                     />

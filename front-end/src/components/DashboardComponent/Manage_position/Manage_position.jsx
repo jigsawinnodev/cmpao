@@ -4,185 +4,224 @@ import axios from "axios";
 import "./Manage_position.css";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { GetAllPosition, Add_edit_position } from "../../../service/api";
 function Manage_position() {
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row) => row.id,
-      width: "120px",
-      cell: (row) => row.id,
+      selector: (row, index) => index + 1,
+      width: "20%",
+      cell: (row, index) => index + 1,
       sortable: true,
       center: true,
     },
     {
       name: "ประเภท",
-      selector: (row) => row.category,
-      width: "250px",
-      cell: (row) => row.category,
+      selector: (row) => row.name,
+      width: "20%",
+      cell: (row) => row.name,
       sortable: true,
       center: true,
     },
     {
       name: "ชื่อตำเเหน่ง",
-      selector: (row) => row.brand,
-      width: "250px",
-      cell: (row) => row.brand,
+      selector: (row) => row.p_name,
+      width: "20%",
+      cell: (row) => row.p_name,
       sortable: true,
       center: true,
     },
     {
       name: "สถานนะ",
-      selector: (row) => row.description,
-      width: "300px",
+      selector: (row) => row.p_active,
+      width: "20%",
+      cell: (row) => (row.p_active ? <div>ใช้งาน</div> : "-"),
       sortable: true,
       center: true,
     },
     {
       name: "เครื่องมือ",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => row.p_id,
       sortable: true,
       cell: (row) => (
         <div>
           <button
             type="button"
             className="btn btn-warning mx-1"
-            onClick={() => EditPosition(row.id)}
+            // onClick={() => EditPosition(row.id)}
+            data-bs-toggle="modal"
+            data-bs-target={"#exampleModal" + row.p_id}
           >
             <i className="bi bi-pencil-fill" style={{ color: "white" }}></i>
           </button>
+          <div
+            className="modal fade"
+            id={"exampleModal" + row.p_id}
+            tabIndex={-1}
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog modal-lg">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    แก้ไขตำแหน่ง
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  />
+                </div>
+                <div className="modal-body">
+                  <div>
+                    <div className="py-2 text-start">
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label"
+                      >
+                        ชื่อตำแหน่ง
+                      </label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        defaultValue={row.p_name ? row.p_name : ""}
+                      />
+                    </div>
+                    <div className="text-start py-2">
+                      <label
+                        htmlFor="exampleInputSelect"
+                        className="form-label"
+                      >
+                        ประเภท
+                      </label>
+                      <select className="form-select" defaultValue={row.name}>
+                        <option value="">เลือก</option>
+                        {positionType.map((val, idx) => {
+                          return (
+                            <option key={idx} value={val.name}>
+                              {val.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    <div className="text-start py-2">
+                      <label
+                        htmlFor="exampleInputSelect"
+                        className="form-label"
+                      >
+                        สถานะ
+                      </label>
+                      <select
+                        className="form-select"
+                        defaultValue={row.p_active}
+                      >
+                        <option value={1}>ใช้งาน</option>
+                        <option value={0}>ไม่ใช้งาน</option>
+                      </select>
+                    </div>
+                    <div className="text-start py-2">
+                      <label
+                        htmlFor="exampleInputSelect"
+                        className="form-label"
+                      >
+                        เเนบไฟล์
+                      </label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="formFile"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      EditPosition(row.p_id);
+                    }}
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <button
             type="button"
-            class="btn btn-danger mx-1"
+            className="btn btn-danger mx-1"
             onClick={() => {
-              DeletePosition(row.id);
+              DeletePosition(row.p_id);
             }}
           >
             <i className="bi bi-trash-fill" style={{ color: "white" }}></i>
           </button>
         </div>
       ),
-      width: "auto",
+      width: "20%",
     },
   ];
-  const EditPosition = (id) => {
-    Swal.fire({
-      title: "เเก้ไขข้อมูลตำเเหน่ง",
-      position: "top",
-      width: "550px",
-      html: `<div class="py-2 text-start">
-      <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">ประเภท</label>
-      <select class="form-select" aria-label="Default select example">
-        <option >Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">สถานะ</label>
-      <select class="form-select" aria-label="Default select example">
-        <option >ใช้งาน</option>
-        <option value="ไม่ใช้งาน">ไม่ใช้งาน</option>
-      </select>
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">เเนบไฟล์</label>
-      <input class="form-control" type="file" id="formFile">
-    </div>
-    `,
-      showCancelButton: true,
-      confirmButtonColor: "#655DBB",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "บันทึก",
-      cancelButtonText: "ยกเลิก",
-    }).then(function () {
-      // wait axios
-      Swal.fire({
-        icon: "success",
-        title: "ได้ทำการบันทึกข้อมูลเรียบร้อยแล้ว",
-      });
-    });
+
+  const getDataPosition = async () => {
+    const data = await GetAllPosition();
+    setPositionData(data.data);
   };
-  const DeletePosition = (id) => {
-    console.log(id);
-    Swal.fire({
-      title: "ยืนยันการลบข้อมูล",
-      text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // wait axios
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  };
-  const AddPosition = () => {
-    Swal.fire({
-      title: "เพิ่มตำเเหน่ง",
-      html: `<div class="py-2 text-start">
-      <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">ประเภท</label>
-      <select class="form-select" aria-label="Default select example">
-        <option >Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">สถานะ</label>
-      <select class="form-select" aria-label="Default select example">
-        <option >ใช้งาน</option>
-        <option value="ไม่ใช้งาน">ไม่ใช้งาน</option>
-      </select>
-    </div>
-    <div class="text-start py-2">
-      <label for="exampleInputSelect" class="form-label">เเนบไฟล์</label>
-      <input class="form-control" type="file" id="formFile">
-    </div>
-    `,
-      showCancelButton: true,
-      width: "750px",
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // wait axios
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  };
-  const [data, setData] = useState([]);
+
+  const [postionData, setPositionData] = useState([]);
   const [search, setSearch] = useState("");
-  const GetData = () => {
+  const [positionType, SetpositionType] = useState([]);
+
+  // เพิ่มใบสมัคร
+  const [namePosition, setNamePosition] = useState("");
+  const [typePosition, setTypePosition] = useState("");
+  const [statusPosition, setStatusPosition] = useState("1");
+  const [filePdf, setFilePdf] = useState([]);
+
+  const AddorEditPosition = (id = "") => {
+    Add_edit_position(id, namePosition, typePosition, statusPosition, filePdf);
+  };
+
+  const GetType_Position = () => {
     axios
-      .get("https://dummyjson.com/products")
+      .get("http://localhost:9500/api/GetType_position")
       .then((res) => {
-        setData(res.data.products);
-        console.log(res.data.products);
-        // console.log(res);
+        SetpositionType(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
+  };
+  const handleSearch = (rows) => {
+    // console.log(rows);
+    return rows.filter((row) => {
+      if (
+        row.name.toString().indexOf(search) > -1 ||
+        row.p_name.toString().indexOf(search) > -1 ||
+        row.p_active.toString().indexOf(search) > -1
+      ) {
+        return true;
+      }
+    });
   };
 
   useEffect(() => {
-    GetData();
+    getDataPosition();
+    // GetData();
+    GetType_Position();
   }, []);
   return (
     <>
@@ -190,9 +229,6 @@ function Manage_position() {
         <div className="shadow-lg h-50 rounded-3">
           <nav>
             <div className="nav px-3 pt-4 pb-2">
-              {/* <div>
-                <h3 className="dashboard">จัดการข้อมูลตำเเหน่ง</h3>
-              </div> */}
               <div className="row w-100 my-auto">
                 <div className="col-md-7">
                   <div className="text-end">
@@ -205,12 +241,133 @@ function Manage_position() {
                   <div className="float-end">
                     <button
                       className="btn btn-outline-success"
-                      onClick={() => {
-                        AddPosition();
-                      }}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
                     >
                       เพิ่มใบสมัคร
                     </button>
+                    <div
+                      className="modal fade"
+                      id="exampleModal"
+                      tabIndex={-1}
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">
+                              เพิ่มตำแหน่ง
+                            </h5>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            />
+                          </div>
+                          <div className="modal-body">
+                            <div>
+                              <div className="py-2 text-start">
+                                <label
+                                  htmlFor="exampleInputEmail1"
+                                  className="form-label"
+                                >
+                                  ชื่อตำแหน่ง
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  defaultValue={namePosition}
+                                  onChange={(e) => {
+                                    setNamePosition(e.target.value);
+                                  }}
+                                />
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  ประเภท
+                                </label>
+                                <select
+                                  className="form-select"
+                                  aria-label="Default select example"
+                                  defaultValue={typePosition}
+                                  onChange={(e) => {
+                                    setTypePosition(e.target.value);
+                                  }}
+                                >
+                                  <option>เลือก</option>
+                                  {positionType.map((val, idx) => (
+                                    <option key={idx} value={val.id}>
+                                      {val.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  สถานะ
+                                </label>
+                                <select
+                                  className="form-select"
+                                  aria-label="Default select example"
+                                  defaultValue={statusPosition}
+                                  onChange={(e) => {
+                                    console.log(e.target.value);
+                                    setStatusPosition(e.target.value);
+                                  }}
+                                >
+                                  <option value={"1"}>ใช้งาน</option>
+                                  <option value={"0"}>ไม่ใช้งาน</option>
+                                </select>
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  เเนบไฟล์
+                                </label>
+                                <input
+                                  multiple
+                                  className="form-control"
+                                  type="file"
+                                  id="formFile"
+                                  accept="application/pdf"
+                                  onChange={(e) => {
+                                    setFilePdf(e.target.files[0]);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={() => {
+                                AddorEditPosition();
+                              }}
+                            >
+                              Save changes
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -243,7 +400,7 @@ function Manage_position() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={data}
+                      data={handleSearch(postionData)}
                       pagination
                       responsive
                     />

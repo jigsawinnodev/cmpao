@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors('*'));
 
 
+
 const router = require('./routers/route');
 app.use('/api', router);
 
