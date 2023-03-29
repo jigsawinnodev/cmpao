@@ -55,6 +55,7 @@ function App() {
 
         <Route path="User" element={<Manage_users />} />
         <Route path="User/add" element={<Manage_users_add />} />
+        <Route path="User/add/:id" element={<Manage_users_add />} />
 
         <Route path="Permission" element={<Manage_privilege />} />
 
