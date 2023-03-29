@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { format, parseISO } from 'date-fns'
 import DatePicker from "react-datepicker";
 import Boy from "../../../../assets/img/boy.png";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +35,7 @@ function Manage_users_add() {
       day: (n) => days[n],
       month: (n) => months[n],
     },
+    
     formatLong: {
       date: () => "dd/MM/yyyy",
     },
@@ -50,7 +52,8 @@ function Manage_users_add() {
   const [name, setName] = useState("");
   const [lname, setLname] = useState("");
   const DateDatatest = "29/03/2023";
-  const [birthday, setBirthday] = useState(Date.now("15/03/2023"));
+  const [birthday, setBirthday] = useState(new Date("1995-10-30"));
+  // const [startDate, setStartDate] = useState(new Date("1995/10/30"));
   const [position, setPosition] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -127,11 +130,36 @@ function Manage_users_add() {
     if (id != "") {
       console.log(id);
       let data = await FindByIdUser(id);
-      console.log(data.data[0].user_id);
+      // console.log(data.data[0].user_id);
+      const date_test = data.data[0].user_birthday
+      // console.log(date_test);
+      const Test = new Date(date_test).toISOString().slice(0, 19).replace('T', ' ');
+      // moment().format();
+      // console.log();
+      // var timeStamp= 1107110465663
+      // const dateFormat= moment(Test).format("YYYY-MM-DD");
+      // console.log(birthday);
+      // console.log(new Date(Test));
+      const TestDate = new Date(date_test)
+      const selected = moment(date_test).toDate()
+      const javaScriptRelease = Date.parse(date_test);
+      console.log(javaScriptRelease)
+      setDataByID(date_test);
+
+
       // console.log(data.data[0].birthday);
-      // const ConvertData = data.data[0].birthday.split("/");
-      // const y = Number(ConvertData[2]) + 543;
-      // data.data[0].birthday = `${ConvertData[0]}/${ConvertData[1]}/${y}`;
+      // alert(date_test);
+
+      // const ConvertData = date_test.split("-");
+
+      // alert(ConvertData);
+
+      // const y = Number(ConvertData[0]) + 543;
+      // console.log(y);
+
+      // const TEST = `${ConvertData[0]}/${ConvertData[1]}/${y}`;
+      // console.log(TEST);
+
       // setDataByID(data);
     }
   };
@@ -143,7 +171,7 @@ function Manage_users_add() {
   return (
     <>
       {/* {JSON.stringify(moment(DataByID.user_birthday).format("X"))} */}
-      {JSON.stringify(id)}
+      {JSON.stringify(DataByID)}
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
@@ -268,7 +296,7 @@ function Manage_users_add() {
                         </label>
                         <DatePicker
                           className="w-100 form-control"
-                          selected={DataByID.user_birthday}
+                          selected={Date.parse(DataByID)}
                           onChange={(date) => setBirthday(date)}
                           showIcon
                           showYearDropdown

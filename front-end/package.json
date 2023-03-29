@@ -30,6 +30,7 @@
     "chroma-js": "2.4.2",
     "datatables.net": "^1.13.4",
     "datatables.net-dt": "^1.13.4",
+    "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "jquery": "^3.6.4",
     "moment": "^2.29.4",

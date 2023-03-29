@@ -4,7 +4,7 @@ var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'cmpao',
+    database: 'react_cmpao_db',
     socketPath:'/Applications/MAMP/tmp/mysql/mysql.sock'
 });
 
