@@ -6,16 +6,22 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // res.json(req.file)
-        // console.log(file);
-        if (file.type === 'application/pdf') {
+        if (file.mimetype === 'application/pdf') {
             cb(null, 'file/pdf');
         } else if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
             cb(null, 'file/img');
         }
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        if (file.mimetype === 'application/pdf') {
+            cb(null, Date.now() + '.pdf');
+        } else if (file.mimetype == "image/png") {
+            cb(null, Date.now() + '.png');
+        } else if (file.mimetype == "image/jpg") {
+            cb(null, Date.now() + '.jpg');
+        } else {
+            cb(null, Date.now() + '.jpeg');
+        }
     }
 })
 
@@ -31,14 +37,24 @@ router.get('/GetStatus_relationship', Admin.Status_relationship);
 router.get('/GetTbl_country', Admin.GetTbl_country);
 router.get('/GetTbl_district', Admin.GetTbl_district);
 router.get('/GetTbl_subdistrict', Admin.GetTbl_subdistrict);
-router.post('/CreateMember', Admin.CreateMember);
 router.get('/GetTbl_religion', Admin.GetTbl_religion);
-router.get('/selectMemberAll', Admin.selectMemberAll);
-router.post('/DeleteMember', Admin.Delete_Member);
 router.get('/GetApplyAll', Admin.GetApplyAll);
 router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 
-// router ManagePosition
+// router ManagePositions
 router.get('/GetAllPosition', Admin.GetAllPosition);
-router.post('/Edit_Add_Position', upload.single('file'), Admin.Edit_Add_Position);
+router.post('/Edit_Add_Position', upload.single('file'), Admin.manage_Position);
+router.post('/Delete_position', Admin.Delete_positions);
+
+// router User
+router.get('/GetUser', Admin.user_all);
+router.get('/GetUser_permission', Admin.GetUser_permission);
+router.post('/Insert_Edit_User', upload.single('img'), Admin.Insert_Edit_User);
+router.get('/FindUserByID/:id', Admin.FindUserByID);
+
+
+// router Member
+router.get('/selectMemberAll', Admin.selectMemberAll);
+router.post('/CreateMember', Admin.CreateMember);
+router.post('/DeleteMember', Admin.Delete_Member);
 module.exports = router;

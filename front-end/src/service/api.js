@@ -146,6 +146,38 @@ export const ConvertTypeDate = (date) => {
     }
     return `${day + ' ' + month_th + ' ' + year_th}`
 }
+export const ConvertDatetimeToDate = (date) => {
+    var monthNames = [
+        "ม.ค",
+        "ก.พ.",
+        "มี.ค.",
+        "เม.ย.",
+        "พ.ค.",
+        "มิ.ย.",
+        "ก.ค.",
+        "ส.ค.",
+        "ก.ย.",
+        "ต.ค.",
+        "พ.ย.",
+        "ธ.ค.",
+    ];
+    const Datasplit = date.split('-');
+    const month = Number(Datasplit[1]);
+    // console.log(month);
+    var month_th = '';
+    const year_th = Number(Datasplit[0]) + 543;
+    const day = Datasplit[2]?.slice(0, 2)
+    for (let index = 0; index < monthNames.length; index++) {
+        if (index == month) {
+            month_th = monthNames[index - 1];
+        }
+    }
+    console.log(Number(day));
+
+    return date
+}
+
+
 
 // Position
 export function GetAllPosition() {
@@ -153,14 +185,60 @@ export function GetAllPosition() {
     // console.log(response);
     return response;
 }
-// export function Add_edit_position(p_name, p_id = '', p_type, p_active, file = '') {
-export function Add_edit_position(data) {
-
-    // console.log(data);
-    axios.post(`${BaseUrl}/api/Edit_Add_Position`,
-        data,
-    ).then(function (response) {
-        console.log(response);
-    });
+export function Add_edit_position(file_Data) {
+    axios({
+        method: "post",
+        url: "http://localhost:9500/api/Edit_Add_Position",
+        data: file_Data,
+        headers: { "Content-Type": "multipart/form-data" },
+    })
+        .then(function (response) {
+            //handle success
+            console.log(response);
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
 }
+export function Delete_position(id) {
+    axios.post(`${BaseUrl}/api/Delete_position`, {
+        id: id
+    }).then((res) => {
+        console.log(res);
+    }).catch((err) => {
+        console.log(err);
+    })
+}
+
+// end position
+
+
+// user
+export function GetAll_user() {
+    let response = axios.get(`${BaseUrl}/api/GetUser`);
+    return response;
+}
+export function Get_permission() {
+    let response = axios.get(`${BaseUrl}/api/GetUser_permission`);
+    return response;
+}
+
+export function Insert_Edit_U(formData) {
+    // console.log('qwe');
+    let response = axios({
+        method: "post",
+        url: `${BaseUrl}/api/Insert_Edit_User`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+    })
+    return response;
+}
+export async function FindByIdUser(id) {
+    console.log(id);
+    let response = await axios.get(`${BaseUrl}/api/FindUserByID/${id}`);
+    console.log(response);
+    return response;
+}
+
 

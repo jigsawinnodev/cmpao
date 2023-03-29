@@ -3,14 +3,18 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { DeleteMember, GetMemberAll } from "../../../service/api";
+import {
+  DeleteMember,
+  GetMemberAll,
+  ConvertDatetimeToDate,
+} from "../../../service/api";
 import Swal from "sweetalert2";
 function Manage_userRegister() {
   const columns = [
     {
       name: "ลำดับ",
       selector: (index) => index + 1,
-      width: "120px",
+      width: "10%",
       cell: (row, index) => index + 1,
       sortable: true,
       center: true,
@@ -19,14 +23,14 @@ function Manage_userRegister() {
       name: "ชื่อ-นามสกุล",
       selector: (row) =>
         row.prename + " " + row.m_firstname + " " + row.m_lastname,
-      width: "200px",
+      width: "20%",
       cell: (row) => row.prename + " " + row.m_firstname + " " + row.m_lastname,
       sortable: true,
     },
     {
       name: "หมายเลขโทรศัพท์",
       selector: (row) => row.m_phone,
-      width: "250px",
+      width: "15%",
       cell: (row) => row.m_phone,
       sortable: true,
     },
@@ -42,7 +46,7 @@ function Manage_userRegister() {
       selector: (row) => row.discountPercentage,
       sortable: true,
       cell: (row) => row.discountPercentage,
-      width: "200px",
+      width: "20%",
     },
     {
       name: "เครื่องมือ",
@@ -65,7 +69,7 @@ function Manage_userRegister() {
         </div>
       ),
       sortable: true,
-      width: "auto",
+      width: "20%",
     },
   ];
   const [member, setMember] = useState([]);
@@ -91,13 +95,7 @@ function Manage_userRegister() {
   };
   const Get_tbl_Member = async () => {
     const GetMember = await GetMemberAll();
-    let result = [];
-    GetMember.forEach((element) => {
-      if (element.m_active == 1) {
-        result.push(element);
-      }
-      setMember(result);
-    });
+    setMember(GetMember);
   };
   useEffect(() => {
     Get_tbl_Member();

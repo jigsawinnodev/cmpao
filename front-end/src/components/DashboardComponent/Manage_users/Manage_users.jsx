@@ -2,99 +2,98 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { GetAll_user, ConvertTypeDate } from "../../../service/api";
 function Manage_users() {
   const columns = [
     {
       name: "ลำดับ",
-      selector: "ลำดับ",
-      width: "120px",
-      cell: (row) => row.id,
+      selector: (row, index) => index + 1,
+      width: "10%",
+      cell: (row, index) => index + 1,
       sortable: true,
+      center: true,
     },
     {
       name: "ชื่อ-นามสกุล",
-      selector: (row) => row.category,
-      width: "170px",
-      cell: (row) => row.category,
-      sortable: true,
-    },
-    {
-      name: "สิทธิ์การเข้าถึงข้อมูล",
-      selector: (row) => row.brand,
-      width: "200",
-      cell: (row) => row.brand,
+      selector: (row) => {
+        return (
+          row.prename_name + " " + row.user_firstname + " " + row.user_lastname
+        );
+      },
+      width: "20%",
+      cell: (row) => {
+        return (
+          row.prename_name + " " + row.user_firstname + " " + row.user_lastname
+        );
+      },
       sortable: true,
     },
     {
       name: "หมายเลขโทรศํพท์",
-      selector: (row) => row.description,
-      width: "200px",
+      selector: (row) => row.user_phone,
+      width: "15%",
+      cell: (row) => row.user_phone,
       sortable: true,
     },
     {
       name: "อีเมล",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => row.user_email,
       sortable: true,
-      cell: (row) => row.discountPercentage,
-      width: "200px",
+      cell: (row) => row.user_email,
+      width: "20%",
     },
     {
       name: "สถานะ",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => ConvertTypeDate(row.login_time),
       sortable: true,
-      cell: (row) => row.discountPercentage,
-      width: "190px",
+      cell: (row) => ConvertTypeDate(row.login_time),
+      width: "15%",
     },
     {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <button
-            type="button"
-            className="btn"
-            style={{ backgroundColor: "#7B8FA1", color: "white" }}
-          >
-            Info
+          <Link to={"add/" + row.user_id}>
+            <button type="button" className="btn btn-outline-warning mx-1">
+              เเก้ไขข้อมูล
+            </button>
+          </Link>
+          {/* <button type="button" className="btn btn-outline-warning mx-1">
+            เเก้ไขข้อมูล
+          </button> */}
+          <button type="button" className="btn btn-outline-danger mx-1">
+            ลบข้อมูล
           </button>
         </div>
       ),
       sortable: true,
-      width: "auto",
+      width: "20%",
     },
   ];
-  const [data, setData] = useState([]);
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "72px",
-      },
-    },
-    headCells: {
-      style: {
-        // paddingLeft: "8px", // override the cell padding for head cells
-        // paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
+  const [user, setUser] = useState([]);
+  const [search, setSearch] = useState("");
+  const handleSearch = (rows) => {
+    console.log(rows);
+    return rows.filter((row) => {
+      console.log(row);
+      if (
+        row.prename_name.indexOf(search) > -1 ||
+        row.user_firstname.indexOf(search) > -1 ||
+        row.user_lastname.indexOf(search) > -1 ||
+        row.user_phone.toString().indexOf(search) > -1 ||
+        row.login_time.toString().indexOf(search) > -1 ||
+        row.user_email.toString().indexOf(search) > -1
+      ) {
+        return true;
+      }
+    });
   };
+
   const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let data = await GetAll_user();
+    setUser(data.data);
   };
+
   useEffect(() => {
     GetData();
   }, []);
@@ -129,7 +128,7 @@ function Manage_users() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={data}
+                      data={handleSearch(user)}
                       pagination
                       responsive
                     />
