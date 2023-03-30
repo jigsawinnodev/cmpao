@@ -234,11 +234,11 @@ export function Insert_Edit_U(formData) {
     })
     return response;
 }
-export async function FindByIdUser(id) {
+export async function FindByIdUser(id = '') {
     console.log(id);
     let response = await axios.get(`${BaseUrl}/api/FindUserByID/${id}`);
-    console.log(response);
-    return response;
+    // console.log(response);
+    return response.data;
 }
 
 

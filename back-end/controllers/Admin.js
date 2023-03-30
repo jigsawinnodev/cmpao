@@ -235,20 +235,25 @@ const Insert_Edit_User = (req, res) => {
 }
 const FindUserByID = (req, res) => {
     const { id } = req.params;
-    console.log(id);
-    let sql = `SELECT * FROM user WHERE user_id = ${id}`;
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) {
-            let baseURL = 'http://localhost:9500/public/img/'
-            let data = [];
-            for (let index = 0; index < result.length; index++) {
-                result[index].user_img = `${baseURL}${result[index].user_img}`
-                data.push(result[index]);
+    if (id != undefined) {
+        let sql = `SELECT * FROM user WHERE user_id = ${id}`;
+        mysqlConnection.query(sql, function (err, result) {
+            if (!err) {
+                let baseURL = 'http://localhost:9500/public/img/'
+                let data = [];
+                for (let index = 0; index < result.length; index++) {
+                    result[index].user_img = `${baseURL}${result[index].user_img}`
+                    data.push(result[index]);
+                }
+                // console.log(data);
+                res.json(data)
             }
-            res.json(data)
-        }
-        if (err) console.log(err);
-    });
+            if (err) console.log(err);
+        });
+    } else {
+        res.json("Error")
+    }
+
 };
 
 

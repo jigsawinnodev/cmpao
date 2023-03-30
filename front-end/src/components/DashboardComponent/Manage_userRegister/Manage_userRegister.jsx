@@ -3,11 +3,7 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import {
-  DeleteMember,
-  GetMemberAll,
-  ConvertDatetimeToDate,
-} from "../../../service/api";
+import { DeleteMember, GetMemberAll } from "../../../service/api";
 import Swal from "sweetalert2";
 function Manage_userRegister() {
   const columns = [
@@ -46,7 +42,7 @@ function Manage_userRegister() {
       selector: (row) => row.discountPercentage,
       sortable: true,
       cell: (row) => row.discountPercentage,
-      width: "20%",
+      width: "15%",
     },
     {
       name: "เครื่องมือ",
@@ -95,7 +91,13 @@ function Manage_userRegister() {
   };
   const Get_tbl_Member = async () => {
     const GetMember = await GetMemberAll();
-    setMember(GetMember);
+    let result = [];
+    GetMember.forEach((element) => {
+      if (element.m_active == 1) {
+        result.push(element);
+      }
+      setMember(result);
+    });
   };
   useEffect(() => {
     Get_tbl_Member();
