@@ -1,24 +1,13 @@
 import axios from "axios";
 var BaseUrl = 'http://localhost:9500';
-export const GetpreName = () => {
-    return axios
-        .get(`${BaseUrl}/api/GetpreName`)
-        .then((res) => {
-            return res.data
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+export const GetpreName = async () => {
+    let response = await axios.get(`${BaseUrl}/api/GetpreName`);
+    return response.data
 };
-export const GetBloodType = () => {
-    return axios
-        .get(`${BaseUrl}/api/GetBloodType`)
-        .then((res) => {
-            return res.data
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+export const GetBloodType = async () => {
+    let response = await axios.get(`${BaseUrl}/api/GetBloodType`);
+    return response.data;
+
 };
 export const GetStatus_relationship = () => {
     return axios
@@ -60,13 +49,10 @@ export const GetTbl_subdistrict = () => {
             console.log(err);
         });
 }
-export const GetTbl_religion = () => {
-    return axios.get(`${BaseUrl}/api/GetTbl_religion`)
-        .then((res) => {
-            return res.data
-        }).catch((err) => {
-            // console.log(err);
-        });
+export const GetTbl_religion = async () => {
+    let response = await axios.get(`${BaseUrl}/api/GetTbl_religion`);
+    // console.log(response);
+    return response.data;
 }
 export const CreateMember = () => {
     return axios.post(`${BaseUrl}/api/CreateMember`)

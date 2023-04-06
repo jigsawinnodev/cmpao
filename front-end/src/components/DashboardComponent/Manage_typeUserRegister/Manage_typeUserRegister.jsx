@@ -4,79 +4,75 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 function Manage_typeUserRegister() {
+  const morkData = [
+    {
+      id: "1",
+      nameposition: "ข้าราชการ",
+    },
+    {
+      id: "2",
+      nameposition: "พนักงานจ้างทั่วไป",
+    },
+    {
+      id: "3",
+      nameposition: "พนักงานจ้างตามภารกิจ",
+    },
+    {
+      id: "4",
+      nameposition: "พนักงานจ้างผู้เชี่ยวชาญพิเศษ",
+    },
+    {
+      id: "5",
+      nameposition: "สอบเปลี่ยนสายงาน",
+    },
+    {
+      id: "6",
+      nameposition: "รับโอน",
+    },
+  ];
   const columns = [
     {
       name: "ลำดับ",
       selector: (row) => row.id,
-      width: "130px",
+      width: "10%",
       cell: (row) => row.id,
       sortable: true,
       center: true,
     },
     {
-      name: "ประเภท",
-      selector: (row) => row.category,
-      width: "150px",
-      cell: (row) => row.category,
+      name: "ชื่อตำเเหน่ง",
+      selector: (row) => row.nameposition,
+      width: "40%",
+      cell: (row) => row.nameposition,
       sortable: true,
     },
-    {
-      name: "วันที่เริ่มต้น",
-      selector: (row) => row.brand,
-      width: "auto",
-      cell: (row) => row.brand,
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "วันที่สิ้นสุด",
-      selector: (row) => row.description,
-      width: "180px",
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "จำนวนตำเเหน่ง",
-      selector: (row) => row.discountPercentage,
-      sortable: true,
-      cell: (row) => row.discountPercentage,
-      width: "auto",
-      center: true,
-    },
-    {
-      name: "จำนวนผู้สมัคร",
-      selector: (row) => row.price,
-      sortable: true,
-      cell: (row) => row.price,
-      width: "auto",
-      center: true,
-    },
+
     {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
           <button
             type="button"
-            class="btn btn-warning mx-1"
+            className="btn btn-warning mx-1"
             onClick={() => {
               EditTypePosition(row.id);
             }}
           >
-            <i class="bi bi-pencil-fill"></i>
+            <i className="bi bi-pencil-fill"></i>
           </button>
           <button
             type="button"
-            class="btn btn-danger mx-1"
+            className="btn btn-danger mx-1"
             onClick={() => {
               DeleteTypePosition(row.id);
             }}
           >
-            <i class="bi bi-trash-fill"></i>
+            <i className="bi bi-trash-fill"></i>
           </button>
         </div>
       ),
       sortable: true,
-      width: "15%",
+      width: "50%",
     },
   ];
   const [data, setData] = useState([]);
@@ -96,7 +92,7 @@ function Manage_typeUserRegister() {
   const EditTypePosition = (id) => {
     console.log(id);
     Swal.fire({
-      position: "top",
+      // position: "top",
       width: "750px",
       title: "เเก้ไขตำเเหน่ง",
       html: `
@@ -146,7 +142,7 @@ function Manage_typeUserRegister() {
   };
   const AddUserRegister = () => {
     Swal.fire({
-      position: "top",
+      // position: "center",
       width: "750px",
       title: "เพิ่มตำแหน่ง",
       html: `
@@ -182,13 +178,14 @@ function Manage_typeUserRegister() {
                 <div className="float-end">
                   <a to="add">
                     <button
-                      className="btn btn-outline-primary"
+                      className="Btn_Add_user"
                       onClick={() => {
                         AddUserRegister();
                       }}
                     >
                       เพิ่มใบสมัคร
                     </button>
+                    {/* <button className="Btn_Add_user">เพิ่มข้อมูล</button> */}
                   </a>
                 </div>
               </div>
@@ -199,9 +196,26 @@ function Manage_typeUserRegister() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={handleSearch(data)}
+                      // data={handleSearch(data)}
+                      data={morkData}
                       pagination
                       responsive
                     />

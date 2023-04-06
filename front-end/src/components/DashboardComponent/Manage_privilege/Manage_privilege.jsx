@@ -6,9 +6,13 @@ function Manage_privilege() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="nav px-3 pt-4 pb-2 my-auto">
-              <div>
-                <h3 className="dashboard">จัดการสิทธิ์</h3>
+            <div className="row w-100 pt-3 pb-4 m-0">
+              <div className="col-md-12 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการสิทธิ์
+                  </h4>
+                </div>
               </div>
             </div>
           </nav>
@@ -35,12 +39,1094 @@ function Manage_privilege() {
                           <td className="text-center align-middle">1</td>
                           <td className="align-middle">
                             <div>
-                              <p className="m-0">Mark</p>
+                              <p className="m-0">หน้าหลัก</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
                             </div>
                           </td>
                           <td>
                             <div className="text-center">
                               <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">2</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการใบสมัคร</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">3</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการข้อมูลตำแหน่ง</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">4</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการข้อมูลหน่วยงาน</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">5</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการผู้สมัคร</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">6</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการผู้ใช้งาน</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">7</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการสิทธิ์</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">8</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">
+                                จัดการประเภทของบุคลากรที่สมัคร
+                              </p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">9</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการการชำระเงิน</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">10</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">จัดการตรวจสอบเอกสาร</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31">
+                                <input defaultChecked type="checkbox" />
+                                <svg viewBox="0 0 35.6 35.6">
+                                  <circle
+                                    className="background"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="17.8"
+                                  />
+                                  <circle
+                                    className="stroke"
+                                    cx="17.8"
+                                    cy="17.8"
+                                    r="14.37"
+                                  />
+                                  <polyline
+                                    className="check"
+                                    points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-center align-middle">11</td>
+                          <td className="align-middle">
+                            <div>
+                              <p className="m-0">ค้นหาข้อมูล</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <div className="checkbox-wrapper-31 ">
                                 <input defaultChecked type="checkbox" />
                                 <svg viewBox="0 0 35.6 35.6">
                                   <circle
@@ -142,7 +1228,11 @@ function Manage_privilege() {
                       </tbody>
                     </table>
                     <div className="text-end px-3 py-2">
-                      <button
+                      <button className="button_Regiser mx-1">บันทึก</button>
+
+                      <button className="button_Back mx-1">รีเซ็ต</button>
+
+                      {/* <button
                         type="button"
                         className="btn btn-primary mx-1"
                         style={{ backgroundColor: "#0E66AE" }}
@@ -155,7 +1245,7 @@ function Manage_privilege() {
                         style={{ backgroundColor: "#fc544b" }}
                       >
                         รีเซ็ต
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

@@ -3,13 +3,49 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import BarChart from "../../Chart/BarChart";
 import { UserData } from "../../../Data";
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
 function Index() {
+  const data = {
+    labels: [
+      "พนักงานธุรการ",
+      "พนักงานการเกษตร",
+      "พนักงานดับเพลิง",
+      "เจ้าหน้าที่ประชาสัมพันธ์",
+      "พนักงานคอมพิวเตอร์",
+    ],
+    datasets: [
+      {
+        label: "จำนวน",
+        data: [5, 7, 3, 4, 2],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 0.5,
+      },
+    ],
+  };
   return (
     <>
       <nav>
         <div className="nav px-5 pt-5 ">
-          <div>
-            <h3 className="dashboard">เเดชบอร์ด</h3>
+          <div className="d-flex justify-content-between w-100 flex-column flex-md-row">
+            <h3 className="dashboard text-center">เเดชบอร์ด</h3>
+            <p className="m-0 my-auto text-center">
+              จำนวนเงินทั้งหมด 388,768 บาท
+            </p>
           </div>
         </div>
       </nav>
@@ -17,245 +53,125 @@ function Index() {
         <div className="overview-boxes pt-3">
           <div className="box shadow">
             <div className="right-side">
-              <div className="box-topic">Total Order</div>
-              <div className="number">40,876</div>
+              <div className="box-topic">จำนวนผู้สมัคร</div>
+              <h3 className="">1,075 คน</h3>
               <div className="indicator">
-                <i className="bx bx-up-arrow-alt" />
-                <span className="text">Up from yesterday</span>
+                <p className="m-0 text-start" style={{ fontSize: "14px" }}>
+                  อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                </p>
               </div>
             </div>
-            <i className="bx bx-cart-alt cart" />
+            <div className="px-2">
+              <i className="bi bi-person-fill-add cart my-auto text-center" />
+            </div>
           </div>
           <div className="box shadow">
             <div className="right-side">
-              <div className="box-topic">Total Sales</div>
-              <div className="number">38,876</div>
+              <div className="box-topic">จำนวนผู้ที่ชำระเงินสำเร็จ</div>
+              <h3 className="">388,768 บาท</h3>
               <div className="indicator">
-                <i className="bx bx-up-arrow-alt" />
-                <span className="text">Up from yesterday</span>
+                <p className="m-0 text-start" style={{ fontSize: "14px" }}>
+                  อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                </p>
               </div>
             </div>
-            <i className="bx bxs-cart-add cart two" />
+            <div className="px-2">
+              <i className="bi bi-cash cart two my-auto text-center m-0" />
+            </div>
           </div>
           <div className="box shadow">
             <div className="right-side">
-              <div className="box-topic">Total Profit</div>
-              <div className="number">$12,876</div>
+              <div className="box-topic">จำนวนผู้ที่เอกสารไม่สมบูรณ์</div>
+              <h3 className="">389 คน</h3>
               <div className="indicator">
-                <i className="bx bx-up-arrow-alt" />
-                <span className="text">Up from yesterday</span>
+                <p className="m-0 text-start" style={{ fontSize: "14px" }}>
+                  อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                </p>
               </div>
             </div>
-            <i className="bx bx-cart cart three" />
+            <div className="px-2">
+              <i className="bi bi-person-fill-exclamation cart my-auto text-center three m-0" />
+            </div>
           </div>
           <div className="box shadow">
             <div className="right-side">
-              <div className="box-topic">Total Return</div>
-              <div className="number">11,086</div>
+              <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
+              <h3 className="">150 คน</h3>
               <div className="indicator">
-                <i className="bx bx-down-arrow-alt down" />
-                <span className="text">Down From Today</span>
+                <p className="m-0 text-start" style={{ fontSize: "14px" }}>
+                  อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                </p>
               </div>
             </div>
-            <i className="bx bxs-cart-download cart four" />
+            <i className="bi bi-person-fill-x cart four my-auto text-center" />
           </div>
         </div>
         <div className="sales-boxes">
           <div className="recent-sales box shadow">
             <div className="title">Recent Sales</div>
             <div className="sales-details">
-              <ul className="details">
-                <li className="topic" style={{ fontWeight: "bold" }}>
-                  Date
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-                <li>
-                  <a href="#">02 Jan 2021</a>
-                </li>
-              </ul>
-              <ul className="details">
-                <li className="topic" style={{ fontWeight: "bold" }}>
-                  Customer
-                </li>
-                <li>
-                  <a href="#">Alex Doe</a>
-                </li>
-                <li>
-                  <a href="#">David Mart</a>
-                </li>
-                <li>
-                  <a href="#">Roe Parter</a>
-                </li>
-                <li>
-                  <a href="#">Diana Penty</a>
-                </li>
-                <li>
-                  <a href="#">Martin Paw</a>
-                </li>
-                <li>
-                  <a href="#">Doe Alex</a>
-                </li>
-                <li>
-                  <a href="#">Aiana Lexa</a>
-                </li>
-                <li>
-                  <a href="#">Rexel Mags</a>
-                </li>
-                <li>
-                  <a href="#">Tiana Loths</a>
-                </li>
-              </ul>
-              <ul className="details">
-                <li className="topic" style={{ fontWeight: "bold" }}>
-                  Sales
-                </li>
-                <li>
-                  <a href="#">Delivered</a>
-                </li>
-                <li>
-                  <a href="#">Pending</a>
-                </li>
-                <li>
-                  <a href="#">Returned</a>
-                </li>
-                <li>
-                  <a href="#">Delivered</a>
-                </li>
-                <li>
-                  <a href="#">Pending</a>
-                </li>
-                <li>
-                  <a href="#">Returned</a>
-                </li>
-                <li>
-                  <a href="#">Delivered</a>
-                </li>
-                <li>
-                  <a href="#">Pending</a>
-                </li>
-                <li>
-                  <a href="#">Delivered</a>
-                </li>
-              </ul>
-              <ul className="details">
-                <li className="topic" style={{ fontWeight: "bold" }}>
-                  Total
-                </li>
-                <li>
-                  <a href="#">$204.98</a>
-                </li>
-                <li>
-                  <a href="#">$24.55</a>
-                </li>
-                <li>
-                  <a href="#">$25.88</a>
-                </li>
-                <li>
-                  <a href="#">$170.66</a>
-                </li>
-                <li>
-                  <a href="#">$56.56</a>
-                </li>
-                <li>
-                  <a href="#">$44.95</a>
-                </li>
-                <li>
-                  <a href="#">$67.33</a>
-                </li>
-                <li>
-                  <a href="#">$23.53</a>
-                </li>
-                <li>
-                  <a href="#">$46.52</a>
-                </li>
-              </ul>
-            </div>
-            <div className="button">
-              <a href="#">See All</a>
+              <BarChart chartData={data} />
             </div>
           </div>
           <div className="top-sales box shadow">
-            <div className="title">Top Seling Product</div>
-            <ul className="top-sales-details">
+            <div className="title">ตำเเหน่งที่เปิดรับสมัคร</div>
+            <ul className="top-sales-details p-0">
               <li>
-                <a href="#">
-                  {/*<img src="images/sunglasses.jpg" alt="">*/}
-                  <span className="product">Vuitton Sunglasses</span>
-                </a>
-                <span className="price">$1107</span>
+                <div className="d-flex">
+                  {/* <p className="m-0 pe-3 fw-bold">1</p> */}
+                  <span className="product">พนักงานธุรการ</span>
+                </div>
+                <span className="price">5 คน</span>
               </li>
               <li>
-                <a href="#">
-                  {/*<img src="images/jeans.jpg" alt="">*/}
-                  <span className="product">Hourglass Jeans </span>
-                </a>
-                <span className="price">$1567</span>
+                <div className="d-flex">
+                  {/* <p className="m-0 pe-3 fw-bold">2</p> */}
+                  <span className="product">พนักงานการเกษตร</span>
+                </div>
+                <span className="price">7 คน</span>
               </li>
               <li>
-                <a href="#">
-                  {/* <img src="images/nike.jpg" alt="">*/}
-                  <span className="product">Nike Sport Shoe</span>
-                </a>
-                <span className="price">$1234</span>
+                <div className="d-flex">
+                  {/* <p className="m-0 pe-3 fw-bold">3</p> */}
+                  <span className="product">พนักงานดับเพลิง</span>
+                </div>
+                <span className="price">3 คน</span>
               </li>
               <li>
-                <a href="#">
-                  {/*<img src="images/scarves.jpg" alt="">*/}
-                  <span className="product">Hermes Silk Scarves.</span>
-                </a>
-                <span className="price">$2312</span>
+                <div className="d-flex">
+                  {/* <p className="m-0 pe-3 fw-bold">4</p> */}
+                  <span className="product">เจ้าหน้าที่ประชาสัมพันธ์</span>
+                </div>
+                <span className="price">4 คน</span>
               </li>
               <li>
-                <a href="#">
-                  {/*<img src="images/blueBag.jpg" alt="">*/}
-                  <span className="product">Succi Ladies Bag</span>
-                </a>
-                <span className="price">$1456</span>
+                <div className="d-flex">
+                  {/* <p className="m-0 pe-3 fw-bold">4</p> */}
+                  <span className="product">พนักงานคอมพิวเตอร์</span>
+                </div>
+                <span className="price">2 คน</span>
               </li>
-              <li>
+              {/* <li>
                 <a href="#">
-                  {/*<img src="images/bag.jpg" alt="">*/}
+                  
                   <span className="product">Gucci Womens's Bags</span>
                 </a>
                 <span className="price">$2345</span>
               </li>
               <li>
                 <a href="#">
-                  {/*<img src="images/addidas.jpg" alt="">*/}
+                  
                   <span className="product">Addidas Running Shoe</span>
                 </a>
                 <span className="price">$2345</span>
               </li>
               <li>
                 <a href="#">
-                  {/*<img src="images/shirt.jpg" alt="">*/}
+                  
                   <span className="product">Bilack Wear's Shirt</span>
                 </a>
                 <span className="price">$1245</span>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

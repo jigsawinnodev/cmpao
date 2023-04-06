@@ -14,7 +14,6 @@ function Dashboard() {
   const GetMenu = () => {
     axios.get("http://localhost:9500/api/GetMenu").then((res) => {
       SetMenu(res.data);
-      // console.log(res.data);
     });
   };
   useEffect(() => {
@@ -41,7 +40,13 @@ function Dashboard() {
                     if (isActive) {
                       return (
                         <li className="SetHover shadow rounded-2 mb-2">
-                          <div className="px-3 px-md-4">
+                          <div
+                            className=""
+                            style={{
+                              paddingLeft: "1.1rem",
+                              paddingRight: "1rem",
+                            }}
+                          >
                             <i
                               className={
                                 value.adm_icon_active + " rounded shadow px-1 "
@@ -63,7 +68,13 @@ function Dashboard() {
                     } else {
                       return (
                         <li className="SetHover mb-2">
-                          <div className="mx-md-4 mx-4">
+                          <div
+                            className=""
+                            style={{
+                              paddingLeft: "1.1rem",
+                              paddingRight: "1rem",
+                            }}
+                          >
                             <i
                               className={
                                 value.adm_icon_nactive + " rounded shadow px-1 "
@@ -90,7 +101,13 @@ function Dashboard() {
                 if (isActive) {
                   return (
                     <li className="SetHover shadow rounded px-1 mb-2">
-                      <div className="px-4">
+                      <div
+                        className=""
+                        style={{
+                          paddingLeft: "1.1rem",
+                          paddingRight: "1rem",
+                        }}
+                      >
                         <i
                           className="bi bi-arrow-right-square-fill"
                           style={{ color: "#2B3467" }}
@@ -104,7 +121,13 @@ function Dashboard() {
                 } else {
                   return (
                     <li className="SetHover mb-2">
-                      <div className="mx-4">
+                      <div
+                        className=""
+                        style={{
+                          paddingLeft: "1.1rem",
+                          paddingRight: "1rem",
+                        }}
+                      >
                         <i
                           className="bi bi-arrow-right-square rounded px-1"
                           style={{ color: "#7B8FA1" }}
@@ -118,437 +141,6 @@ function Dashboard() {
                 }
               }}
             </NavLink>
-
-            {/* <NavLink to="/Dashboard/" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow-lg rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-grid-3x3-gap-fill rounded px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        แดชบอร์ด
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-grid-3x3-gap rounded shadow px-1 "
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        แดชบอร์ด
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_userRegister" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-person-fill-gear rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการผู้สมัคร
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-person-gear rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการผู้สมัคร
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_position" className="LinkItem">
-              {({ isActive, isPending }) => {
-                // console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-person-circle rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการข้อมูลตำเเหน่ง
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-person rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการข้อมูลตำเเหน่ง
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_agency" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-people-fill rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการข้อมูลหน่วยงาน
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-people rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการข้อมูลหน่วยงาน
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_users" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-file-earmark-person-fill rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการผู้ใช้งาน
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-file-earmark-person rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการผู้ใช้งาน
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_privilege" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-shield-fill-check rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการสิทธิ์
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-shield-check rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการสิทธิ์
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_typeUserRegister" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-person-fill-gear rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการประเภทของบุคลากรที่สมัคร
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-person-gear rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการประเภทของบุคลากรที่สมัคร
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_money" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-credit-card-fill rounded shadow px-1 "
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการการชำระเงิน
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-credit-card rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการการชำระเงิน
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-            <NavLink to="Manage_document" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-file-earmark-check-fill rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "black", fontSize: "14.5px" }}
-                      >
-                        จัดการตรวจสอบเอกสาร
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-file-earmark-check rounded shadow px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span
-                        className="links_name"
-                        style={{ color: "#7B8FA1", fontSize: "14.5px" }}
-                      >
-                        จัดการตรวจสอบเอกสาร
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-
-            <NavLink to="Manage_search" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded-2 mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-search rounded shadow px-1"
-                          style={{ color: "white", backgroundColor: "#443C68" }}
-                        ></i>
-                      </div>
-                      <span className="links_name" style={{ color: "black" }}>
-                        ค้นหาข้อมูล
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-search rounded shadow px-1 mb-2"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span className="links_name" style={{ color: "#7B8FA1" }}>
-                        ค้นหาข้อมูล
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink>
-
-            <NavLink to="/" className="LinkItem">
-              {({ isActive, isPending }) => {
-                console.log(isActive);
-                if (isActive) {
-                  return (
-                    <li className="SetHover shadow rounded px-1 mb-2">
-                      <div className="px-4">
-                        <i
-                          className="bi bi-arrow-right-square-fill"
-                          style={{ color: "#2B3467" }}
-                        ></i>
-                      </div>
-                      <span className="links_name" style={{ color: "black" }}>
-                        Log out
-                      </span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="SetHover mb-2">
-                      <div className="mx-4">
-                        <i
-                          className="bi bi-arrow-right-square rounded px-1"
-                          style={{ color: "#7B8FA1" }}
-                        ></i>
-                      </div>
-                      <span className="links_name" style={{ color: "#7B8FA1" }}>
-                        Log out
-                      </span>
-                    </li>
-                  );
-                }
-              }}
-            </NavLink> */}
           </ul>
         </div>
         <div className="home-section ">

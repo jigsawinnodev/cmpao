@@ -5,146 +5,298 @@ import Icon2 from "../../assets/img/icon_2.png";
 import Icon3 from "../../assets/img/icon_3.png";
 import IconProfile from "../../assets/img/icon_profile.png";
 import IconContent from "../../assets/img/icon_4.png";
-
-import { Link, Routes, Route, Outlet } from "react-router-dom";
+import { NavLink, Routes, Route, Outlet } from "react-router-dom";
 // import Component
 import EmptyWork from "../EmptyWork/EmptyWork";
 import FormWork from "../FormWork/FormWork";
-import VertyfyStatus from "../VertyfyStatus";
-import DetailWork from "../DetailWork";
+import VertyfyStatus from "../VertifyStatus/VertyfyStatus";
+import DetailWork from "../DetailWork/DetailWork";
 
 import style from "./Menu.module.css";
+import { color } from "@mui/system";
 
 function Menu() {
   return (
     <>
-      <div className="container-fluid px-4">
-        <div className="row">
+      <div className="container-fluid p-0 ">
+        <div className="row m-0 " style={{ backgroundColor: "white" }}>
           <div
-            className="col-md-2 shadow mb-4 p-0"
-            style={{ backgroundcolor: "#065375" }}
+            className="col-md-2 p-0 shadow-lg "
+            // style={{ height: "calc(96vh - 68px)" }}
           >
-            <div className="row m-0">
-              <div className="col-md-12 rounded-2 pt-5">
-                <Link
-                  to="/register"
-                  className={"text-decoration-none " + style.Navigate}
+            <div className="row m-0 py-3 rounded">
+              <div className="col-md-12 rounded-2">
+                <NavLink
+                  to="/register/"
+                  className="mx-auto text-decoration-none"
                 >
-                  <div className={"rounded-2 py-3 " + style.setBGLink}>
-                    <div className={style.BoxImg}>
-                      <img
-                        src={Ball}
-                        alt=""
-                        className={"img-fluid " + style.ImgBall}
-                      />
-                    </div>
-                    <div className="row m-0">
-                      <div className="col-md-3">
-                        <div className="text-center my-auto text-md-end">
-                          <img src={Icon1} alt="" className="img-fluid" />
+                  {({ isActive, isPending }) => {
+                    // console.log(isActive);
+                    if (isActive) {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#6832ae" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-person-fill-add"
+                                  style={{ fontSize: "22px", color: "white" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "#ffffff",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  แบบฟอร์มสมัครงาน
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-9 p-0">
-                        <div className="text-center text-md-start">
-                          <p
-                            className="m-0"
-                            style={{
-                              color: "#ffffff",
-                              fontSize: "18.17px",
-                            }}
-                          >
-                            ตำแหน่งงานว่าง
-                          </p>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#EEEEEE" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-person-add"
+                                  style={{ fontSize: "22px", color: "black" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "black",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  แบบฟอร์มสมัครงาน
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                      );
+                    }
+                  }}
+                </NavLink>
               </div>
-              <div className="col-md-12 rounded-2 pt-2">
-                <Link
-                  to="FormWork"
-                  className={"text-decoration-none " + style.Navigate}
-                >
-                  <div className={"rounded-2 py-3 " + style.setBGLink}>
-                    <div className={style.BoxImg}>
-                      <img
-                        src={Ball}
-                        alt=""
-                        className={"img-fluid " + style.ImgBall}
-                      />
-                    </div>
-                    <div className="row m-0">
-                      <div className="col-md-3">
-                        <div className="text-center text-md-end">
-                          <img src={Icon2} alt="" className="img-fluid" />
+              {/* <div className="col-md-12 rounded-2 pt-2">
+                <NavLink to="FormWork" className="mx-auto text-decoration-none">
+                  {({ isActive, isPending }) => {
+                    // console.log(isActive);
+                    if (isActive) {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#6832ae" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-clipboard-plus-fill"
+                                  style={{ fontSize: "22px", color: "white" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "#ffffff",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  แบบฟอร์มสมัครงาน
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-9 p-0">
-                        <div className="text-center text-md-start">
-                          <p
-                            className="m-0"
-                            style={{ color: "#ffffff", fontSize: "18.17px" }}
-                          >
-                            แบบฟอร์มสมัครงาน
-                          </p>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#EEEEEE" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-clipboard-plus"
+                                  style={{ fontSize: "22px", color: "black" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "black",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  แบบฟอร์มสมัครงาน
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              <div className="col-md-12 rounded-2 pt-2 pb-4">
-                <Link
+                      );
+                    }
+                  }}
+                </NavLink>
+              </div> */}
+              <div className="col-md-12 rounded-2 pt-2 border-bottom pb-3">
+                <NavLink
                   to="VerifyStatus"
-                  className={"text-decoration-none " + style.Navigate}
+                  className="mx-auto text-decoration-none"
                 >
-                  <div className={"rounded-2 py-3 " + style.setBGLink}>
-                    <div className={style.BoxImg}>
-                      <img
-                        src={Ball}
-                        alt=""
-                        className={"img-fluid " + style.ImgBall}
-                      />
-                    </div>
-                    <div className="row m-0">
-                      <div className="col-md-3">
-                        <div className="text-center text-md-end">
-                          <img src={Icon3} alt="" className="img-fluid" />
+                  {({ isActive, isPending }) => {
+                    // console.log(isActive);
+                    if (isActive) {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#6832ae" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-clipboard2-check-fill"
+                                  style={{ fontSize: "22px", color: "white" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "#ffffff",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  ตรวจสอบสถานะ
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-9 p-0">
-                        <div className="text-center text-md-start">
-                          <p
-                            className="m-0"
-                            style={{ color: "#ffffff", fontSize: "18.17px" }}
-                          >
-                            ตรวจสอบสถานะ
-                          </p>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className={"rounded-2 py-3"}
+                          style={{ backgroundColor: "#EEEEEE" }}
+                        >
+                          <div className={style.BoxImg}>
+                            <img
+                              src={Ball}
+                              alt=""
+                              className={"img-fluid " + style.ImgBall}
+                            />
+                          </div>
+                          <div className="row m-0">
+                            <div className="col-md-3">
+                              <div className="text-center text-md-end">
+                                <i
+                                  className="bi bi-clipboard2-check"
+                                  style={{ fontSize: "22px", color: "black" }}
+                                ></i>
+                              </div>
+                            </div>
+                            <div className="col-md-9 p-0 my-auto">
+                              <div className="text-center text-md-start">
+                                <p
+                                  className="m-0"
+                                  style={{
+                                    color: "black",
+                                    fontSize: "18.17px",
+                                  }}
+                                >
+                                  ตรวจสอบสถานะ
+                                </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                      );
+                    }
+                  }}
+                </NavLink>
               </div>
-              <hr className="hr " />
               <div className="col-md-12">
-                <div className="row">
-                  <div className="col-md-7">
-                    <div
-                      className="pt-4 text-center"
-                      style={{ color: "white" }}
-                    >
-                      <p>ข้อมูลส่วนตัว</p>
-                    </div>
-                  </div>
-                  <div className="col-md-5">
+                <div className="row m-0">
+                  <div className="col-md-12 py-4">
                     <div className="text-center">
-                      <img src={IconProfile} alt="" />
+                      <img src={IconProfile} alt="" className="img-fluid" />
                     </div>
                   </div>
                   <div className="col-md-12">
-                    <div className="px-3" style={{ color: "white" }}>
+                    <div className="text-center">
+                      <h5>ข้อมูลส่วนตัว</h5>
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+                    <div className="">
                       <p className="m-0 text-md-start text-center py-2">
                         ชื่อ : มากศรี มีสุก
                       </p>
@@ -155,14 +307,19 @@ function Menu() {
                     </div>
                   </div>
                   <div className="col-md-12">
-                    <div className="pt-5 pb-4">
-                      <button
-                        className={
-                          "rounded-pill w-100 py-3 " + style.setColorBtn
-                        }
-                      >
-                        Settings
-                      </button>
+                    <div className="py-4 text-center">
+                      <div className="d-flex justify-content-center flex-column flex-md-column ">
+                        <NavLink to="Edit_profile">
+                          <button className={style.SettingProfile}>
+                            เเก้ไขข้อมูล
+                          </button>
+                        </NavLink>
+                        <NavLink to="/">
+                          <button className={style.logoutUser}>
+                            ออกจากระบบ
+                          </button>
+                        </NavLink>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -170,11 +327,6 @@ function Menu() {
             </div>
           </div>
           <div className="col-md-10">
-            <div className="text-end  px-md-5">
-              <p className="m-0" style={{ color: "white" }}>
-                วันที่ 01/02/2023
-              </p>
-            </div>
             <Outlet />
           </div>
         </div>

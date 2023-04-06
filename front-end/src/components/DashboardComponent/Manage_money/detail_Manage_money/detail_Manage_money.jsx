@@ -3,55 +3,64 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 function Detail_Manage_money() {
+  const mockData = [
+    {
+      id: 1,
+      idcard: "3-7503-09374-82-6",
+      numberOrder: 1,
+      nameAndLastname: "นายสมใจ นันตา",
+      // type :
+    },
+  ];
   const columns = [
     {
       name: "ลำดับ",
       selector: (row) => row.id,
-      width: "130px",
+      width: "10%",
       cell: (row) => row.id,
       sortable: true,
       center: true,
     },
     {
-      name: "ประเภท",
+      name: "เลขบัตรประชาชน",
       selector: (row) => row.category,
-      width: "150px",
+      width: "15%",
       cell: (row) => row.category,
       sortable: true,
     },
     {
-      name: "วันที่เริ่มต้น",
+      name: "ลำดับสมัคร",
       selector: (row) => row.brand,
-      width: "auto",
+      width: "15%",
       cell: (row) => row.brand,
       sortable: true,
       center: true,
     },
     {
-      name: "วันที่สิ้นสุด",
+      name: "ชื่อ-นามสกุล",
       selector: (row) => row.description,
-      width: "180px",
+      width: "15%",
       sortable: true,
       center: true,
     },
     {
-      name: "จำนวนตำเเหน่ง",
+      name: "ประเภท",
       selector: (row) => row.discountPercentage,
       sortable: true,
       cell: (row) => row.discountPercentage,
-      width: "auto",
+      width: "15%",
       center: true,
     },
     {
-      name: "จำนวนผู้สมัคร",
+      name: "ตำเเหน่ง",
       selector: (row) => row.price,
       sortable: true,
       cell: (row) => row.price,
-      width: "auto",
+      width: "15%",
       center: true,
     },
     {
-      name: "เครื่องมือ",
+      name: "สถานนะ",
       selector: (row) => (
         <div className="">
           <button
@@ -142,9 +151,10 @@ function Detail_Manage_money() {
             </div>
             <div className="col-md-6 my-auto">
               <div className="d-flex justify-content-end ">
-                <button type="button" className="btn btn-outline-success">
+                {/* <button type="button" className="btn btn-outline-success">
                   รายงานราชกาล
-                </button>
+                </button> */}
+                <button className="Btn_Add_user">รายงานราชกาล</button>
               </div>
             </div>
             <div className="col-md-12">

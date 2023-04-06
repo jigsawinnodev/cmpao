@@ -1,35 +1,132 @@
 .BoxImg {
   position: relative;
 }
+
 .setColorBtn {
   background-color: #075a7e;
   color: white;
   border: 0;
 }
-/*  */
-
-/* .ContentMenu {
-  background-color: #065375;
-  height: 100vh;
-} */
 
 .ImgBall {
   position: absolute;
-  right: 10px;
-  top: -10px;
+  right: 0px;
+  top: 0px;
 }
+
 .ImgBall {
   display: none;
 }
-.Navigate:active .ImgBall {
+
+.ImgBall:active {
   display: block;
 }
-.Navigate:active .setBGLink {
-    background-color: #9e9ea7;
-  }
+
 .setBGLink {
-  background-color: #075a7e;
+  background-color: #6832ae;
 }
+
 .setBGLink:hover {
-  background-color: #9e9ea7;
+  background-color: #6911dd;
+}
+
+
+.SettingProfile {
+  --color: #560bad;
+  font-family: inherit;
+  display: inline-block;
+  width: 8em;
+  height: 2.6em;
+  line-height: 2.5em;
+  margin: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--color);
+  transition: color .5s;
+  z-index: 1;
+  font-size: 17px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: var(--color);
+}
+
+.SettingProfile:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: var(--color);
+  height: 150px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.SettingProfile:hover {
+  color: #fff;
+}
+
+.SettingProfile:before {
+  top: 100%;
+  left: 100%;
+  transition: all .7s;
+}
+
+.SettingProfile:hover:before {
+  top: -30px;
+  left: -30px;
+}
+
+.SettingProfile:active:before {
+  background: #3a0ca3;
+  transition: background 0s;
+}
+
+
+
+.logoutUser {
+  --color: #000000;
+  font-family: inherit;
+  display: inline-block;
+  width: 8em;
+  height: 2.6em;
+  line-height: 2.5em;
+  /* margin: 0px; */
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--color);
+  transition: color .5s;
+  z-index: 1;
+  font-size: 17px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: var(--color);
+}
+
+.logoutUser:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: var(--color);
+  height: 150px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.logoutUser:hover {
+  color: #fff;
+}
+
+.logoutUser:before {
+  top: 100%;
+  left: 100%;
+  transition: all .7s;
+}
+
+.logoutUser:hover:before {
+  top: -30px;
+  left: -30px;
+}
+
+.logoutUser:active:before {
+  background: #3a0ca3;
+  transition: background 0s;
 }

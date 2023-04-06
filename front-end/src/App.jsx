@@ -6,8 +6,8 @@ import Register from "./view/Register/Register";
 import Dashboard from "./view/Dashboard/Dashboard";
 import EmptyWork from "./components/EmptyWork/EmptyWork";
 import FormWork from "./components/FormWork/FormWork";
-import VertyfyStatus from "./components/VertyfyStatus";
-import DetailWork from "./components/DetailWork";
+import VertyfyStatus from "./components/VertifyStatus/VertyfyStatus";
+import DetailWork from "./components/DetailWork/DetailWork";
 import Manage_register from "./components/DashboardComponent/Manage_register/Manage_register";
 import IndexPage from "./components/DashboardComponent/index/IndexPage";
 // import Manage_register from "./components/DashboardComponent/Manage_register";
@@ -27,16 +27,23 @@ import UserRegister_Add from "./components/DashboardComponent/Manage_userRegiste
 import Manage_users_add from "./components/DashboardComponent/Manage_users/Manage_users_add/Manage_users_add";
 import Detail_Manage_money from "./components/DashboardComponent/Manage_money/detail_Manage_money/detail_Manage_money";
 import Manage_ducument_add from "./components/DashboardComponent/Manage_document/Manage_ducument_add/Manage_ducument_add";
-
+import NewUser from "./view/indexPage/Register";
+import Edit_profile from "./components/Edit_profile";
+import moment from "moment";
+import "moment/locale/th";
+moment.locale("th");
 function App() {
   return (
     <Routes>
       <Route exact path="/" element={<Rootpage />} />
+      <Route exact path="Newuser" element={<NewUser />} />
       <Route path="Register" element={<Register />}>
-        <Route index element={<EmptyWork />} />
-        <Route path="FormWork" element={<FormWork />} />
+        <Route index path="" element={<EmptyWork />} />
+        <Route path="Edit_profile" element={<Edit_profile />} />
         <Route path="VerifyStatus" element={<VertyfyStatus />} />
         <Route path="DetailWork/:id" element={<DetailWork />} />
+        <Route path="DetailWork/:id/FormWork" element={<FormWork />} />
+        <Route path="DetailWork/:id/FormWork/:id_user" element={<FormWork />} />
       </Route>
       <Route path="Dashboard" element={<Dashboard />}>
         <Route index path="" element={<IndexPage />} />
@@ -69,7 +76,6 @@ function App() {
 
         <Route path="Information" element={<Manage_search />} />
       </Route>
-      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }

@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import ImgNav from "../assets/img/img_nav.png";
 import "../App.css";
 
 function Navbar() {
+  const [ShowNavbar, setShowNavbar] = useState(false);
+  const Show_Navbar = () => {
+    console.log(ShowNavbar);
+    setShowNavbar(!ShowNavbar);
+  };
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light pt-3 ">
-        <div
-          className="container-fluid "
-          style={{ paddingLeft: "80px", paddingRight: "80px" }}
-        >
-          <img src={ImgNav} alt="" className="img-fluid " />
+      <nav
+        className="navbar navbar-expand-lg py-2 border-bottom  "
+        style={{ backgroundColor: "#6832ae" }}
+      >
+        <div className="container-fluid px-4 px-md-5">
+          <img src={ImgNav} alt="" className="img-fluid my-auto" />
           <button
             className="navbar-toggler"
             type="button"
@@ -26,10 +31,10 @@ function Navbar() {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">
-                  <div className="" style={{ color: "White", fontSize: 20 }}>
+                  <div className="" style={{ color: "White", fontSize: 22 }}>
                     องค์การบริหารส่วนจังหวัดเชียงใหม่
                   </div>
-                  <div style={{ fontSize: 12, color: "White" }}>
+                  <div style={{ fontSize: 16, color: "White" }}>
                     Chiang Mai Provincial Administrative Organization
                   </div>
                 </a>
@@ -37,8 +42,8 @@ function Navbar() {
             </ul>
             <div>
               <h2
-                className="mt-5 mb-0"
-                style={{ fontSize: 25, color: "White" }}
+                className="mt-5 mb-0 text-center text-md-start"
+                style={{ fontSize: 22, color: "White" }}
               >
                 ระบบการรับสมัครบุคลากรออนไลน์
               </h2>
@@ -46,12 +51,6 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      <div
-        className="container-fluid px-5"
-        style={{ backgroundColor: "#065375" }}
-      >
-        <hr className="hr m-0  pb-1" style={{ color: "White", height: 0 }} />
-      </div>
     </>
   );
 }

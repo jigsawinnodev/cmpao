@@ -6,7 +6,6 @@ import Loadding from "../../../loadding/loadding";
 import { Apply_Applycheck, ConvertTypeDate } from "../../../../service/api";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
-import { NavLink } from "react-router-dom";
 moment.locale("th");
 function Apply_check() {
   let { id } = useParams();
@@ -123,21 +122,15 @@ function Apply_check() {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <button type="button" className="btn btn-info mx-1">
+          <button type="button" className="btn btn-info">
             <i class="bi bi-pencil"></i>
-          </button>
-          <button type="button" className="btn btn-danger mx-1">
-            <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
       cell: (row) => (
         <div className="">
-          <button type="button" className="btn btn-info mx-1">
+          <button type="button" className="btn btn-info">
             <i class="bi bi-pencil"></i>
-          </button>
-          <button type="button" className="btn btn-danger mx-1">
-            <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
@@ -379,14 +372,6 @@ function Apply_check() {
                       progressPending={loadding}
                       progressComponent={<Loadding />}
                     />
-                  </div>
-                  <div className="col-md-12">
-                    <div className="float-end py-2">
-                      <button className="button_Regiser mx-1">บันทึก</button>
-                      <NavLink to="/Dashboard/Apply">
-                        <button className="button_Back mx-1">ย้อนกลับ</button>
-                      </NavLink>
-                    </div>
                   </div>
                 </div>
               </div>

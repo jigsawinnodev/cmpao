@@ -3,7 +3,15 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { GetAll_user, ConvertTypeDate } from "../../../service/api";
+import { Tooltip } from "bootstrap";
 function Manage_users() {
+  // var tooltipTriggerList = [].slice.call(
+  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
+  // );
+
+  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  //   return new Tooltip(tooltipTriggerEl);
+  // });
   const columns = [
     {
       name: "ลำดับ",
@@ -54,15 +62,27 @@ function Manage_users() {
       selector: (row) => (
         <div className="">
           <Link to={"add/" + row.user_id}>
-            <button type="button" className="btn btn-outline-warning mx-1">
-              เเก้ไขข้อมูล
+            <button
+              type="button"
+              className="btn btn-warning mx-1"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="เเก้ไขข้อมูล"
+            >
+              <i className="bi bi-pencil"></i>
             </button>
           </Link>
           {/* <button type="button" className="btn btn-outline-warning mx-1">
             เเก้ไขข้อมูล
           </button> */}
-          <button type="button" className="btn btn-outline-danger mx-1">
-            ลบข้อมูล
+          <button
+            type="button"
+            className="btn btn-danger mx-1"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="ลบข้อมูล"
+          >
+            <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
@@ -102,7 +122,7 @@ function Manage_users() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="row w-100 py-3 my-auto m-0">
+            <div className="row w-100 pt-3 pb-4 m-0">
               <div className="col-md-10 my-auto">
                 <div className="text-start px-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
@@ -113,9 +133,10 @@ function Manage_users() {
               <div className="col-md-2">
                 <div className="float-end">
                   <Link to="add">
-                    <button className="btn btn-outline-primary">
+                    {/* <button className="btn btn-outline-primary">
                       เพิ่มข้อมูล
-                    </button>
+                    </button> */}
+                    <button className="Btn_Add_user">เพิ่มข้อมูล</button>
                   </Link>
                 </div>
               </div>
@@ -125,6 +146,24 @@ function Manage_users() {
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
+                  <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                  </div>
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}

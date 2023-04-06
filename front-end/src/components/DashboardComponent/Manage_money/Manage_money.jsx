@@ -4,35 +4,118 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
 function Manage_money() {
+  const mockData = [
+    {
+      id: 1,
+      type: "พนักงานจ้างทั่วไป",
+      dateStart: "3 เม.ย. 2566",
+      dateEnd: "29 เม.ย. 2566",
+      countPosition: "99",
+      countCancelMoney: "0",
+    },
+    {
+      id: 2,
+      type: "พนักงานจ้างทั่วไป",
+      dateStart: "3 เม.ย. 2566",
+      dateEnd: "4 เม.ย. 2566",
+      countPosition: "99",
+      countCancelMoney: "0",
+    },
+    {
+      id: 3,
+      type: "ข้าราชการ",
+      dateStart: "3 เม.ย. 2566",
+      dateEnd: "4 เม.ย. 2566",
+      countPosition: "99",
+      countCancelMoney: "0",
+    },
+    {
+      id: 4,
+      type: "ข้าราชการ",
+      dateStart: "4 เม.ย. 2566",
+      dateEnd: "22 เม.ย. 2566",
+      countPosition: "10",
+      countCancelMoney: "0",
+    },
+    {
+      id: 5,
+      type: "ข้าราชการ",
+      dateStart: "31 มี.ค. 2566",
+      dateEnd: "1 เม.ย. 2566",
+      countPosition: "10",
+      countCancelMoney: "0",
+    },
+    {
+      id: 6,
+      type: "พนักงานจ้างทั่วไป",
+      dateStart: "4 ม.ค. 2566",
+      dateEnd: "5 ม.ค. 2566",
+      countPosition: "0",
+      countCancelMoney: "0",
+    },
+    {
+      id: 7,
+      type: "พนักงานจ้างทั่วไป",
+      dateStart: "16 ต.ค. 2565",
+      dateEnd: "31 ต.ค. 2565",
+      countPosition: "0",
+      countCancelMoney: "1",
+    },
+    {
+      id: 8,
+      type: "ข้าราชการ",
+      dateStart: "21 ต.ค. 2565",
+      dateEnd: "22 ต.ค. 2565",
+      countPosition: "0",
+      countCancelMoney: "0",
+    },
+  ];
   const columns = [
     {
       name: "ลำดับ",
       selector: (row) => row.id,
-      width: "120px",
+      width: "10%",
       cell: (row) => row.id,
       sortable: true,
       center: true,
     },
     {
       name: "ประเภท",
-      selector: (row) => row.category,
-      width: "250px",
-      cell: (row) => row.category,
+      selector: (row) => row.type,
+      width: "15%",
+      cell: (row) => row.type,
+      sortable: true,
+      // center: true,
+    },
+    {
+      name: "วันที่เริ่มต้น",
+      selector: (row) => row.dateStart,
+      width: "15%",
+      cell: (row) => row.dateStart,
+      sortable: true,
+      // center: true,
+    },
+    {
+      name: "วันที่สิ้นสุด",
+      selector: (row) => row.dateEnd,
+      cell: (row) => row.dateEnd,
+      width: "15%",
+      sortable: true,
+      // center: true,
+    },
+    {
+      name: "จำนวนตำเเหน่ง",
+      selector: (row) => row.countPosition,
+      cell: (row) => row.countPosition,
+      width: "15%",
       sortable: true,
       center: true,
     },
     {
-      name: "ชื่อตำเเหน่ง",
-      selector: (row) => row.brand,
-      width: "250px",
-      cell: (row) => row.brand,
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "สถานนะ",
-      selector: (row) => row.description,
-      width: "300px",
+      name: "จำนวนที่ชำระเงิน",
+      selector: (row) => row.countCancelMoney,
+      cell: (row) => row.countCancelMoney,
+      width: "15%",
       sortable: true,
       center: true,
     },
@@ -42,12 +125,13 @@ function Manage_money() {
       sortable: true,
       cell: (row) => (
         <Link to="payment_check">
-          <button type="button" class="btn btn-secondary">
-            <i class="bi bi-gear-fill"></i>
+          <button type="button" className="btn btn-secondary">
+            <i className="bi bi-gear-fill"></i>
           </button>
         </Link>
       ),
-      width: "auto",
+      center: true,
+      width: "15%",
     },
   ];
   const [data, setData] = useState([]);
@@ -102,9 +186,26 @@ function Manage_money() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={handleSearch(data)}
+                      // data={handleSearch(data)}
+                      data={mockData}
                       pagination
                       responsive
                     />

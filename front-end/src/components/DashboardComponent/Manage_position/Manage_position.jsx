@@ -9,11 +9,62 @@ import {
   Add_edit_position,
   Delete_position,
 } from "../../../service/api";
+import { Tooltip } from "bootstrap";
 function Manage_position() {
+  // var tooltipTriggerList = [].slice.call(
+  //   document.querySelectorAll("[data-bs-toggle=modal]")
+  // );
+  // var tooltipTriggerList1 = [].slice.call(
+  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
+  // );
+  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  //   return new Tooltip(tooltipTriggerEl);
+  // });
+  // var tooltipList1 = tooltipTriggerList1.map(function (tooltipTriggerEl) {
+  //   return new Tooltip(tooltipTriggerEl);
+  // });
+  const mockData = [
+    {
+      id: "1",
+      type: "พนักงานราชการ",
+      positionType: "เจ้าหน้าที่",
+      status: "ใช้งาน",
+    },
+    {
+      id: "2",
+      type: "พนักงานราชการ",
+      positionType: "เจ้าหน้าที่การเงิน",
+      status: "ไม่ใช้งาน",
+    },
+    {
+      id: "2",
+      type: "พนักงานราชการ",
+      positionType: "การเงิน",
+      status: "ไม่ใช้งาน",
+    },
+    {
+      id: "2",
+      type: "พนักงานราชการ",
+      positionType: "เจ้าหน้าที่",
+      status: "ไม่ใช้งาน",
+    },
+    {
+      id: "3",
+      type: "พนักงานราชการ",
+      positionType: "เจ้าหน้าที่",
+      status: "ใช้งาน",
+    },
+    {
+      id: "4",
+      type: "พนักงานราชการ",
+      positionType: "เจ้าหน้าที่",
+      status: "ใช้งาน",
+    },
+  ];
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row, index) => index + 1,
+      selector: (row, index) => row.id,
       width: "20%",
       cell: (row, index) => index + 1,
       sortable: true,
@@ -21,25 +72,26 @@ function Manage_position() {
     },
     {
       name: "ประเภท",
-      selector: (row) => row.name,
+      selector: (row) => row.type,
       width: "20%",
-      cell: (row) => row.name,
+      cell: (row) => row.type,
       sortable: true,
       center: true,
     },
     {
       name: "ชื่อตำเเหน่ง",
-      selector: (row) => row.p_name,
+      selector: (row) => row.positionType,
       width: "20%",
-      cell: (row) => row.p_name,
+      cell: (row) => row.positionType,
       sortable: true,
       center: true,
     },
     {
       name: "สถานนะ",
-      selector: (row) => row.p_active,
+      selector: (row) => row.status,
       width: "20%",
-      cell: (row) => (row.p_active ? <div>ใช้งาน</div> : "-"),
+      // cell: (row) => (row.status ? <div>ใช้งาน</div> : "-"),
+      cell: (row) => row.status,
       sortable: true,
       center: true,
     },
@@ -53,9 +105,11 @@ function Manage_position() {
             type="button"
             className="btn btn-warning mx-1"
             data-bs-toggle="modal"
+            title="เเก้ไขข้อมูล"
+            data-bs-placement="left"
             data-bs-target={"#exampleModal" + row.p_id}
           >
-            <i className="bi bi-pencil-fill" style={{ color: "white" }}></i>
+            <i class="bi bi-pencil"></i>
           </button>
           <div
             className="modal fade"
@@ -185,11 +239,14 @@ function Manage_position() {
           <button
             type="button"
             className="btn btn-danger mx-1"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="ลบข้อมูล"
             onClick={() => {
               DeleteMember(row.p_id);
             }}
           >
-            <i className="bi bi-trash-fill" style={{ color: "white" }}></i>
+            <i className="bi bi-trash" style={{ color: "white" }}></i>
           </button>
         </div>
       ),
@@ -367,13 +424,22 @@ function Manage_position() {
                 </div>
                 <div className="col-md-5">
                   <div className="float-end">
-                    <button
+                    {/* <button
                       className="btn btn-outline-success"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                     >
                       เพิ่มใบสมัคร
+                    </button> */}
+
+                    <button
+                      className="Btn_Add_user"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                    >
+                      เพิ่มใบสมัคร
                     </button>
+
                     <div
                       className="modal fade"
                       id="exampleModal"
@@ -531,7 +597,8 @@ function Manage_position() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={handleSearch(postionData)}
+                      // data={handleSearch(postionData)}
+                      data={mockData}
                       pagination
                       responsive
                     />

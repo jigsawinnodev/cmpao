@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import moment from "moment";
+
 import { DeleteMember, GetMemberAll } from "../../../service/api";
 import Swal from "sweetalert2";
+import { Tooltip } from "bootstrap";
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
 function Manage_userRegister() {
+  // var tooltipTriggerList = [].slice.call(
+  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
+  // );
+
+  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  //   return new Tooltip(tooltipTriggerEl);
+  // });
+
   const columns = [
     {
       name: "ลำดับ",
@@ -33,15 +45,15 @@ function Manage_userRegister() {
     {
       name: "อีเมล",
       selector: (row) => row.m_email,
-      width: "15%",
+      width: "20%",
       cell: (row) => (row.m_email ? row.m_email : "-"),
       sortable: true,
     },
     {
       name: "สถานะการใช้งาน",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => moment(row.login_time).add(543, "year").format("ll"),
       sortable: true,
-      cell: (row) => row.discountPercentage,
+      cell: (row) => moment(row.login_time).add(543, "year").format("ll"),
       width: "15%",
     },
     {
@@ -49,18 +61,27 @@ function Manage_userRegister() {
       selector: (row) => (
         <div className="">
           <Link to={"add/" + row.m_id}>
-            <button type="button" className="btn btn-outline-warning mx-1">
-              เเก้ไขข้อมูล
+            <button
+              type="button"
+              className="btn btn-warning mx-1"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="เเก้ไขข้อมูล"
+            >
+              <i class="bi bi-pencil"></i>
             </button>
           </Link>
           <button
             type="button"
-            className="btn btn-outline-danger mx-1"
+            className="btn btn-danger mx-1"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="ลบช้อมูล"
             onClick={() => {
               Delete_Members(row.m_id);
             }}
           >
-            ลบข้อมูล
+            <i class="bi bi-trash"></i>
           </button>
         </div>
       ),
@@ -104,6 +125,7 @@ function Manage_userRegister() {
   }, []);
   return (
     <>
+      {/* {JSON.stringify(member)} */}
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
@@ -118,9 +140,7 @@ function Manage_userRegister() {
               <div className="col-md-2">
                 <div className="float-end">
                   <Link to="add">
-                    <button className="btn btn-outline-primary">
-                      เพิ่มใบสมัคร
-                    </button>
+                    <button className="Btn_Add_user">เพิ่มใบสมัคร</button>
                   </Link>
                 </div>
               </div>

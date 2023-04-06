@@ -221,9 +221,7 @@ function Manage_ducument_add() {
                     />
                   </div>
                   <div className="col-md-4">
-                    <label htmlFor="exampleInputDataEnd" className="form-label">
-                      วันที่สิ้นสุด
-                    </label>
+                    <label className="form-label">วันที่สิ้นสุด</label>
                     <DatePicker
                       className="form-control"
                       selected={endDate}
