@@ -29,8 +29,10 @@ import Detail_Manage_money from "./components/DashboardComponent/Manage_money/de
 import Manage_ducument_add from "./components/DashboardComponent/Manage_document/Manage_ducument_add/Manage_ducument_add";
 import NewUser from "./view/indexPage/Register";
 import Edit_profile from "./components/Edit_profile";
+
 import moment from "moment";
 import "moment/locale/th";
+import Manage_apply_check from "./components/DashboardComponent/Manage_document/Manage_apply_check/Manage_apply_check";
 moment.locale("th");
 function App() {
   return (
@@ -43,7 +45,7 @@ function App() {
         <Route path="VerifyStatus" element={<VertyfyStatus />} />
         <Route path="DetailWork/:id" element={<DetailWork />} />
         <Route path="DetailWork/:id/FormWork" element={<FormWork />} />
-        <Route path="DetailWork/:id/FormWork/:id_user" element={<FormWork />} />
+        {/* <Route path="DetailWork/:id/FormWork/:id_user" element={<FormWork />} /> */}
       </Route>
       <Route path="Dashboard" element={<Dashboard />}>
         <Route index path="" element={<IndexPage />} />
@@ -73,6 +75,11 @@ function App() {
 
         <Route path="Document" element={<Manage_document />} />
         <Route path="Document/add" element={<Manage_ducument_add />} />
+        <Route path="Document/add/:id" element={<Manage_ducument_add />} />
+        <Route
+          path="Document/apply_check/:id"
+          element={<Manage_apply_check />}
+        />
 
         <Route path="Information" element={<Manage_search />} />
       </Route>

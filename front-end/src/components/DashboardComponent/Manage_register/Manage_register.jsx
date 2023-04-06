@@ -9,13 +9,13 @@ import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
 function Manage_register() {
-  var tooltipTriggerList = [].slice.call(
-    document.querySelectorAll("[data-bs-toggle=tooltip]")
-  );
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    console.log(tooltipTriggerEl);
-    return new Tooltip(tooltipTriggerEl);
-  });
+  // var tooltipTriggerList = [].slice.call(
+  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
+  // );
+  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  //   console.log(tooltipTriggerEl);
+  //   return new Tooltip(tooltipTriggerEl);
+  // });
 
   var monthNames = [
     "ม.ค",

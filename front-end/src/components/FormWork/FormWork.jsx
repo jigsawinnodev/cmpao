@@ -177,7 +177,7 @@ function FormWork() {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="form-label">ศาสนา</label>
+                        <label className="form-label">หมู่โลหิต</label>
                         <select
                           className="form-select"
                           aria-label="Default select example"
@@ -383,13 +383,21 @@ function FormWork() {
                 <div className="col-md-12">
                   <div className="row m-0">
                     <div className="col-md-12">
-                      <p>ประวัติการศึกษา</p>
+                      <p className="pt-5 pt-md-0">ประวัติการศึกษา</p>
                     </div>
                     <div className="col-md-12 text-end">
-                      <span
+                      {/* <span
                         className="btn btn-success mb-3"
                         id="insertEdu"
                         onClick={handleClickOpen}
+                      >
+                        เพิ่มข้อมูล
+                      </span> */}
+                      <span
+                        className="Btn_Add_user my-2"
+                        onClick={() => {
+                          handleClickOpen();
+                        }}
                       >
                         เพิ่มข้อมูล
                       </span>
@@ -562,7 +570,7 @@ function FormWork() {
                         </form>
                       </Dialog>
                     </div>
-                    <div className="col-md-12">
+                    <div className="col-md-12 table-responsive">
                       <table className="table table-bordered">
                         <thead className="text-center">
                           <tr>
@@ -575,24 +583,29 @@ function FormWork() {
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
+                            <td>วิทยาลัยเทคนิคเชียงใหม่</td>
+                            <td>ประกาศนียบัตรวิชาชีพชั้นสูง</td>
+                            <td className="text-center">4 พฤษภาคม 2561</td>
+                            <td className="text-center">4 พฤษภาคม 2563</td>
+                            <td className="text-center">
+                              <button type="button" className="btn btn-warning">
+                                <i class="bi bi-pencil-fill"></i>
+                              </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <p>ใบอนุญาตประกอบวิชาชีพ</p>
+                    <p className="pt-3 pt-md-0">ใบอนุญาตประกอบวิชาชีพ</p>
                     <div className="col-md-12 text-end">
-                      <span
+                      {/* <span
                         className="btn btn-success mb-3"
                         id="insertEdu"
                         onClick={handleClickOpen2}
                       >
                         เพิ่มข้อมูล
-                      </span>
+                      </span> */}
+                      <button className="Btn_Add_user my-2">เพิ่มข้อมูล</button>
                       <Dialog
                         fullWidth
                         open={openModal_2}
@@ -745,33 +758,40 @@ function FormWork() {
                       <table className="table table-bordered">
                         <thead className="text-center">
                           <tr>
-                            <th scope="col">วุฒิที่ได้รับ </th>
-                            <th scope="col">ชื่อสถานศึกษา</th>
-                            <th scope="col">วันที่เริ่ม</th>
-                            <th scope="col">วันที่จบการศึกษา</th>
+                            <th scope="col">ครั้งที่ </th>
+                            <th scope="col">ชื่อใบรับรอง</th>
+                            <th scope="col">วันที่ให้ใบรับรอง</th>
+                            <th scope="col">วันที่หมดอายุ</th>
                             <th scope="col">เครื่องมือ</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
+                            <td className="text-center" scope="row">
+                              1
+                            </td>
+                            <td> ประกาศนียบัตรวิชาชีพชั้นสูง</td>
+                            <td className="text-center">4 พฤษภาคม 2561</td>
+                            <td className="text-center">4 พฤษภาคม 2563</td>
+                            <td className="text-center">
+                              <button type="button" className="btn btn-warning">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <p>ประวัติการทำงาน</p>
+                    <p className="pt-3 pt-md-0">ประวัติการทำงาน</p>
                     <div className="col-md-12 text-end">
-                      <span
+                      {/* <span
                         className="btn btn-success mb-3"
                         id="insertEdu"
                         onClick={handleClickOpen3}
                       >
                         เพิ่มข้อมูล
-                      </span>
+                      </span> */}
+                      <button className="Btn_Add_user my-2">เพิ่มข้อมูล</button>
                       <Dialog
                         fullWidth
                         maxWidth="md"
@@ -941,20 +961,26 @@ function FormWork() {
                       <table className="table table-bordered">
                         <thead className="text-center">
                           <tr>
-                            <th scope="col">วุฒิที่ได้รับ </th>
-                            <th scope="col">ชื่อสถานศึกษา</th>
+                            <th scope="col">สถานที่ทำงาน</th>
+                            <th scope="col">ตำแหน่ง</th>
+                            <th scope="col">เงินเดือนสุดท้ายก่อนออก</th>
                             <th scope="col">วันที่เริ่ม</th>
-                            <th scope="col">วันที่จบการศึกษา</th>
+                            <th scope="col">วันที่สิ้นสุด</th>
                             <th scope="col">เครื่องมือ</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
+                            <td>บริษัทกัมปนาท</td>
+                            <td>โปรเเกรมเมอร์</td>
+                            <td>14,000</td>
+                            <td>5 พฤษภาคม 2561</td>
+                            <td>4 พฤษภาคม 2563</td>
+                            <td className="text-center">
+                              <button type="button" class="btn btn-warning">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -970,7 +996,7 @@ function FormWork() {
                       </div>
                     </div>
                     <div className="col-md-12">
-                      <div className="row m-0">
+                      <div className="row ">
                         <div className="col-md-4">
                           <div className="row">
                             <div className="col-md-12">
@@ -1020,10 +1046,10 @@ function FormWork() {
                                     className="form-select"
                                     aria-label="Default select example"
                                   >
-                                    <option>Open this select menu</option>
-                                    <option value={1}>One</option>
-                                    <option value={2}>Two</option>
-                                    <option value={3}>Three</option>
+                                    <option>เลือก</option>
+                                    <option value={1}>เชียงใหม่</option>
+                                    <option value={2}>ลำพูน</option>
+                                    <option value={3}>ลำปาง</option>
                                   </select>
                                 </div>
                               </div>
@@ -1102,10 +1128,10 @@ function FormWork() {
                                     className="form-select"
                                     aria-label="Default select example"
                                   >
-                                    <option>Open this select menu</option>
-                                    <option value={1}>One</option>
-                                    <option value={2}>Two</option>
-                                    <option value={3}>Three</option>
+                                    <option>เลือก</option>
+                                    <option value={1}>เชียงใหม่</option>
+                                    <option value={2}>ลำพูน</option>
+                                    <option value={3}>ตาก</option>
                                   </select>
                                 </div>
                               </div>
@@ -1121,10 +1147,9 @@ function FormWork() {
                                     className="form-select"
                                     aria-label="Default select example"
                                   >
-                                    <option>Open this select menu</option>
-                                    <option value={1}>One</option>
-                                    <option value={2}>Two</option>
-                                    <option value={3}>Three</option>
+                                    <option>เลือก</option>
+                                    <option value={1}>เมือง</option>
+                                    <option value={2}>สารภี</option>
                                   </select>
                                 </div>
                               </div>
@@ -1140,10 +1165,9 @@ function FormWork() {
                                     className="form-select"
                                     aria-label="Default select example"
                                   >
-                                    <option>Open this select menu</option>
-                                    <option value={1}>One</option>
-                                    <option value={2}>Two</option>
-                                    <option value={3}>Three</option>
+                                    <option>เลือก</option>
+                                    <option value={1}>ในเมือง</option>
+                                    <option value={2}>ช้างเผือก</option>
                                   </select>
                                 </div>
                               </div>

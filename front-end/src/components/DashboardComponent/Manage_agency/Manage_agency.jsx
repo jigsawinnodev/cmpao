@@ -272,6 +272,7 @@ function Manage_agency() {
                       defaultCollapseIcon={<ExpandMoreIcon />}
                       defaultExpanded={[
                         "root",
+                        "1",
                         "3",
                         "7",
                         "11",

@@ -125,8 +125,8 @@ function Manage_money() {
       sortable: true,
       cell: (row) => (
         <Link to="payment_check">
-          <button type="button" className="btn btn-secondary">
-            <i className="bi bi-gear-fill"></i>
+          <button type="button" className="btn btn-info">
+            <i className="bi bi-gear" style={{ color: "black" }}></i>
           </button>
         </Link>
       ),

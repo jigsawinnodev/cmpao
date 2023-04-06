@@ -58,7 +58,7 @@ function Manage_typeUserRegister() {
               EditTypePosition(row.id);
             }}
           >
-            <i className="bi bi-pencil-fill"></i>
+            <i class="bi bi-pencil"></i>
           </button>
           <button
             type="button"

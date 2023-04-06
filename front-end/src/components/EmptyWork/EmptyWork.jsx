@@ -70,7 +70,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -105,7 +105,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -140,7 +140,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -175,7 +175,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -210,7 +210,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -246,7 +246,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">
@@ -282,7 +282,7 @@ function EmptyWork() {
                     <div className="col-md-1 text-center my-auto">
                       <i
                         className="bi bi-megaphone-fill"
-                        style={{ fontSize: "30px" }}
+                        style={{ fontSize: "25px" }}
                       ></i>
                     </div>
                     <div className="col-md-7 my-auto text-center text-md-start">

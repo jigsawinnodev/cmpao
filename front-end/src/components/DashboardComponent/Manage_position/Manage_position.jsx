@@ -413,6 +413,150 @@ function Manage_position() {
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
+            <div className="row w-100  pt-3 pb-4 m-0">
+              <div className="col-md-10 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการข้อมูลตำเเหน่ง
+                  </h4>
+                </div>
+              </div>
+              <div className="col-md-2">
+                <div className="float-end">
+                  <button
+                    className="Btn_Add_user"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    เพิ่มใบสมัคร
+                  </button>
+                  <div
+                    className="modal fade"
+                    id="exampleModal"
+                    tabIndex={-1}
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <form
+                      onSubmit={handleSubmit}
+                      // encType="multipart/form-data"
+                    >
+                      <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">
+                              เพิ่มตำแหน่ง
+                            </h5>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            />
+                          </div>
+                          <div className="modal-body">
+                            <div>
+                              <div className="py-2 text-start">
+                                <label
+                                  htmlFor="exampleInputEmail1"
+                                  className="form-label"
+                                >
+                                  ชื่อตำแหน่ง
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={namePosition}
+                                  required
+                                  onChange={(e) => {
+                                    setNamePosition(e.target.value);
+                                  }}
+                                />
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  ประเภท
+                                </label>
+                                <select
+                                  className="form-select"
+                                  value={typePosition}
+                                  required
+                                  onChange={(e) => {
+                                    setTypePosition(e.target.value);
+                                  }}
+                                >
+                                  <option value={""}>เลือก</option>
+                                  {positionType.map((val, idx) => (
+                                    <option key={idx} value={val.id}>
+                                      {val.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  สถานะ
+                                </label>
+                                <select
+                                  className="form-select"
+                                  aria-label="Default select example"
+                                  value={statusPosition}
+                                  onChange={(e) => {
+                                    console.log(e.target.value);
+                                    setStatusPosition(e.target.value);
+                                  }}
+                                >
+                                  <option value={"1"}>ใช้งาน</option>
+                                  <option value={"0"}>ไม่ใช้งาน</option>
+                                </select>
+                              </div>
+                              <div className="text-start py-2">
+                                <label
+                                  htmlFor="exampleInputSelect"
+                                  className="form-label"
+                                >
+                                  เเนบไฟล์
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  accept="application/pdf"
+                                  ref={ref}
+                                  required
+                                  onChange={(e) => {
+                                    setFilePdf(e.target.files[0]);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              ยกเลิก
+                            </button>
+                            <button type="submit" className="btn btn-primary">
+                              บันทึกข้อมูล
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+          {/* <nav>
             <div className="nav px-3 pt-4 pb-2">
               <div className="row w-100 my-auto">
                 <div className="col-md-7">
@@ -424,13 +568,13 @@ function Manage_position() {
                 </div>
                 <div className="col-md-5">
                   <div className="float-end">
-                    {/* <button
+                    <button
                       className="btn btn-outline-success"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                     >
                       เพิ่มใบสมัคร
-                    </button> */}
+                    </button>
 
                     <button
                       className="Btn_Add_user"
@@ -439,137 +583,11 @@ function Manage_position() {
                     >
                       เพิ่มใบสมัคร
                     </button>
-
-                    <div
-                      className="modal fade"
-                      id="exampleModal"
-                      tabIndex={-1}
-                      aria-labelledby="exampleModalLabel"
-                      aria-hidden="true"
-                    >
-                      <form
-                        onSubmit={handleSubmit}
-                        // encType="multipart/form-data"
-                      >
-                        <div className="modal-dialog modal-lg">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5
-                                className="modal-title"
-                                id="exampleModalLabel"
-                              >
-                                เพิ่มตำแหน่ง
-                              </h5>
-                              <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                              />
-                            </div>
-                            <div className="modal-body">
-                              <div>
-                                <div className="py-2 text-start">
-                                  <label
-                                    htmlFor="exampleInputEmail1"
-                                    className="form-label"
-                                  >
-                                    ชื่อตำแหน่ง
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    value={namePosition}
-                                    required
-                                    onChange={(e) => {
-                                      setNamePosition(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                                <div className="text-start py-2">
-                                  <label
-                                    htmlFor="exampleInputSelect"
-                                    className="form-label"
-                                  >
-                                    ประเภท
-                                  </label>
-                                  <select
-                                    className="form-select"
-                                    value={typePosition}
-                                    required
-                                    onChange={(e) => {
-                                      setTypePosition(e.target.value);
-                                    }}
-                                  >
-                                    <option value={""}>เลือก</option>
-                                    {positionType.map((val, idx) => (
-                                      <option key={idx} value={val.id}>
-                                        {val.name}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <div className="text-start py-2">
-                                  <label
-                                    htmlFor="exampleInputSelect"
-                                    className="form-label"
-                                  >
-                                    สถานะ
-                                  </label>
-                                  <select
-                                    className="form-select"
-                                    aria-label="Default select example"
-                                    value={statusPosition}
-                                    onChange={(e) => {
-                                      console.log(e.target.value);
-                                      setStatusPosition(e.target.value);
-                                    }}
-                                  >
-                                    <option value={"1"}>ใช้งาน</option>
-                                    <option value={"0"}>ไม่ใช้งาน</option>
-                                  </select>
-                                </div>
-                                <div className="text-start py-2">
-                                  <label
-                                    htmlFor="exampleInputSelect"
-                                    className="form-label"
-                                  >
-                                    เเนบไฟล์
-                                  </label>
-                                  <input
-                                    className="form-control"
-                                    type="file"
-                                    accept="application/pdf"
-                                    ref={ref}
-                                    required
-                                    onChange={(e) => {
-                                      setFilePdf(e.target.files[0]);
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                              >
-                                ยกเลิก
-                              </button>
-                              <button type="submit" className="btn btn-primary">
-                                บันทึกข้อมูล
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </nav>
+          </nav> */}
           <div className="">
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>

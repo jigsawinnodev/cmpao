@@ -9,7 +9,27 @@ function Detail_Manage_money() {
       idcard: "3-7503-09374-82-6",
       numberOrder: 1,
       nameAndLastname: "นายสมใจ นันตา",
-      // type :
+      type: "ข้าราชการ",
+      position: "พนักงานทั่วไป",
+      status: "ชำระเงินสำเร็จ",
+    },
+    {
+      id: 2,
+      idcard: "3-7503-09374-82-6",
+      numberOrder: 2,
+      nameAndLastname: "นางเเก้วใจ สวยงาม",
+      type: "ข้าราชการ",
+      position: "พนักงานทั่วไป",
+      status: "ชำระเงินสำเร็จ",
+    },
+    {
+      id: 3,
+      idcard: "3-7503-09374-82-6",
+      numberOrder: 3,
+      nameAndLastname: "นายกัมปนาท ดอนตอง",
+      type: "ข้าราชการ",
+      position: "พนักงานทั่วไป",
+      status: "ชำระเงินสำเร็จ",
     },
   ];
   const columns = [
@@ -23,66 +43,47 @@ function Detail_Manage_money() {
     },
     {
       name: "เลขบัตรประชาชน",
-      selector: (row) => row.category,
+      selector: (row) => row.idcard,
       width: "15%",
-      cell: (row) => row.category,
+      cell: (row) => row.idcard,
       sortable: true,
     },
     {
-      name: "ลำดับสมัคร",
-      selector: (row) => row.brand,
+      name: "เลขผู้สมัครสอบ",
+      selector: (row) => row.numberOrder,
       width: "15%",
-      cell: (row) => row.brand,
+      cell: (row) => row.numberOrder,
       sortable: true,
       center: true,
     },
     {
       name: "ชื่อ-นามสกุล",
-      selector: (row) => row.description,
+      selector: (row) => row.nameAndLastname,
+      cell: (row) => row.nameAndLastname,
       width: "15%",
       sortable: true,
-      center: true,
+      // center: true,
     },
     {
       name: "ประเภท",
-      selector: (row) => row.discountPercentage,
+      selector: (row) => row.type,
       sortable: true,
-      cell: (row) => row.discountPercentage,
+      cell: (row) => row.type,
       width: "15%",
       center: true,
     },
     {
       name: "ตำเเหน่ง",
-      selector: (row) => row.price,
+      selector: (row) => row.position,
       sortable: true,
-      cell: (row) => row.price,
+      cell: (row) => row.position,
       width: "15%",
       center: true,
     },
     {
       name: "สถานนะ",
-      selector: (row) => (
-        <div className="">
-          <button
-            type="button"
-            class="btn btn-warning mx-1"
-            onClick={() => {
-              EditTypePosition(row.id);
-            }}
-          >
-            <i class="bi bi-pencil-fill"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger mx-1"
-            onClick={() => {
-              DeleteTypePosition(row.id);
-            }}
-          >
-            <i class="bi bi-trash-fill"></i>
-          </button>
-        </div>
-      ),
+      selector: (row) => row.status,
+      cell: (row) => row.status,
       sortable: true,
       width: "15%",
     },
@@ -160,10 +161,13 @@ function Detail_Manage_money() {
             <div className="col-md-12">
               <DataTable
                 columns={columns}
-                data={handleSearch(data)}
+                data={mockData}
                 pagination
                 responsive
               />
+            </div>
+            <div className="col-md-12">
+              
             </div>
           </div>
         </div>

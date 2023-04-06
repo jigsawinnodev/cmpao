@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Manage_ducument_add.css";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
@@ -12,23 +12,19 @@ function Manage_ducument_add() {
   const nodes = [
     {
       value: "mars",
-      label: "Mars",
+      label: "อบจ. เชียงใหม่",
       children: [
-        { value: "phobos", label: "Phobos" },
-        { value: "deimos", label: "Deimos" },
+        { value: "phobos", label: "สำนักการศึกษา ศาสนา และวัฒนธรรม" },
+        { value: "deimos", label: "กองพัสดุ" },
       ],
     },
+  ];
+  const MockData = [
     {
-      value: "test",
-      label: "test",
-      children: [
-        { value: "qqqq", label: "Phobosbb" },
-        {
-          value: "ggqq",
-          label: "oopp",
-          children: [{ value: "xx", label: "yy" }],
-        },
-      ],
+      id: "1",
+      position: "พยาบาลวิชาชีพ",
+      idPosition: "1",
+      countUser: "3",
     },
   ];
   const [checked, setChecked] = useState([]);
@@ -68,14 +64,14 @@ function Manage_ducument_add() {
       center: true,
     },
     {
-      name: "ประเภท",
+      name: "ตำเเหน่ง",
       selector: (row) => row.category,
       width: "150px",
       cell: (row) => row.category,
       sortable: true,
     },
     {
-      name: "วันที่เริ่มต้น",
+      name: "รหัสประจำตำเเหน่ง",
       selector: (row) => row.brand,
       width: "auto",
       cell: (row) => row.brand,
@@ -83,37 +79,48 @@ function Manage_ducument_add() {
       center: true,
     },
     {
-      name: "วันที่สิ้นสุด",
+      name: "จำนวน",
       selector: (row) => row.description,
       width: "180px",
       sortable: true,
       center: true,
     },
     {
-      name: "จำนวนตำเเหน่ง",
-      selector: (row) => row.discountPercentage,
+      name: "เอกสารเเนบ",
+      selector: (row) => (
+        <div className="">
+          <a>
+            <i className="bi bi-file-earmark-pdf-fill"></i>
+          </a>
+        </div>
+      ),
       sortable: true,
-      cell: (row) => row.discountPercentage,
+      cell: (row) => (
+        <div className="">
+          <a>
+            <i className="bi bi-file-earmark-pdf-fill"></i>
+          </a>
+        </div>
+      ),
       width: "auto",
       center: true,
     },
-    {
-      name: "จำนวนผู้สมัคร",
-      selector: (row) => row.price,
-      sortable: true,
-      cell: (row) => row.price,
-      width: "auto",
-      center: true,
-    },
+
     {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <Link to={"apply_check/" + row.id}>
+          {/* <NavLink to={"apply_check/" + row.id}>
             <button type="button" className="btn btn-outline-secondary">
               Secondary
             </button>
-          </Link>
+          </NavLink> */}
+          <button type="button" className="btn btn-warning mx-1">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button type="button" className="btn btn-danger mx-1">
+            <i class="bi bi-trash"></i>
+          </button>
         </div>
       ),
       sortable: true,
@@ -246,9 +253,16 @@ function Manage_ducument_add() {
                       <h5 className="m-0">รายการตำแหน่งที่เปิดรับสมัคร</h5>
                     </div>
                     <div>
-                      <button
+                      {/* <button
                         type="button"
                         className="btn btn-outline-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                        เพิ่มใบสมัคร
+                      </button> */}
+                      <button
+                        className="Btn_Add_user"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
@@ -306,7 +320,7 @@ function Manage_ducument_add() {
                                         aria-controls="tab2-content"
                                         aria-selected="false"
                                       >
-                                        Tab 2
+                                        หน่วยงาน
                                       </a>
                                     </li>
                                   </ul>
@@ -630,7 +644,11 @@ function Manage_ducument_add() {
                   </div>
                   <div className="col-md-12">
                     <div className="float-end py-1">
-                      <button type="button" className="btn btn-primary mx-1">
+                      <button className="button_Regiser mx-1">บันทึก</button>
+                      <NavLink to="/Dashboard/Document/">
+                        <button className="button_Back mx-1">ย้อนกลับ</button>
+                      </NavLink>
+                      {/* <button type="button" className="btn btn-primary mx-1">
                         บันทึก
                       </button>
                       <button
@@ -641,7 +659,7 @@ function Manage_ducument_add() {
                         }}
                       >
                         ย้อนกลับ
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

@@ -121,35 +121,35 @@ function Index() {
                   {/* <p className="m-0 pe-3 fw-bold">1</p> */}
                   <span className="product">พนักงานธุรการ</span>
                 </div>
-                <span className="price">5 คน</span>
+                <span className="price">5 ตำเเหน่ง</span>
               </li>
               <li>
                 <div className="d-flex">
                   {/* <p className="m-0 pe-3 fw-bold">2</p> */}
                   <span className="product">พนักงานการเกษตร</span>
                 </div>
-                <span className="price">7 คน</span>
+                <span className="price">7 ตำเเหน่ง</span>
               </li>
               <li>
                 <div className="d-flex">
                   {/* <p className="m-0 pe-3 fw-bold">3</p> */}
                   <span className="product">พนักงานดับเพลิง</span>
                 </div>
-                <span className="price">3 คน</span>
+                <span className="price">3 ตำเเหน่ง</span>
               </li>
               <li>
                 <div className="d-flex">
                   {/* <p className="m-0 pe-3 fw-bold">4</p> */}
                   <span className="product">เจ้าหน้าที่ประชาสัมพันธ์</span>
                 </div>
-                <span className="price">4 คน</span>
+                <span className="price">4 ตำเเหน่ง</span>
               </li>
               <li>
                 <div className="d-flex">
                   {/* <p className="m-0 pe-3 fw-bold">4</p> */}
                   <span className="product">พนักงานคอมพิวเตอร์</span>
                 </div>
-                <span className="price">2 คน</span>
+                <span className="price">2 ตำเเหน่ง</span>
               </li>
               {/* <li>
                 <a href="#">

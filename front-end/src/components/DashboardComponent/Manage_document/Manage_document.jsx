@@ -128,7 +128,7 @@ function Manage_document() {
       name: "เครื่องมือ",
       selector: (row) => (
         <div className="">
-          <Link to={"apply_check/" + row.jc_id} className="mx-1">
+          <Link to={"apply_check/" + row.id} className="mx-1">
             <button
               type="button"
               id="button_to_applyCheck"
@@ -143,7 +143,7 @@ function Manage_document() {
               <i className="bi bi-gear" style={{ color: "black" }}></i>
             </button>
           </Link>
-          <Link to={"edit"} className="mx-1">
+          <Link to={"add/" + row.id} className="mx-1">
             <button
               type="button"
               className="btn btn-warning"
