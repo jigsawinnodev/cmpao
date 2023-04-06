@@ -181,7 +181,7 @@ function Manage_register() {
     <>
       <div className="px-3 py-4">
         <div className="shadow-lg h-100 rounded-3">
-          <nav>
+          {/* <nav>
             <div className="nav px-3 pt-4 pb-1">
               <div className="row w-100 my-auto">
                 <div className="col-md-7">
@@ -211,11 +211,47 @@ function Manage_register() {
                 />
               </div>
             </div>
+          </nav> */}
+          <nav>
+            <div className="row w-100  pt-3 pb-4 m-0">
+              <div className="col-md-10 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการใบสมัคร
+                  </h4>
+                </div>
+              </div>
+              <div className="col-md-2">
+                <div className="float-end">
+                  <Link to="edit">
+                    <button className="Btn_Add_user">เพิ่มใบสมัคร</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </nav>
           <div className="">
             <div className="px-3">
               <div className="rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
+                  <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                  </div>
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}

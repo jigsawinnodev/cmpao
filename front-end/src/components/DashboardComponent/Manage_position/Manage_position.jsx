@@ -574,7 +574,7 @@ function Manage_position() {
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
-                  <div className="col-md-12 my-auto">
+                  {/* <div className="col-md-12 my-auto">
                     <div className="float-end py-1">
                       <div className="input-wrapper my-auto">
                         <button className="iconAddregister">
@@ -592,6 +592,24 @@ function Manage_position() {
                           onChange={(e) => setSearch(e.target.value)}
                         />
                       </div>
+                    </div>
+                  </div> */}
+                  <div className="col-md-12">
+                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                      <button className="icon">
+                        <i
+                          className="bi bi-search"
+                          style={{ color: "white" }}
+                        ></i>
+                      </button>
+                      <input
+                        placeholder="ค้นหา"
+                        className="input"
+                        name="text"
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-md-12">

@@ -133,7 +133,7 @@ function Manage_userRegister() {
               <div className="col-md-10 my-auto">
                 <div className="text-start px-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
-                    จัดการข้อมูลหน่วยงาน
+                    จัดการผู้สมัคร
                   </h4>
                 </div>
               </div>

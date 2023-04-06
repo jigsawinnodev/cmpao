@@ -239,7 +239,7 @@ function Manage_agency() {
     <>
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
-          <nav>
+          {/* <nav>
             <div className="row w-100 my-auto py-3">
               <div className="col-md-12">
                 <div className="text-center">
@@ -248,15 +248,17 @@ function Manage_agency() {
                   </h2>
                 </div>
               </div>
-              {/* <div className="col-md-5">
-                <div className="float-end">
-                  <Link to="edit">
-                    <button className="btn btn-outline-primary">
-                      เพิ่มใบสมัคร
-                    </button>
-                  </Link>
+             
+          <nav> */}
+          <nav>
+            <div className="row w-100  pt-3 pb-4 m-0">
+              <div className="col-md-12 my-auto">
+                <div className="text-start px-3">
+                  <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
+                    จัดการข้อมูลหน่วยงาน
+                  </h4>
                 </div>
-              </div> */}
+              </div>
             </div>
           </nav>
           <div className="">
