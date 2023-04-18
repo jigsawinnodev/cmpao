@@ -1,5 +1,6 @@
 import axios from "axios";
 var BaseUrl = 'http://localhost:9500';
+
 export const GetpreName = async () => {
     let response = await axios.get(`${BaseUrl}/api/GetpreName`);
     return response.data
@@ -64,6 +65,16 @@ export const CreateMember = () => {
         });
 }
 
+
+export const GetAllApply = async () => {
+    return await axios.get(`${BaseUrl}/api/GetApplyAll`)
+        .then((res) => {
+            // console.log(res);
+            return res.data;
+        }).catch((err) => {
+            console.log(err);
+        });
+}
 export const GetMemberAll = async () => {
     return await axios
         .get("http://localhost:9500/api/selectMemberAll")
@@ -74,20 +85,11 @@ export const GetMemberAll = async () => {
             console.log(err);
         });
 }
-export const GetAllApply = async () => {
-    return await axios.get(`${BaseUrl}/api/GetApplyAll`)
-        .then((res) => {
-            // console.log(res.data);
-            return res.data
-        }).catch((err) => {
-            console.log(err);
-        });
-}
 export const DeleteMember = async (id) => {
-    axios.post(`${BaseUrl}/api/DeleteMember`, {
-        id: id,
+    axios.post(`${BaseUrl}/api/DeleteMember/${id}`, {
     }).then((res) => {
-        // console.log(res);
+        console.log(res);
+
     }).catch((err) => {
         // console.log(err);
     });
@@ -172,14 +174,14 @@ export function GetAllPosition() {
     return response;
 }
 export function Add_edit_position(file_Data) {
+    // console.log(file_Data);
     axios({
         method: "post",
-        url: "http://localhost:9500/api/Edit_Add_Position",
+        url: `${BaseUrl}/api/Edit_Add_Position`,
         data: file_Data,
         headers: { "Content-Type": "multipart/form-data" },
     })
         .then(function (response) {
-            //handle success
             console.log(response);
         })
         .catch(function (response) {
@@ -188,7 +190,7 @@ export function Add_edit_position(file_Data) {
         });
 }
 export function Delete_position(id) {
-    axios.post(`${BaseUrl}/api/Delete_position`, {
+    axios.post(`${BaseUrl}/api/Delete_position/${id}`, {
         id: id
     }).then((res) => {
         console.log(res);
@@ -210,20 +212,43 @@ export function Get_permission() {
     return response;
 }
 
-export function Insert_Edit_U(formData) {
-    // console.log('qwe');
-    let response = axios({
+export function Insert_Edit_User_Add(formData) {
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log(formData);
+
+    axios({
         method: "post",
         url: `${BaseUrl}/api/Insert_Edit_User`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
-    })
-    return response;
+    }).then(function (response) {
+        console.log(response);
+    }).catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+    // return response;
 }
 export async function FindByIdUser(id = '') {
     console.log(id);
     let response = await axios.get(`${BaseUrl}/api/FindUserByID/${id}`);
     // console.log(response);
+    return response.data;
+}
+
+export async function GetType_position(id = "") {
+    let response = await axios.get(`${BaseUrl}/api/GetType_position`);
+    return response.data;
+}
+export async function Insert_position(data) {
+    let response = await axios.post(`${BaseUrl}/api/Edit_type_position`, {
+        name: data
+    });
+    return response.data;
+}
+export async function Delete_type_position(id) {
+    let response = await axios.post(`${BaseUrl}/api/Delete_type_position/${id}`);
     return response.data;
 }
 

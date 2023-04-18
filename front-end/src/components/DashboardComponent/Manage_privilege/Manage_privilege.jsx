@@ -7,11 +7,19 @@ function Manage_privilege() {
         <div className="shadow-lg h-50 rounded-3">
           <nav>
             <div className="row w-100 pt-3 pb-4 m-0">
-              <div className="col-md-12 my-auto">
+              <div className="col-md-10 my-auto">
                 <div className="text-start px-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
                     จัดการสิทธิ์
                   </h4>
+                </div>
+              </div>
+              <div className="col-md-2">
+                <div className="float-end">
+                  {/* <button className="btn btn-outline-primary">
+                      เพิ่มข้อมูล
+                    </button> */}
+                  <button className="Btn_Add_user">เพิ่มข้อมูล</button>
                 </div>
               </div>
             </div>
@@ -21,7 +29,7 @@ function Manage_privilege() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12 px-3">
-                    <table className="table">
+                    <table className="">
                       <thead
                         style={{ backgroundColor: "#eaecf4", color: "#6e707e" }}
                       >
@@ -35,7 +43,7 @@ function Manage_privilege() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">1</td>
                           <td className="align-middle">
                             <div>
@@ -143,7 +151,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">2</td>
                           <td className="align-middle">
                             <div>
@@ -251,7 +259,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">3</td>
                           <td className="align-middle">
                             <div>
@@ -359,7 +367,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">4</td>
                           <td className="align-middle">
                             <div>
@@ -467,7 +475,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">5</td>
                           <td className="align-middle">
                             <div>
@@ -575,7 +583,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">6</td>
                           <td className="align-middle">
                             <div>
@@ -683,7 +691,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">7</td>
                           <td className="align-middle">
                             <div>
@@ -791,7 +799,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">8</td>
                           <td className="align-middle">
                             <div>
@@ -901,7 +909,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">9</td>
                           <td className="align-middle">
                             <div>
@@ -1009,7 +1017,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">10</td>
                           <td className="align-middle">
                             <div>
@@ -1117,7 +1125,7 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr>
-                        <tr>
+                        <tr className="border-bottom">
                           <td className="text-center align-middle">11</td>
                           <td className="align-middle">
                             <div>
@@ -1227,25 +1235,10 @@ function Manage_privilege() {
                         </tr>
                       </tbody>
                     </table>
-                    <div className="text-end px-3 py-2">
+                    <div className="text-end py-4">
                       <button className="button_Regiser mx-1">บันทึก</button>
 
-                      <button className="button_Back mx-1">รีเซ็ต</button>
-
-                      {/* <button
-                        type="button"
-                        className="btn btn-primary mx-1"
-                        style={{ backgroundColor: "#0E66AE" }}
-                      >
-                        บันทึก
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        style={{ backgroundColor: "#fc544b" }}
-                      >
-                        รีเซ็ต
-                      </button> */}
+                      <button className="button_Back">รีเซ็ต</button>
                     </div>
                   </div>
                 </div>

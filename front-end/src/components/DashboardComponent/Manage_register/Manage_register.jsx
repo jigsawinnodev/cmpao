@@ -8,6 +8,8 @@ import { Tooltip } from "bootstrap";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
+// import DataTable from "../../tbl/DataTable";
+
 function Manage_register() {
   // var tooltipTriggerList = [].slice.call(
   //   document.querySelectorAll("[data-bs-toggle=tooltip]")
@@ -16,28 +18,13 @@ function Manage_register() {
   //   console.log(tooltipTriggerEl);
   //   return new Tooltip(tooltipTriggerEl);
   // });
-
-  var monthNames = [
-    "ม.ค",
-    "ก.พ.",
-    "มี.ค.",
-    "เม.ย.",
-    "พ.ค.",
-    "มิ.ย.",
-    "ก.ค.",
-    "ส.ค.",
-    "ก.ย.",
-    "ต.ค.",
-    "พ.ย.",
-    "ธ.ค.",
-  ];
   const columns = [
     {
       name: "ลำดับ",
       selector: (row, index) => index + 1,
       width: "10%",
       cell: (row, index) => index + 1,
-      sortable: true,
+      // sortable: true,
       center: true,
     },
     {
@@ -114,15 +101,15 @@ function Manage_register() {
           <button
             type="button"
             className="btn btn-danger"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            title="ลบข้อมูล"
+            // data-bs-toggle="tooltip"
+            // data-bs-placement="bottom"
+            // title="ลบข้อมูล"
           >
             <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
-      sortable: true,
+      // sortable: true,
       width: "15%",
       center: true,
     },
@@ -133,6 +120,7 @@ function Manage_register() {
   // const HiddenToltip = () => {
   //   Tooltip.querySelectorAll("[data-bs-toggle=tooltip]").HiddenToltip;
   // };
+  const DeleteApply = () => {};
   const GetData = async () => {
     const data = await GetAllApply();
     setGetAllApply(data);
@@ -173,60 +161,28 @@ function Manage_register() {
 
   useEffect(() => {
     GetData();
-    Array.from(
-      document.querySelectorAll('button[data-bs-toggle="tooltip"]')
-    ).forEach((tooltipNode) => new Tooltip(tooltipNode));
-  }, []);
+    // Array.from(
+    //   document.querySelectorAll('button[data-bs-toggle="tooltip"]')
+    // ).forEach((tooltipNode) => new Tooltip(tooltipNode));
+  }, [apply]);
   return (
     <>
+      {/* {JSON.stringify(apply)} */}
       <div className="px-3 py-4">
         <div className="shadow-lg h-100 rounded-3">
-          {/* <nav>
-            <div className="nav px-3 pt-4 pb-1">
-              <div className="row w-100 my-auto">
-                <div className="col-md-7">
-                  <div className="text-start">
-                    <h3 className="dashboard m-0 fw-bold">จัดการใบสมัคร</h3>
-                  </div>
-                </div>
-                <div className="col-md-5">
-                  <div className="float-end">
-                    <Link to="edit">
-                      <button className="Btn_Add_user">เพิ่มใบสมัคร</button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div className="input-wrapper px-3 pt-5 w-100 float-end">
-                <button className="icon">
-                  <i className="bi bi-search" style={{ color: "white" }}></i>
-                </button>
-                <input
-                  placeholder="ค้นหา"
-                  className="input"
-                  name="text"
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-            </div>
-          </nav> */}
           <nav>
-            <div className="row w-100  pt-3 pb-4 m-0">
-              <div className="col-md-10 my-auto">
-                <div className="text-start px-3">
+            <div className="d-flex justify-content-between pt-3">
+              <div className="my-auto">
+                <div className="px-3 py-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
                     จัดการใบสมัคร
                   </h4>
                 </div>
               </div>
-              <div className="col-md-2">
-                <div className="float-end">
-                  <Link to="edit">
-                    <button className="Btn_Add_user">เพิ่มใบสมัคร</button>
-                  </Link>
-                </div>
+              <div className="float-end px-3 my-auto">
+                <Link to="edit">
+                  <button className="Btn_Add_user">เพิ่มใบสมัคร</button>
+                </Link>
               </div>
             </div>
           </nav>
@@ -235,7 +191,7 @@ function Manage_register() {
               <div className="rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                    <div className="input-wrapper py-1 w-100 float-end">
                       <button className="icon">
                         <i
                           className="bi bi-search"
@@ -264,6 +220,8 @@ function Manage_register() {
               </div>
             </div>
           </div>
+          {/* {JSON.stringify(apply)} */}
+          <div className="px-3">{/* <DataTable dataSet={apply} /> */}</div>
         </div>
       </div>
     </>

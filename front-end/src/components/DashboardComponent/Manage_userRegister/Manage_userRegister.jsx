@@ -51,9 +51,9 @@ function Manage_userRegister() {
     },
     {
       name: "สถานะการใช้งาน",
-      selector: (row) => moment(row.login_time).add(543, "year").format("ll"),
+      selector: (row) => moment(row.login_time).add(543, "year").format("LL"),
       sortable: true,
-      cell: (row) => moment(row.login_time).add(543, "year").format("ll"),
+      cell: (row) => moment(row.login_time).add(543, "year").format("LL"),
       width: "15%",
     },
     {
@@ -68,7 +68,7 @@ function Manage_userRegister() {
               data-bs-placement="left"
               title="เเก้ไขข้อมูล"
             >
-              <i class="bi bi-pencil"></i>
+              <i className="bi bi-pencil"></i>
             </button>
           </Link>
           <button
@@ -81,7 +81,7 @@ function Manage_userRegister() {
               Delete_Members(row.m_id);
             }}
           >
-            <i class="bi bi-trash"></i>
+            <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
@@ -93,6 +93,7 @@ function Manage_userRegister() {
   const [search, setSearch] = useState("");
 
   const Delete_Members = (id) => {
+    console.log(id);
     Swal.fire({
       title: "ยืนยันการลบข้อมูล?",
       text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
@@ -104,25 +105,45 @@ function Manage_userRegister() {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        const DeleteData = DeleteMember(id);
-        Get_tbl_Member();
+        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
+          () => {
+            DeleteMember(id);
+            Get_tbl_Member();
+          }
+        );
+      }
+    });
+  };
+  const handleSearch = (rows) => {
+    return rows.filter((row) => {
+      if (
+        row.m_firstname.indexOf(search) > -1 ||
+        row.m_lastname.indexOf(search) > -1 ||
+        row.prename.indexOf(search) > -1 ||
+        row.m_phone.toString().indexOf(search) > -1 ||
+        row.m_email.indexOf(search) > -1 ||
+        moment(row.login_time)
+          .add(543, "year")
+          .format("LL")
+          .toString()
+          .indexOf(search) > -1 ||
+        moment(row.login_time)
+          .add(543, "year")
+          .format("ll")
+          .toString()
+          .indexOf(search) > -1
+      ) {
+        return true;
       }
     });
   };
   const Get_tbl_Member = async () => {
     const GetMember = await GetMemberAll();
-    let result = [];
-    GetMember.forEach((element) => {
-      if (element.m_active == 1) {
-        result.push(element);
-      }
-      setMember(result);
-    });
+    setMember(GetMember);
   };
   useEffect(() => {
     Get_tbl_Member();
-  }, []);
+  }, [member]);
   return (
     <>
       {/* {JSON.stringify(member)} */}
@@ -151,7 +172,7 @@ function Manage_userRegister() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                    <div className="input-wrapper  py-1 w-100 float-end">
                       <button className="icon">
                         <i
                           className="bi bi-search"
@@ -171,7 +192,7 @@ function Manage_userRegister() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      data={member}
+                      data={handleSearch(member)}
                       pagination
                       responsive
                     />

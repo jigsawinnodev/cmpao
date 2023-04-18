@@ -1,70 +1,57 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "./Manage_position.css";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import {
   GetAllPosition,
   Add_edit_position,
   Delete_position,
 } from "../../../service/api";
+import { useDropzone } from "react-dropzone";
 import { Tooltip } from "bootstrap";
+import FileUpload from "./InputFile/InputFile";
 function Manage_position() {
-  // var tooltipTriggerList = [].slice.call(
-  //   document.querySelectorAll("[data-bs-toggle=modal]")
-  // );
-  // var tooltipTriggerList1 = [].slice.call(
-  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
-  // );
-  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  //   return new Tooltip(tooltipTriggerEl);
-  // });
-  // var tooltipList1 = tooltipTriggerList1.map(function (tooltipTriggerEl) {
-  //   return new Tooltip(tooltipTriggerEl);
-  // });
-  const mockData = [
-    {
-      id: "1",
-      type: "พนักงานราชการ",
-      positionType: "เจ้าหน้าที่",
-      status: "ใช้งาน",
-    },
-    {
-      id: "2",
-      type: "พนักงานราชการ",
-      positionType: "เจ้าหน้าที่การเงิน",
-      status: "ไม่ใช้งาน",
-    },
-    {
-      id: "2",
-      type: "พนักงานราชการ",
-      positionType: "การเงิน",
-      status: "ไม่ใช้งาน",
-    },
-    {
-      id: "2",
-      type: "พนักงานราชการ",
-      positionType: "เจ้าหน้าที่",
-      status: "ไม่ใช้งาน",
-    },
-    {
-      id: "3",
-      type: "พนักงานราชการ",
-      positionType: "เจ้าหน้าที่",
-      status: "ใช้งาน",
-    },
-    {
-      id: "4",
-      type: "พนักงานราชการ",
-      positionType: "เจ้าหน้าที่",
-      status: "ใช้งาน",
-    },
-  ];
+  // modal
+  const [show, setShow] = useState(false);
+  const [showModalAdd, setShowModalAdd] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleCloseModalAdd = () => setShowModalAdd(false);
+
+  // เเก้ไข
+  const [E_p_name, setE_p_name] = useState(""); //ชื่อตำเเหน่ง
+  const [E_id, setE_id] = useState(""); // id
+  const [E_type, setE_type] = useState("");
+  const [E_status, setE_status] = useState("");
+  const [E_filePdf, setE_FilePdf] = useState([]);
+  const E_inputFile = useRef(null);
+
+  const onFileChange = (files) => {
+    console.log(files);
+  };
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  const files = acceptedFiles.map((file) => <p key={file.path}>{file.path}</p>);
+  const SetDataForEdit = (data) => {
+    console.log(data);
+    setE_id(data.p_id);
+    setE_p_name(data.p_name);
+    setE_type(data.p_type);
+    setE_status(data.p_active);
+    // inputFile.current.files = data.p_file;
+    setE_FilePdf(data.p_file);
+    setShow(true);
+    // console.log(data);
+  };
+
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row, index) => row.id,
+      selector: (row, index) => index + 1,
       width: "20%",
       cell: (row, index) => index + 1,
       sortable: true,
@@ -72,26 +59,39 @@ function Manage_position() {
     },
     {
       name: "ประเภท",
-      selector: (row) => row.type,
+      selector: (row) => row.p_type,
       width: "20%",
-      cell: (row) => row.type,
+      cell: (row) => row.p_type,
       sortable: true,
       center: true,
     },
     {
       name: "ชื่อตำเเหน่ง",
-      selector: (row) => row.positionType,
+      selector: (row) => row.name,
       width: "20%",
-      cell: (row) => row.positionType,
+      cell: (row) => row.name,
       sortable: true,
       center: true,
     },
     {
       name: "สถานนะ",
-      selector: (row) => row.status,
+      selector: (row) => row.p_active,
       width: "20%",
-      // cell: (row) => (row.status ? <div>ใช้งาน</div> : "-"),
-      cell: (row) => row.status,
+      cell: (row) => {
+        if (row.p_active == "1") {
+          return (
+            <div className="fw-bold" style={{ color: "green" }}>
+              ใช้งาน
+            </div>
+          );
+        } else {
+          return (
+            <div className="fw-bold" style={{ color: "red" }}>
+              ไม่ใช้งาน
+            </div>
+          );
+        }
+      },
       sortable: true,
       center: true,
     },
@@ -104,15 +104,112 @@ function Manage_position() {
           <button
             type="button"
             className="btn btn-warning mx-1"
-            data-bs-toggle="modal"
+            // data-bs-toggle="modal"
             title="เเก้ไขข้อมูล"
-            data-bs-placement="left"
-            data-bs-target={"#exampleModal" + row.p_id}
+            // data-bs-placement="left"
+            // data-bs-target={"#exampleModal" + row.p_id}
+            // onClick={() => {
+            //   SetDataForEdit(row);
+            // }}
+            onClick={() => SetDataForEdit(row)}
           >
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
-          <div
-            className="modal fade"
+
+          <Modal show={show} size="lg" onHide={handleClose}>
+            <form
+              onSubmit={(e) => {
+                haddleEditSubmit(e);
+              }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>แก้ไขตำแหน่ง</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <input type="hidden" value={E_id} />
+                <div>
+                  <div className="py-2 text-start">
+                    <label htmlFor="exampleInputEmail1" className="form-label">
+                      ชื่อตำแหน่ง
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      defaultValue={E_p_name}
+                      required
+                      onChange={(e) => {
+                        setE_p_name(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="text-start py-2">
+                    <label htmlFor="exampleInputSelect" className="form-label">
+                      ประเภท
+                    </label>
+                    <select
+                      className="form-select"
+                      value={E_type}
+                      required
+                      onChange={(e) => {
+                        setE_type(e.target.value);
+                      }}
+                    >
+                      <option>เลือก</option>
+                      {positionType.map((val, idx) => {
+                        // console.log(val);
+                        return (
+                          <option key={idx} value={val.id}>
+                            {val.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="text-start py-2">
+                    <label htmlFor="exampleInputSelect" className="form-label">
+                      สถานะ
+                    </label>
+                    <select
+                      className="form-select"
+                      value={E_status}
+                      required
+                      onChange={(e) => {
+                        setE_status(e.target.value);
+                      }}
+                    >
+                      <option value={1}>ใช้งาน</option>
+                      <option value={0}>ไม่ใช้งาน</option>
+                    </select>
+                  </div>
+                  <div className="text-start py-2">
+                    <label htmlFor="exampleInputSelect" className="form-label ">
+                      เเนบไฟล์
+                    </label>
+                    <div className="text-center">
+                      <FileUpload
+                        file={E_filePdf}
+                        onFileChange={(files) => onFileChange(files)}
+                      ></FileUpload>
+                    </div>
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <div className="col-md-12 text-center">
+                  <Button type="submit" className="button_Add_Regiser mx-1">
+                    บันทึก
+                  </Button>
+                  <Button className="button_Back mx-1" onClick={handleClose}>
+                    ยกเลิก
+                  </Button>
+                </div>
+              </Modal.Footer>
+            </form>
+          </Modal>
+          {/* <div
+            className="modal fade modalShow"
             id={"exampleModal" + row.p_id}
             tabIndex={-1}
             aria-labelledby="exampleModalLabel"
@@ -137,6 +234,7 @@ function Manage_position() {
                   }}
                 >
                   <div className="modal-body">
+                    <input type="hidden" value={E_id} />
                     <div>
                       <div className="py-2 text-start">
                         <label
@@ -150,10 +248,10 @@ function Manage_position() {
                           className="form-control"
                           id="exampleInputEmail1"
                           aria-describedby="emailHelp"
-                          defaultValue={row.p_name}
+                          defaultValue={E_p_name}
                           required
                           onChange={(e) => {
-                            setE_NamePosition(e.target.value);
+                            setE_p_name(e.target.value);
                           }}
                         />
                       </div>
@@ -166,14 +264,15 @@ function Manage_position() {
                         </label>
                         <select
                           className="form-select"
-                          defaultValue={row.p_type}
+                          value={E_type}
                           required
                           onChange={(e) => {
-                            setE_TypePosition(e.target.value);
+                            setE_type(e.target.value);
                           }}
                         >
-                          <option value={""}>เลือก</option>
+                          <option>เลือก</option>
                           {positionType.map((val, idx) => {
+                            // console.log(val);
                             return (
                               <option key={idx} value={val.id}>
                                 {val.name}
@@ -191,14 +290,14 @@ function Manage_position() {
                         </label>
                         <select
                           className="form-select"
-                          defaultValue={row.p_active}
+                          value={E_status}
                           required
                           onChange={(e) => {
-                            setE_StatusPosition(e.target.value);
+                            setE_status(e.target.value);
                           }}
                         >
-                          <option value={"1"}>ใช้งาน</option>
-                          <option value={"0"}>ไม่ใช้งาน</option>
+                          <option value={1}>ใช้งาน</option>
+                          <option value={0}>ไม่ใช้งาน</option>
                         </select>
                       </div>
                       <div className="text-start py-2">
@@ -211,7 +310,8 @@ function Manage_position() {
                         <input
                           className="form-control"
                           type="file"
-                          required
+                          // required
+                          value={filePdf}
                           accept="application/pdf"
                           onChange={(e) => {
                             setE_FilePdf(e.target.files[0]);
@@ -221,21 +321,23 @@ function Manage_position() {
                     </div>
                   </div>
                   <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      ยกเลิก
-                    </button>
-                    <button type="submit" className="btn btn-primary">
-                      บันทึก
-                    </button>
+                    <div className="col-md-12 text-center">
+                      <button type="submit" className="button_Add_Regiser mx-1">
+                        บันทึก
+                      </button>
+                      <button
+                        type="button"
+                        className="button_Back mx-1"
+                        data-bs-dismiss="modal"
+                      >
+                        ยกเลิก
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>
             </div>
-          </div>
+          </div> */}
           <button
             type="button"
             className="btn btn-danger mx-1"
@@ -256,8 +358,8 @@ function Manage_position() {
 
   const getDataPosition = async () => {
     const data = await GetAllPosition();
+    // console.log(data);
     setPositionData(data.data);
-    // console.log(data.data);
   };
 
   const [postionData, setPositionData] = useState([]);
@@ -270,50 +372,33 @@ function Manage_position() {
   const [statusPosition, setStatusPosition] = useState("1");
   const [filePdf, setFilePdf] = useState();
   const ref = useRef();
-  // เเก้ไข
-  const [E_namePosition, setE_NamePosition] = useState();
-  const [E_typePosition, setE_TypePosition] = useState("");
-  const [E_statusPosition, setE_StatusPosition] = useState("");
-  const [E_filePdf, setE_FilePdf] = useState();
 
   // modal dialog
-  const [showModal, SetShowmodal] = useState(false);
 
-  // const AddPosition = (id = "") => {
-  //   const formData = new FormData();
-
-  //   formData.append("file", filePdf);
-  //   formData.append("p_name", namePosition);
-  //   formData.append("p_id", id);
-  //   formData.append("p_type", typePosition);
-  //   formData.append("p_active", statusPosition);
-  //   Add_edit_position(formData);
-  //   Swal.fire({
-  //     icon: "success",
-  //     text: "ได้ทำการบันทึกข้อมูลเรียบร้อยแล้ว",
-  //   }).then(() => {
-  //     setNamePosition("");
-  //     setTypePosition("");
-  //     setStatusPosition("1");
-  //     setFilePdf("");
-  //     ref.current.value = "";
-  //   });
-  // };
-  const haddleEditSubmit = (event, id) => {
+  const haddleEditSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    console.log(E_namePosition);
+    // console.log(E_namePosition);
+    // console.log(E_filePdf);
     formData.append("file", E_filePdf);
-    formData.append("p_name", E_namePosition);
-    formData.append("p_id", id);
-    formData.append("p_type", E_typePosition);
-    formData.append("p_active", E_statusPosition);
+    formData.append("p_name", E_p_name);
+    formData.append("p_id", E_id);
+    formData.append("p_type", E_type);
+    formData.append("p_active", E_status);
     Add_edit_position(formData);
-    setE_NamePosition("");
-    setE_TypePosition("");
-    setE_StatusPosition("");
-    setE_FilePdf("");
-    getDataPosition();
+    setShow(false);
+    Swal.fire({
+      icon: "success",
+      title: "เเก้ไขข้อมูลสำเร็จ",
+      timer: 1500,
+    }).then(() => {
+      setE_p_name("");
+      setE_id("");
+      setE_type("");
+      setE_status("");
+      setE_FilePdf();
+      getDataPosition();
+    });
   };
 
   const handleSubmit = (event, id = "") => {
@@ -325,6 +410,7 @@ function Manage_position() {
     formData.append("p_type", typePosition);
     formData.append("p_active", statusPosition);
     Add_edit_position(formData);
+    setShowModalAdd(false);
     Swal.fire({
       icon: "success",
       text: "ได้ทำการบันทึกข้อมูลเรียบร้อยแล้ว",
@@ -333,9 +419,9 @@ function Manage_position() {
       setTypePosition("");
       setStatusPosition("1");
       setFilePdf("");
-      ref.current.value = "";
+      // ref.current.value = "";
+      getDataPosition();
     });
-    getDataPosition();
   };
   const DeleteMember = (id) => {
     Swal.fire({
@@ -359,22 +445,6 @@ function Manage_position() {
     });
   };
 
-  // const editPosition = (event, id) => {
-  //   event.preventdefault();
-  //   const formData = new FormData();
-  //   console.log(E_namePosition);
-  //   formData.append("file", E_filePdf);
-  //   formData.append("p_name", E_namePosition);
-  //   formData.append("p_id", id);
-  //   formData.append("p_type", E_typePosition);
-  //   formData.append("p_active", E_statusPosition);
-  //   Add_edit_position(formData);
-  //   setE_NamePosition("");
-  //   setE_TypePosition("");
-  //   setE_StatusPosition("");
-  //   setE_FilePdf("");
-  // };
-
   const GetType_Position = () => {
     axios
       .get("http://localhost:9500/api/GetType_position")
@@ -387,10 +457,6 @@ function Manage_position() {
       });
   };
   const handleSearch = (rows) => {
-    // const [E_namePosition, setE_NamePosition] = useState("");
-    // const [E_typePosition, setE_TypePosition] = useState("");
-    // const [E_statusPosition, setE_StatusPosition] = useState("");
-    // const [E_filePdf, setE_FilePdf] = useState();
     // console.log(rows);
     return rows.filter((row) => {
       if (
@@ -405,215 +471,287 @@ function Manage_position() {
 
   useEffect(() => {
     getDataPosition();
-    // GetData();
+    console.log(E_filePdf);
     GetType_Position();
-  }, []);
+  }, [E_filePdf]);
   return (
     <>
+      {/* {JSON.stringify(E_filePdf)} */}
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>
-            <div className="row w-100  pt-3 pb-4 m-0">
-              <div className="col-md-10 my-auto">
-                <div className="text-start px-3">
+            <div className="d-flex justify-content-between pt-3">
+              <div className="my-auto">
+                <div className="px-3 py-3">
                   <h4 className="dashboard m-0" style={{ color: "#655DBB" }}>
                     จัดการข้อมูลตำเเหน่ง
                   </h4>
                 </div>
               </div>
-              <div className="col-md-2">
-                <div className="float-end">
-                  <button
-                    className="Btn_Add_user"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
+              <div className="float-end px-3 my-auto">
+                <button
+                  className="Btn_Add_user"
+                  // data-bs-toggle="modal"
+                  // data-bs-target="#exampleModal"
+                  onClick={() => {
+                    setShowModalAdd(true);
+                  }}
+                >
+                  เพิ่มใบสมัคร
+                </button>
+                <Modal
+                  show={showModalAdd}
+                  size="lg"
+                  onHide={handleCloseModalAdd}
+                >
+                  <form
+                    onSubmit={(e) => {
+                      handleSubmit(e);
+                    }}
                   >
-                    เพิ่มใบสมัคร
-                  </button>
-                  <div
-                    className="modal fade"
-                    id="exampleModal"
-                    tabIndex={-1}
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <form
-                      onSubmit={handleSubmit}
-                      // encType="multipart/form-data"
-                    >
-                      <div className="modal-dialog modal-lg">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">
-                              เพิ่มตำแหน่ง
-                            </h5>
-                            <button
-                              type="button"
-                              className="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            />
-                          </div>
-                          <div className="modal-body">
-                            <div>
-                              <div className="py-2 text-start">
-                                <label
-                                  htmlFor="exampleInputEmail1"
-                                  className="form-label"
-                                >
-                                  ชื่อตำแหน่ง
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={namePosition}
-                                  required
-                                  onChange={(e) => {
-                                    setNamePosition(e.target.value);
-                                  }}
-                                />
-                              </div>
-                              <div className="text-start py-2">
-                                <label
-                                  htmlFor="exampleInputSelect"
-                                  className="form-label"
-                                >
-                                  ประเภท
-                                </label>
-                                <select
-                                  className="form-select"
-                                  value={typePosition}
-                                  required
-                                  onChange={(e) => {
-                                    setTypePosition(e.target.value);
-                                  }}
-                                >
-                                  <option value={""}>เลือก</option>
-                                  {positionType.map((val, idx) => (
-                                    <option key={idx} value={val.id}>
-                                      {val.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                              <div className="text-start py-2">
-                                <label
-                                  htmlFor="exampleInputSelect"
-                                  className="form-label"
-                                >
-                                  สถานะ
-                                </label>
-                                <select
-                                  className="form-select"
-                                  aria-label="Default select example"
-                                  value={statusPosition}
-                                  onChange={(e) => {
-                                    console.log(e.target.value);
-                                    setStatusPosition(e.target.value);
-                                  }}
-                                >
-                                  <option value={"1"}>ใช้งาน</option>
-                                  <option value={"0"}>ไม่ใช้งาน</option>
-                                </select>
-                              </div>
-                              <div className="text-start py-2">
-                                <label
-                                  htmlFor="exampleInputSelect"
-                                  className="form-label"
-                                >
-                                  เเนบไฟล์
-                                </label>
-                                <input
-                                  className="form-control"
-                                  type="file"
-                                  accept="application/pdf"
-                                  ref={ref}
-                                  required
-                                  onChange={(e) => {
-                                    setFilePdf(e.target.files[0]);
-                                  }}
-                                />
-                              </div>
+                    <Modal.Header closeButton>
+                      <Modal.Title>เพิ่มตำแหน่ง</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <input type="hidden" value={E_id} />
+                      <div>
+                        <div className="py-2 text-start">
+                          <label
+                            htmlFor="exampleInputEmail1"
+                            className="form-label"
+                          >
+                            ชื่อตำแหน่ง
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                            defaultValue={namePosition}
+                            required
+                            onChange={(e) => {
+                              setNamePosition(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="text-start py-2">
+                          <label
+                            htmlFor="exampleInputSelect"
+                            className="form-label"
+                          >
+                            ประเภท
+                          </label>
+                          <select
+                            className="form-select"
+                            value={typePosition}
+                            required
+                            onChange={(e) => {
+                              setTypePosition(e.target.value);
+                            }}
+                          >
+                            <option>เลือก</option>
+                            {positionType.map((val, idx) => {
+                              // console.log(val);
+                              return (
+                                <option key={idx} value={val.id}>
+                                  {val.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                        <div className="text-start py-2">
+                          <label
+                            htmlFor="exampleInputSelect"
+                            className="form-label"
+                          >
+                            สถานะ
+                          </label>
+                          <select
+                            className="form-select"
+                            value={statusPosition}
+                            required
+                            onChange={(e) => {
+                              setStatusPosition(e.target.value);
+                            }}
+                          >
+                            <option value={1}>ใช้งาน</option>
+                            <option value={0}>ไม่ใช้งาน</option>
+                          </select>
+                        </div>
+                        <div className="text-start py-2">
+                          <label
+                            htmlFor="exampleInputSelect"
+                            className="form-label"
+                          >
+                            เเนบไฟล์
+                          </label>
+                          <input
+                            className="form-control"
+                            type="file"
+                            // required
+                            value={filePdf}
+                            accept="application/pdf"
+                            onChange={(e) => {
+                              setFilePdf(e.target.files[0]);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <div className="col-md-12 text-center">
+                        <Button
+                          type="submit"
+                          className="button_Add_Regiser mx-1"
+                        >
+                          บันทึก
+                        </Button>
+                        <Button
+                          className="button_Back mx-1"
+                          onClick={handleCloseModalAdd}
+                        >
+                          ยกเลิก
+                        </Button>
+                      </div>
+                    </Modal.Footer>
+                  </form>
+                </Modal>
+                {/* <div
+                  className="modal fade"
+                  id="exampleModal"
+                  tabIndex={-1}
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <form onSubmit={handleSubmit}>
+                    <div className="modal-dialog modal-lg">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="exampleModalLabel">
+                            เพิ่มตำแหน่ง
+                          </h5>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          />
+                        </div>
+                        <div className="modal-body">
+                          <div>
+                            <div className="py-2 text-start">
+                              <label
+                                htmlFor="exampleInputEmail1"
+                                className="form-label"
+                              >
+                                ชื่อตำแหน่ง
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={namePosition}
+                                required
+                                placeholder="ชื่อตำแหน่ง"
+                                onChange={(e) => {
+                                  setNamePosition(e.target.value);
+                                }}
+                              />
+                            </div>
+                            <div className="text-start py-2">
+                              <label
+                                htmlFor="exampleInputSelect"
+                                className="form-label"
+                              >
+                                ประเภท
+                              </label>
+                              <select
+                                className="form-select"
+                                value={typePosition}
+                                required
+                                onChange={(e) => {
+                                  setTypePosition(e.target.value);
+                                }}
+                              >
+                                <option value={""}>เลือก</option>
+                                {positionType.map((val, idx) => (
+                                  <option key={idx} value={val.id}>
+                                    {val.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="text-start py-2">
+                              <label
+                                htmlFor="exampleInputSelect"
+                                className="form-label"
+                              >
+                                สถานะ
+                              </label>
+                              <select
+                                className="form-select"
+                                aria-label="Default select example"
+                                value={statusPosition}
+                                onChange={(e) => {
+                                  console.log(e.target.value);
+                                  setStatusPosition(e.target.value);
+                                }}
+                              >
+                                <option value={"1"}>ใช้งาน</option>
+                                <option value={"0"}>ไม่ใช้งาน</option>
+                              </select>
+                            </div>
+                            <div className="text-start py-2">
+                              <label
+                                htmlFor="exampleInputSelect"
+                                className="form-label"
+                              >
+                                เเนบไฟล์
+                              </label>
+                              <input
+                                className="form-control"
+                                type="file"
+                                accept="application/pdf"
+                                ref={ref}
+                                required
+                                onChange={(e) => {
+                                  setFilePdf(e.target.files[0]);
+                                }}
+                              />
                             </div>
                           </div>
-                          <div className="modal-footer">
+                        </div>
+                        <div className="modal-footer">
+                          <div className="col-md-12 text-center">
+                            <button
+                              type="submit"
+                              className="button_Add_Regiser mx-1"
+                            >
+                              บันทึก
+                            </button>
                             <button
                               type="button"
-                              className="btn btn-secondary"
+                              className="button_Back mx-1"
                               data-bs-dismiss="modal"
                             >
                               ยกเลิก
                             </button>
-                            <button type="submit" className="btn btn-primary">
-                              บันทึกข้อมูล
-                            </button>
                           </div>
                         </div>
                       </div>
-                    </form>
-                  </div>
-                </div>
+                    </div>
+                  </form>
+                </div> */}
               </div>
             </div>
           </nav>
-          {/* <nav>
-            <div className="nav px-3 pt-4 pb-2">
-              <div className="row w-100 my-auto">
-                <div className="col-md-7">
-                  <div className="text-end">
-                    <h2 className="dashboard m-0" style={{ color: "#655DBB" }}>
-                      จัดการข้อมูลตำเเหน่ง
-                    </h2>
-                  </div>
-                </div>
-                <div className="col-md-5">
-                  <div className="float-end">
-                    <button
-                      className="btn btn-outline-success"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                    >
-                      เพิ่มใบสมัคร
-                    </button>
 
-                    <button
-                      className="Btn_Add_user"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                    >
-                      เพิ่มใบสมัคร
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav> */}
           <div className="">
-            <div className="px-3 py-2">
+            <div className="px-3">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
-                  {/* <div className="col-md-12 my-auto">
-                    <div className="float-end py-1">
-                      <div className="input-wrapper my-auto">
-                        <button className="iconAddregister">
-                          <i
-                            className="bi bi-search"
-                            style={{ color: "white" }}
-                          ></i>
-                        </button>
-                        <input
-                          placeholder="ค้นหา"
-                          className="input"
-                          name="text"
-                          type="text"
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="col-md-12">
-                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                    <div className="input-wrapper py-1 w-100 float-end">
                       <button className="icon">
                         <i
                           className="bi bi-search"
@@ -633,8 +771,8 @@ function Manage_position() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      // data={handleSearch(postionData)}
-                      data={mockData}
+                      data={handleSearch(postionData)}
+                      // data={mockData}
                       pagination
                       responsive
                     />

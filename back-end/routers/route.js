@@ -30,7 +30,6 @@ const upload = multer({ storage: storage });
 
 router.get('/', RootController.getTest);
 router.get('/GetMenu', Admin.GetMenuAdmin);
-router.get('/GetType_position', Admin.GetType_position);
 router.get('/GetBloodType', Admin.BloodType);
 router.get('/GetpreName', Admin.GetpreName);
 router.get('/GetStatus_relationship', Admin.Status_relationship);
@@ -38,13 +37,29 @@ router.get('/GetTbl_country', Admin.GetTbl_country);
 router.get('/GetTbl_district', Admin.GetTbl_district);
 router.get('/GetTbl_subdistrict', Admin.GetTbl_subdistrict);
 router.get('/GetTbl_religion', Admin.GetTbl_religion);
-router.get('/GetApplyAll', Admin.GetApplyAll);
+
+
+
+
+// router TypePosition
+router.get('/GetType_position', Admin.GetType_position);
+router.post('/Edit_type_position', Admin.Edit_position);
+router.post('/Delete_type_position/:id', Admin.DeleteType_position);
+
+
+
+
+
+// router Apply
 router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
+router.get('/GetApplyAll', Admin.GetApplyAll);
+router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
+
 
 // router ManagePositions
 router.get('/GetAllPosition', Admin.GetAllPosition);
 router.post('/Edit_Add_Position', upload.single('file'), Admin.manage_Position);
-router.post('/Delete_position', Admin.Delete_positions);
+router.post('/Delete_position/:id', Admin.Delete_positions);
 
 // router User
 router.get('/GetUser', Admin.user_all);
@@ -56,5 +71,10 @@ router.get('/FindUserByID/:id', Admin.FindUserByID);
 // router Member
 router.get('/selectMemberAll', Admin.selectMemberAll);
 router.post('/CreateMember', Admin.CreateMember);
-router.post('/DeleteMember', Admin.Delete_Member);
+router.post('/DeleteMember/:id', Admin.Delete_Member);
+
+
+
+// router Permissions
+// router.get('/permissions', Admin.Permissions);
 module.exports = router;

@@ -4,8 +4,9 @@
  }
 
  .rdt_TableCol {
-   background-color: #655DBB;
-   color: white;
+   background-color: #DBBBF5;
+   color: rgb(0, 0, 0);
+   border-top: #000000;
 
    /* border-radius: ; */
    /* justify-content: center; */
@@ -14,13 +15,13 @@
    /* เเก้หัวตาราง */
  }
 
- .rdt_TableCol:first-of-type {
+ /* .rdt_TableCol:first-of-type {
    border-radius: 10px 0 0 0;
  }
 
  .rdt_TableCol:last-of-type {
    border-radius: 0 10px 0 0;
- }
+ } */
 
  .rdt_TableCell {
    font-size: 16px;
@@ -66,7 +67,7 @@
    align-items: center;
    justify-content: center;
    position: absolute;
-   right: 16px;
+   right: 1px;
    cursor: pointer;
    width: 50px;
    height: 50px;

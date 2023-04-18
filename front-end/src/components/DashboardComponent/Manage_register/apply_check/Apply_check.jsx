@@ -10,62 +10,7 @@ import { NavLink } from "react-router-dom";
 moment.locale("th");
 function Apply_check() {
   let { id } = useParams();
-  const morkData = [
-    {
-      id: "1",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "75432",
-      countUser: "8",
-    },
-    {
-      id: "2",
-      position: "ข้าราชการ",
-      idcode: "76423",
-      countUser: "1",
-    },
-    {
-      id: "3",
-      position: "ข้าราชการ",
-      idcode: "79532",
-      countUser: "7",
-    },
-    {
-      id: "4",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "48562",
-      countUser: "1",
-    },
-    {
-      id: "5",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "21496",
-      countUser: "1",
-    },
-    {
-      id: "6",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "20158",
-      countUser: "2",
-    },
-    {
-      id: "7",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "32549",
-      countUser: "1",
-    },
-    {
-      id: "8",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "45160",
-      countUser: "3",
-    },
-    {
-      id: "9",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "51902",
-      countUser: "3",
-    },
-  ];
+
   const columns = [
     {
       name: "ลำดับ",
@@ -76,23 +21,23 @@ function Apply_check() {
       center: true,
     },
     {
-      name: "ตำเเหน่ง",
+      name: "เลขผู้สมัครสอบ",
       selector: (row) => row.position,
-      width: "20%",
+      width: "25%",
       cell: (row) => row.position,
       sortable: true,
       center: true,
     },
     {
-      name: "รหัสประจำตำเเหน่ง",
+      name: "ชื่อ-นามสกุล",
       selector: (row) => row.idcode,
-      width: "20%",
+      width: "25%",
       cell: (row) => row.idcode,
       sortable: true,
       center: true,
     },
     {
-      name: "จำนวน",
+      name: "ตำเเหน่ง",
       selector: (row) => row.countUser,
       cell: (row) => row.countUser,
       width: "20%",
@@ -100,7 +45,7 @@ function Apply_check() {
       center: true,
     },
     {
-      name: "เอกสารเเนบ",
+      name: "สถานนะ",
       selector: (row) => (
         <div className="">
           <a type="button" className="">
@@ -116,44 +61,15 @@ function Apply_check() {
           </a>
         </div>
       ),
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "เครื่องมือ",
-      selector: (row) => (
-        <div className="">
-          <button type="button" className="btn btn-info mx-1">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button type="button" className="btn btn-danger mx-1">
-            <i className="bi bi-trash"></i>
-          </button>
-        </div>
-      ),
-      cell: (row) => (
-        <div className="">
-          <button type="button" className="btn btn-info mx-1">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button type="button" className="btn btn-danger mx-1">
-            <i className="bi bi-trash"></i>
-          </button>
-        </div>
-      ),
-      sortable: true,
-      width: "15%",
+      width: "20%",
       center: true,
     },
   ];
 
   const Get_Apply_Applycheck = async () => {
-    console.log(id);
-    if (id != "" || id != undefined || id != null) {
-      const Data = await Apply_Applycheck(id);
-      console.log(Data);
-      setApply_Applycheck(Data[0]);
-    }
+    const Data = await Apply_Applycheck(id);
+    // console.log(Data);
+    setApply_Applycheck(Data[0]);
   };
 
   const GetData = async () => {
@@ -172,6 +88,7 @@ function Apply_check() {
   };
 
   const handleSearch = (rows) => {
+    console.log(rows);
     return rows.filter((row) => {
       // if (!search) return true;
       if (
@@ -341,12 +258,14 @@ function Apply_check() {
                     </ul>
                   </div>
 
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary mx-1"
-                  >
-                    เพิ่มผู้สมัคร
-                  </button>
+                  <NavLink to="/Dashboard/Apply/edit">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary mx-1"
+                    >
+                      เพิ่มผู้สมัคร
+                    </button>
+                  </NavLink>
                 </div>
               </div>
               <div className="col-md-12">
@@ -373,7 +292,7 @@ function Apply_check() {
                   <div className="col-md-12 ">
                     <DataTable
                       columns={columns}
-                      data={morkData}
+                      data={handleSearch(C_Apply_Applycheck)}
                       pagination
                       responsive
                       progressPending={loadding}

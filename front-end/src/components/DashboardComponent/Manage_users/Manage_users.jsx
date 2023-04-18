@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { GetAll_user, ConvertTypeDate } from "../../../service/api";
 import { Tooltip } from "bootstrap";
+import Swal from "sweetalert2";
+import "./Manage_users.css";
 function Manage_users() {
   // var tooltipTriggerList = [].slice.call(
   //   document.querySelectorAll("[data-bs-toggle=tooltip]")
@@ -78,9 +80,12 @@ function Manage_users() {
           <button
             type="button"
             className="btn btn-danger mx-1"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title="ลบข้อมูล"
+            onClick={() => {
+              DeleteData(row.user_id);
+            }}
+            // data-bs-toggle="tooltip"
+            // data-bs-placement="right"
+            // title="ลบข้อมูล"
           >
             <i className="bi bi-trash"></i>
           </button>
@@ -109,6 +114,23 @@ function Manage_users() {
     });
   };
 
+  const DeleteData = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "ยืนยันการลบข้อมูล?",
+      text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
+  };
   const GetData = async () => {
     let data = await GetAll_user();
     setUser(data.data);

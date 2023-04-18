@@ -108,7 +108,7 @@ function Index() {
         </div>
         <div className="sales-boxes">
           <div className="recent-sales box shadow">
-            <div className="title">Recent Sales</div>
+            {/* <div className="title">Recent Sales</div> */}
             <div className="sales-details">
               <BarChart chartData={data} />
             </div>

@@ -9,11 +9,11 @@ import "dayjs/locale/th";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DayjsUtils from "@date-io/dayjs";
 import { th } from "date-fns/locale";
-
+import dayjs from "dayjs";
 import {
   GetpreName,
   Get_permission,
-  Insert_Edit_U,
+  Insert_Edit_User_Add,
   FindByIdUser,
 } from "../../../../service/api";
 import moment from "moment";
@@ -51,8 +51,9 @@ function Manage_users_add() {
   const [preName, setpreName] = useState([]);
   const [G_permission, Getpermission] = useState([]);
   const [showImg, setShowImg] = useState();
+
+  // for edit
   const [DataByID, setDataByID] = useState({
-    login_time: "",
     user_active: "",
     user_birthday: "",
     user_email: "",
@@ -68,6 +69,7 @@ function Manage_users_add() {
     user_prename: "",
     user_status: "",
     user_username: "",
+    user_confirmpassword: "",
   });
 
   // insert new user
@@ -75,7 +77,6 @@ function Manage_users_add() {
   const [titalname, setTitalname] = useState("");
   const [name, setName] = useState("");
   const [lname, setLname] = useState("");
-
   const [birthday, setBirthday] = useState("");
   const [position, setPosition] = useState("");
   const [phone, setPhone] = useState("");
@@ -88,56 +89,49 @@ function Manage_users_add() {
   const [fileImg, setFileImg] = useState();
 
   // insert User Function
+
   const handleSubmitFormInsert = async (event) => {
     event.preventDefault();
+    console.log("qwe");
     const format2 = "YYYY-MM-DD";
-    const formathDate = moment(birthday).format(format2);
-    if (password == confirmPassword) {
-      const formData = new FormData();
-      formData.append("img", fileImg);
-      formData.append("user_idcard", idcard);
-      formData.append("user_prename", titalname);
-      formData.append("user_firstname", name);
-      formData.append("user_lastname", lname);
-      formData.append("user_username", username);
-      formData.append("user_password", password);
-      formData.append("user_birthday", formathDate);
-      formData.append("user_position", position);
-      formData.append("user_permission", permition);
-      formData.append("user_email", email);
-      formData.append("user_phone", phone);
-      formData.append("user_active", statusActive);
-      let responsive = await Insert_Edit_U(formData);
-      if (responsive.status == 1) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "ชื่อผู้ใช้งานซ้ำ!!",
-        });
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "บันทึกข้อมูลสำเร็จ",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          navigate("/Dashboard/User");
-        });
-      }
-      setIdcard("");
-      setTitalname("");
-      setName("");
-      setLname("");
-      setBirthday("");
-      setPosition("");
-      setPhone("");
-      setEmail("");
-      setPermition("");
-      setUsername("");
-      setPassword("");
-      setConfirmPassword("");
-      setStatusActive("");
-    }
+    const formathDate = moment(DataByID.user_birthday).format(format2);
+    const formData = new FormData();
+    formData.append("img", DataByID.user_img);
+    formData.append("user_id", DataByID.user_id);
+    formData.append("user_idcard", DataByID.user_idcard);
+    formData.append("user_prename", DataByID.user_prename);
+    formData.append("user_firstname", DataByID.user_firstname);
+    formData.append("user_lastname", DataByID.user_lastname);
+    formData.append("user_username", DataByID.user_username);
+    formData.append("user_password", DataByID.user_password);
+    formData.append("user_birthday", formathDate);
+    formData.append("user_position", DataByID.user_position);
+    formData.append("user_permission", DataByID.user_permission);
+    formData.append("user_email", DataByID.user_email);
+    formData.append("user_phone", DataByID.user_phone);
+    formData.append("user_active", DataByID.user_active);
+    // console.log(DataByID);
+    Insert_Edit_User_Add(formData);
+    // if (responsive.status == 1) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Oops...",
+    //     text: "ชื่อผู้ใช้งานซ้ำ!!",
+    //   });
+    // } else {
+    //   Swal.fire({
+    //     icon: "success",
+    //     title: "บันทึกข้อมูลสำเร็จ",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   }).then(() => {
+    //     navigate("/Dashboard/User");
+    //   });
+    // }
+  };
+
+  const handleSubmitFormEdit = async (event) => {
+    event.preventDefault();
   };
   const DataPreName = async () => {
     let data = await GetpreName();
@@ -165,7 +159,6 @@ function Manage_users_add() {
   if (id) {
     return (
       <>
-        {JSON.stringify(DataByID.user_idcard)}
         <div className="px-3 py-4">
           <div className="shadow-lg h-50 rounded-3">
             <nav>
@@ -183,6 +176,7 @@ function Manage_users_add() {
                   <div className="col-md-8">
                     <div className="row">
                       <div className="col-md-6 px-4">
+                        <input type="hidden" value={DataByID.user_id} />
                         <div className="mb-3">
                           <label
                             htmlFor="exampleInputEmail1"
@@ -190,18 +184,19 @@ function Manage_users_add() {
                           >
                             รหัสประจำตัวประชาชน
                           </label>
-                          {/* <input
+                          <input
                             type="text"
                             className="form-control"
                             required
                             defaultValue={DataByID.user_idcard}
                             placeholder="รหัสประจำตัวประชาชน"
-                            
-                            onChange={(e) => {(
-                              ...DataByID,
-                              setDataByID(...DataByID,user_idcard:e.target.value);
-                            )}}
-                          /> */}
+                            onChange={(e) => {
+                              setDataByID({
+                                ...DataByID,
+                                user_idcard: e.target.value,
+                              });
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -220,11 +215,12 @@ function Manage_users_add() {
                                 className="form-select"
                                 aria-label="Default select example"
                                 required
-                                value={
-                                  titalname ? titalname : DataByID.user_prename
-                                }
+                                value={DataByID.user_prename}
                                 onChange={(e) => {
-                                  setTitalname(e.target.value);
+                                  setDataByID({
+                                    ...DataByID,
+                                    user_prename: e.target.value,
+                                  });
                                 }}
                               >
                                 <option value="">เลือก</option>
@@ -251,11 +247,12 @@ function Manage_users_add() {
                                 className="form-control"
                                 placeholder="ชื่อ"
                                 required
-                                defaultValue={
-                                  name ? name : DataByID.user_firstname
-                                }
+                                value={DataByID.user_firstname}
                                 onChange={(e) => {
-                                  setName(e.target.value);
+                                  setDataByID({
+                                    ...DataByID,
+                                    user_firstname: e.target.value,
+                                  });
                                 }}
                               />
                             </div>
@@ -275,11 +272,12 @@ function Manage_users_add() {
                             className="form-control"
                             placeholder="นามสกุล"
                             required
-                            defaultValue={
-                              lname ? lname : DataByID.user_lastname
-                            }
+                            value={DataByID.user_lastname}
                             onChange={(e) => {
-                              setLname(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_lastname: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -300,22 +298,17 @@ function Manage_users_add() {
                               <DatePicker
                                 className="form-control"
                                 label="วัน/เดือน/ปี"
-                                inputFormat="dd-MMMM-yyyyy"
+                                value={dayjs(DataByID.user_birthday)}
+                                onChange={(e) => {
+                                  setDataByID({
+                                    ...DataByID,
+                                    user_birthday: e.target.value,
+                                  });
+                                }}
+                                slotProps={{ textField: { size: "small" } }}
                               />
                             </LocalizationProvider>
                           </div>
-                          {/* <DatePicker
-                            className="w-100 form-control"
-                            selected={DataByID.birthday}
-                            onChange={(date) => setBirthday(date)}
-                            showIcon
-                            showYearDropdown
-                            showMonthDropdown
-                            scrollableYearDropdown
-                            yearDropdownItemNumber={50}
-                            locale={locale}
-                            dateFormat="dd/MM/yyyy"
-                          /> */}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -331,9 +324,12 @@ function Manage_users_add() {
                             className="form-control"
                             placeholder="ตำแหน่ง"
                             required
-                            defaultValue=""
+                            value={DataByID.user_position}
                             onChange={(e) => {
-                              setPosition(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_position: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -351,9 +347,12 @@ function Manage_users_add() {
                             className="form-control"
                             placeholder="เบอร์โทรศัพท์"
                             required
-                            defaultValue=""
+                            value={DataByID.user_phone}
                             onChange={(e) => {
-                              setPhone(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_phone: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -369,16 +368,55 @@ function Manage_users_add() {
                           <input
                             type="text"
                             className="form-control"
-                            defaultValue=""
+                            value={DataByID.user_email}
                             required
                             placeholder="อีเมล"
                             onChange={(e) => {
-                              setEmail(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_email: e.target.value,
+                              });
                             }}
                           />
                         </div>
                       </div>
-                      <div className="col-md-6">
+                      {DataByID.user_permission == 4 ? (
+                        ""
+                      ) : (
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label
+                              htmlFor="exampleInputEmail1"
+                              className="form-label"
+                            >
+                              สิทธิ์การเข้าถึงข้อมูล
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={DataByID.user_permission}
+                              required
+                              onChange={(e) => {
+                                setDataByID({
+                                  ...DataByID,
+                                  user_permission: e.target.value,
+                                });
+                              }}
+                            >
+                              <option value="">เลือก</option>
+                              {G_permission.map((val, idx) => {
+                                // console.log(val);
+                                return (
+                                  <option key={idx} value={val.permiss_id}>
+                                    {val.permiss_name}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+                      {/* <div className="col-md-6">
                         <div className="mb-3">
                           <label
                             htmlFor="exampleInputEmail1"
@@ -389,14 +427,18 @@ function Manage_users_add() {
                           <select
                             className="form-select"
                             aria-label="Default select example"
-                            defaultValue=""
+                            value={DataByID.user_permission}
                             required
                             onChange={(e) => {
-                              setPermition(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_permission: e.target.value,
+                              });
                             }}
                           >
-                            <option value={""}>เลือก</option>
+                            <option value="">เลือก</option>
                             {G_permission.map((val, idx) => {
+                              console.log(val);
                               return (
                                 <option key={idx} value={val.permiss_id}>
                                   {val.permiss_name}
@@ -405,19 +447,34 @@ function Manage_users_add() {
                             })}
                           </select>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="col-md-4">
                     <div className="row">
                       <div className="col-md-12">
                         <div className="text-center">
-                          <img
-                            src={showImg}
+                          {showImg ? (
+                            <img
+                              src={showImg}
+                              alt=""
+                              className="rounded-circle"
+                              style={{ width: "170px", height: "170px" }}
+                            />
+                          ) : (
+                            <img
+                              src={DataByID.user_img}
+                              alt=""
+                              className="rounded-circle"
+                              style={{ width: "170px", height: "170px" }}
+                            />
+                          )}
+                          {/* <img
+                            src={DataByID.user_img}
                             alt=""
                             className="rounded-circle"
                             style={{ width: "170px", height: "170px" }}
-                          />
+                          /> */}
                         </div>
                       </div>
                       <div className="col-md-12">
@@ -427,7 +484,10 @@ function Manage_users_add() {
                             type="file"
                             id="formFile"
                             onChange={(e) => {
-                              setFileImg(e.target.files[0]);
+                              setDataByID({
+                                ...DataByID,
+                                user_img: e.target.files[0],
+                              });
                               setShowImg(
                                 URL.createObjectURL(e.target.files[0])
                               );
@@ -447,9 +507,13 @@ function Manage_users_add() {
                             type="text"
                             className="form-control"
                             placeholder="ชื่อผู้ใช้งาน"
+                            value={DataByID.user_username}
                             required
                             onChange={(e) => {
-                              setUsername(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_username: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -466,9 +530,11 @@ function Manage_users_add() {
                             type="password"
                             className="form-control"
                             placeholder="รหัสผ่าน"
-                            required
                             onChange={(e) => {
-                              setPassword(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_password: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -485,9 +551,11 @@ function Manage_users_add() {
                             type="password"
                             className="form-control"
                             placeholder="ยืนยันรหัสผ่าน"
-                            required
                             onChange={(e) => {
-                              setConfirmPassword(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_confirmpasswords: e.target.value,
+                              });
                             }}
                           />
                         </div>
@@ -502,14 +570,17 @@ function Manage_users_add() {
                           </label>
                           <select
                             className="form-select"
-                            aria-label="Default select example"
                             required
+                            value={DataByID.user_active}
                             onChange={(e) => {
-                              setStatusActive(e.target.value);
+                              setDataByID({
+                                ...DataByID,
+                                user_active: e.target.value,
+                              });
                             }}
                           >
-                            <option value={1}>ใช้งาน</option>
-                            <option value={0}>ไม่ใช้งาน</option>
+                            <option value="1">ใช้งาน</option>
+                            <option value="0">ไม่ใช้งาน</option>
                           </select>
                         </div>
                       </div>
@@ -665,18 +736,23 @@ function Manage_users_add() {
                         >
                           วันเดือนปีเกิด
                         </label>
-                        {/* <DatePicker
-                          className="w-100 form-control"
-                          selected={birthday}
-                          onChange={(date) => setBirthday(date)}
-                          showIcon
-                          showYearDropdown
-                          showMonthDropdown
-                          scrollableYearDropdown
-                          yearDropdownItemNumber={50}
-                          locale={locale}
-                          dateFormat="dd/MM/yyyy"
-                        /> */}
+                        <LocalizationProvider
+                          dateAdapter={AdapterDayjs}
+                          adapterLocale="th"
+                        >
+                          <DatePicker
+                            className="form-control"
+                            label="วัน/เดือน/ปี"
+                            value={dayjs(DataByID.user_birthday)}
+                            onChange={(e) => {
+                              setDataByID({
+                                ...DataByID,
+                                user_birthday: e.target.value,
+                              });
+                            }}
+                            slotProps={{ textField: { size: "small" } }}
+                          />
+                        </LocalizationProvider>
                       </div>
                     </div>
                     <div className="col-md-6">

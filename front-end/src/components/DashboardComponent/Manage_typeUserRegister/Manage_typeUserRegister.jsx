@@ -3,47 +3,26 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import {
+  GetType_position,
+  Insert_position,
+  Delete_type_position,
+} from "../../../service/api";
 function Manage_typeUserRegister() {
-  const morkData = [
-    {
-      id: "1",
-      nameposition: "ข้าราชการ",
-    },
-    {
-      id: "2",
-      nameposition: "พนักงานจ้างทั่วไป",
-    },
-    {
-      id: "3",
-      nameposition: "พนักงานจ้างตามภารกิจ",
-    },
-    {
-      id: "4",
-      nameposition: "พนักงานจ้างผู้เชี่ยวชาญพิเศษ",
-    },
-    {
-      id: "5",
-      nameposition: "สอบเปลี่ยนสายงาน",
-    },
-    {
-      id: "6",
-      nameposition: "รับโอน",
-    },
-  ];
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row) => row.id,
+      selector: (row, index) => index + 1,
       width: "10%",
-      cell: (row) => row.id,
+      cell: (row, index) => index + 1,
       sortable: true,
       center: true,
     },
     {
       name: "ชื่อตำเเหน่ง",
-      selector: (row) => row.nameposition,
+      selector: (row) => row.name,
       width: "40%",
-      cell: (row) => row.nameposition,
+      cell: (row) => row.name,
       sortable: true,
     },
 
@@ -55,10 +34,10 @@ function Manage_typeUserRegister() {
             type="button"
             className="btn btn-warning mx-1"
             onClick={() => {
-              EditTypePosition(row.id);
+              EditTypePosition(row);
             }}
           >
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
           <button
             type="button"
@@ -75,37 +54,32 @@ function Manage_typeUserRegister() {
       width: "50%",
     },
   ];
-  const [data, setData] = useState([]);
+  const [DataTypePosition, setDataTypePosition] = useState([]);
   const [search, setSearch] = useState("");
+  const [name, setName] = useState("");
   const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let response = await GetType_position();
+    console.log(response);
+    setDataTypePosition(response);
   };
-  const EditTypePosition = (id) => {
-    console.log(id);
+  const EditTypePosition = (data) => {
+    // console.log(data.name);
+    setName(data.name);
     Swal.fire({
-      // position: "top",
       width: "750px",
       title: "เเก้ไขตำเเหน่ง",
       html: `
       <div class="mb-3 text-start">
       <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
-      </div>
-            `,
+      <input type="text" class="form-control" id="edit_name" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
+      </div>`,
       showCancelButton: true,
       cancelButtonText: "ยกเลิก",
       confirmButtonText: "บันทึก",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
+    }).then((result) => {
+      console.log(result);
     });
   };
   const DeleteTypePosition = (id) => {
@@ -121,7 +95,8 @@ function Manage_typeUserRegister() {
       cancelButtonColor: "#d33",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        Delete_type_position(id);
+        GetData();
       }
     });
   };
@@ -148,19 +123,26 @@ function Manage_typeUserRegister() {
       html: `
       <div class="mb-3 text-start">
       <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
-      </div>
-            `,
+      <input type="text" class="form-control" id="nameInSert" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
+      </div>`,
       showCancelButton: true,
       cancelButtonText: "ยกเลิก",
       confirmButtonText: "บันทึก",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
+      preConfirm: () => {
+        const name = Swal.getPopup().querySelector("#nameInSert").value;
+        // console.log(name);
+        return { name: name };
+      },
+    }).then((result) => {
+      Insert_position(result.value.name);
+      GetData();
     });
   };
   useEffect(() => {
     GetData();
-  }, []);
+  }, [DataTypePosition]);
   return (
     <>
       <div className="px-3 py-4">
@@ -214,8 +196,8 @@ function Manage_typeUserRegister() {
                   <div className="col-md-12">
                     <DataTable
                       columns={columns}
-                      // data={handleSearch(data)}
-                      data={morkData}
+                      data={handleSearch(DataTypePosition)}
+                      // data={morkData}
                       pagination
                       responsive
                     />

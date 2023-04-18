@@ -9,62 +9,7 @@ import "moment/locale/th";
 moment.locale("th");
 function Apply_check() {
   let { id } = useParams();
-  const morkData = [
-    {
-      id: "1",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "75432",
-      countUser: "8",
-    },
-    {
-      id: "2",
-      position: "ข้าราชการ",
-      idcode: "76423",
-      countUser: "1",
-    },
-    {
-      id: "3",
-      position: "ข้าราชการ",
-      idcode: "79532",
-      countUser: "7",
-    },
-    {
-      id: "4",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "48562",
-      countUser: "1",
-    },
-    {
-      id: "5",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "21496",
-      countUser: "1",
-    },
-    {
-      id: "6",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "20158",
-      countUser: "2",
-    },
-    {
-      id: "7",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "32549",
-      countUser: "1",
-    },
-    {
-      id: "8",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "45160",
-      countUser: "3",
-    },
-    {
-      id: "9",
-      position: "พนักงานจ้างทั่วไป",
-      idcode: "51902",
-      countUser: "3",
-    },
-  ];
+
   const columns = [
     {
       name: "ลำดับ",
@@ -123,14 +68,14 @@ function Apply_check() {
       selector: (row) => (
         <div className="">
           <button type="button" className="btn btn-info">
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
         </div>
       ),
       cell: (row) => (
         <div className="">
           <button type="button" className="btn btn-info">
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
         </div>
       ),

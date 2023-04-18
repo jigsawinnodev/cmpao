@@ -57,6 +57,7 @@ function UserRegister_Add() {
   const [get_religion, set_religion] = useState([]);
   //use ตัวเเปร
 
+  const [S_id, set_S_id] = useState("");
   const [S_idCard, setIdCard] = useState(""); //บัตรประชาชน
   const [S_titlename, setTitlename] = useState(""); //คำนำหน้าชื่อ
   const [S_name, setName] = useState(""); // ชื่อ
@@ -86,73 +87,102 @@ function UserRegister_Add() {
   const [S_nameUser, setNameUser] = useState(""); // ชื่อผู้ใช้งาน
   const [S_passwordUser, setpasswordUser] = useState(""); // รหัสผ่าน
   const [S_ConpasswordUser, setConpasswordUser] = useState(""); // ยืนยันรหัสผ่าน
-
   const [S_activeUser, setActiveUser] = useState(""); //สถานนะการใช้งาน
   // filter
   const [filtterDistrict, setFiltterDistrict] = useState([]);
   const [filtterSub_district, setSub_district] = useState([]);
+
   const InsertNewMember = () => {
-    if (
-      S_idCard &&
-      S_titlename &&
-      S_name &&
-      S_lname &&
-      S_birthday &&
-      S_bloodtype &&
-      S_ethnicity &&
-      S_nationality &&
-      S_religion &&
-      S_family_status &&
-      S_Name_spouse &&
-      S_house_number &&
-      S_village &&
-      S_alleyway &&
-      S_road &&
-      S_province &&
-      S_district &&
-      S_Sub_district &&
-      S_postal_code &&
-      S_phone &&
-      S_email &&
-      S_Job_Father &&
-      S_name_Father &&
-      S_Job_Mather &&
-      S_name_Mather &&
-      S_imgUser &&
-      S_nameUser != ""
-    ) {
-      if (S_passwordUser == S_ConpasswordUser) {
-        CreateMember(
-          S_idCard,
-          S_titlename,
-          S_name,
-          S_lname,
-          S_birthday,
-          S_bloodtype,
-          S_ethnicity,
-          S_nationality,
-          S_religion,
-          S_family_status,
-          S_Name_spouse,
-          S_house_number,
-          S_village,
-          S_alleyway,
-          S_road,
-          S_province,
-          S_district,
-          S_Sub_district,
-          S_postal_code,
-          S_phone,
-          S_email,
-          S_Job_Father,
-          S_name_Father,
-          S_Job_Mather,
-          S_name_Mather,
-          S_imgUser,
-          S_nameUser,
-          S_passwordUser
-        );
-      }
+    // (m_id, m_img, m_username, m_password, m_idcard, m_email, m_active, m_status, m_prename, m_firstname, m_lastname, m_race, m_nation, m_religion, m_blood, m_birthday, m_spouse, m_relationship, m_education, m_major, m_gradday, m_school, m_idcard_province, m_house_no, m_moo, m_alley, m_road, m_subdistrict, m_district, m_province, m_zipcode, m_phone, m_fathername, m_father_occupation, m_mothername, m_mother_occupation, is_accept, reset_link_token, expire_date, reset_active, login_time, m_idcard_district, m_idcard_issuance_date, m_mother_nationality, m_father_nationality, spouse_nation, spouse_occupation, m_telephone, m_hometown, m_domicile
+    if (S_passwordUser == S_ConpasswordUser) {
+      const formData = new FormData();
+      formData.append("m_id", S_id);
+      formData.append("m_img", S_imgUser);
+      formData.append("m_username", S_nameUser);
+      formData.append("m_password", S_passwordUser);
+      formData.append("m_idcard", S_idCard);
+      formData.append("m_email", S_email);
+      formData.append("m_active", S_activeUser);
+      formData.append("m_status", S_family_status);
+      formData.append("m_prename", S_titlename);
+      formData.append("m_firstname", S_name);
+      formData.append("m_lastname", S_lname);
+      formData.append("m_lastname", S_lname);
+      formData.append("m_race", S_ethnicity);
+      formData.append("m_nation", S_nationality);
+      formData.append("m_religion", S_religion);
+      formData.append("m_blood", S_bloodtype);
+      formData.append("m_birthday", S_birthday);
+      formData.append("m_spouse", S_Name_spouse);
+      formData.append("m_relationship", S_Name_spouse);
+      CreateMember(
+        S_idCard,
+        S_titlename,
+        S_name,
+        S_lname,
+        S_birthday,
+        S_bloodtype,
+        S_ethnicity,
+        S_nationality,
+        S_religion,
+        S_family_status,
+        S_Name_spouse,
+        S_house_number,
+        S_village,
+        S_alleyway,
+        S_road,
+        S_province,
+        S_district,
+        S_Sub_district,
+        S_postal_code,
+        S_phone,
+        S_email,
+        S_Job_Father,
+        S_name_Father,
+        S_Job_Mather,
+        S_name_Mather,
+        S_imgUser,
+        S_nameUser,
+        S_passwordUser
+      );
+    } else {
+      alert("bad");
+    }
+  };
+
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+    if (S_passwordUser == S_ConpasswordUser) {
+      CreateMember(
+        S_idCard,
+        S_titlename,
+        S_name,
+        S_lname,
+        S_birthday,
+        S_bloodtype,
+        S_ethnicity,
+        S_nationality,
+        S_religion,
+        S_family_status,
+        S_Name_spouse,
+        S_house_number,
+        S_village,
+        S_alleyway,
+        S_road,
+        S_province,
+        S_district,
+        S_Sub_district,
+        S_postal_code,
+        S_phone,
+        S_email,
+        S_Job_Father,
+        S_name_Father,
+        S_Job_Mather,
+        S_name_Mather,
+        S_imgUser,
+        S_nameUser,
+        S_passwordUser
+      );
     } else {
       alert("bad");
     }
@@ -183,14 +213,10 @@ function UserRegister_Add() {
     setSub_DistrictS(getSubDistrict);
     if (getSubDistrict != "") {
       const Data = Subdistrict.find((value) => value.id == getSubDistrict);
-      console.log(Data);
       setPostalCode(Data.zipcode);
     }
   };
 
-  const GetMenmberFindOne = ()=>{
-    
-  }
   const GetDataFromApi = async () => {
     const preName = await GetpreName();
     const BloodType = await GetBloodType();
@@ -228,13 +254,19 @@ function UserRegister_Add() {
               </div>
             </div>
           </nav>
-
-          <form>
+          <form onSubmit={HandleSubmit}>
             <div className="row">
               <div className="col-md-8">
                 <div className="row px-4">
                   <div className="col-md-6">
                     <div className="mb-3">
+                      <input
+                        type="hidden"
+                        value={S_id}
+                        onChange={(e) => {
+                          set_S_id(e.target.value);
+                        }}
+                      />
                       <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
@@ -242,7 +274,6 @@ function UserRegister_Add() {
                         รหัสประจำตัวประชาชน
                       </label>
                       <input
-                        required
                         type="text"
                         className="form-control"
                         placeholder="รหัสประจำตัวประชาชน"
@@ -250,6 +281,7 @@ function UserRegister_Add() {
                         onChange={(e) => {
                           setIdCard(e.target.value);
                         }}
+                        required
                       />
                     </div>
                   </div>
@@ -901,13 +933,7 @@ function UserRegister_Add() {
                 </div>
               </div>
               <div className="py-4 text-end px-4">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary mx-1"
-                  onClick={() => {
-                    InsertNewMember();
-                  }}
-                >
+                <button type="submit" className="btn btn-outline-primary mx-1">
                   บันทึก
                 </button>
                 <button
