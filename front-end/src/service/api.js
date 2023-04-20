@@ -1,6 +1,12 @@
 import axios from "axios";
 var BaseUrl = 'http://localhost:9500';
 
+
+export const GetMenuAdmin = async () => {
+    let response = await axios.get(`${BaseUrl}/api/GetMenu`);
+    return response.data;
+}
+
 export const GetpreName = async () => {
     let response = await axios.get(`${BaseUrl}/api/GetpreName`);
     return response.data
@@ -213,17 +219,14 @@ export function Get_permission() {
 }
 
 export function Insert_Edit_User_Add(formData) {
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxx");
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxx");
-    console.log(formData);
 
-    axios({
+    return axios({
         method: "post",
         url: `${BaseUrl}/api/Insert_Edit_User`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
     }).then(function (response) {
-        console.log(response);
+        return response.data;
     }).catch(function (response) {
         //handle error
         console.log(response);
@@ -249,6 +252,11 @@ export async function Insert_position(data) {
 }
 export async function Delete_type_position(id) {
     let response = await axios.post(`${BaseUrl}/api/Delete_type_position/${id}`);
+    return response.data;
+}
+
+export async function GetAllpermissions() {
+    let response = await axios.get(`${BaseUrl}/api/permissionsAll`);
     return response.data;
 }
 

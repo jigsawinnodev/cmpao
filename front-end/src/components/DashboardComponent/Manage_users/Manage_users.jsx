@@ -127,6 +127,7 @@ function Manage_users() {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
+        
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });

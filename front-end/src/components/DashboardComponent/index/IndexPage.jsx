@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import BarChart from "../../Chart/BarChart";
 import { UserData } from "../../../Data";
 import moment from "moment/min/moment-with-locales";
@@ -41,11 +41,8 @@ function Index() {
     <>
       <nav>
         <div className="nav px-5 pt-5 ">
-          <div className="d-flex justify-content-between w-100 flex-column flex-md-row">
+          <div className="d-flex justify-content-start w-100 flex-column flex-md-row">
             <h3 className="dashboard text-center">เเดชบอร์ด</h3>
-            <p className="m-0 my-auto text-center">
-              จำนวนเงินทั้งหมด 388,768 บาท
-            </p>
           </div>
         </div>
       </nav>
@@ -65,6 +62,7 @@ function Index() {
               <i className="bi bi-person-fill-add cart my-auto text-center" />
             </div>
           </div>
+
           <div className="box shadow">
             <div className="right-side">
               <div className="box-topic">จำนวนผู้ที่ชำระเงินสำเร็จ</div>

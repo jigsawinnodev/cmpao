@@ -76,5 +76,8 @@ router.post('/DeleteMember/:id', Admin.Delete_Member);
 
 
 // router Permissions
-// router.get('/permissions', Admin.Permissions);
+router.get('/permissionsAll', Admin.PermissionsGetAll);
+router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
+
+
 module.exports = router;

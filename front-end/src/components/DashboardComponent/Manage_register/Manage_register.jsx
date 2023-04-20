@@ -85,7 +85,7 @@ function Manage_register() {
               <i className="bi bi-gear" style={{ color: "black" }}></i>
             </button>
           </Link>
-          <Link to={"edit"} className="mx-1">
+          <Link to={"edit/" + row.jc_id} className="mx-1">
             <button
               type="button"
               className="btn btn-warning"

@@ -72,25 +72,25 @@ function Manage_users_add() {
     user_confirmpassword: "",
   });
 
-  // insert new user
-  const [idcard, setIdcard] = useState("");
-  const [titalname, setTitalname] = useState("");
-  const [name, setName] = useState("");
-  const [lname, setLname] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [position, setPosition] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [permition, setPermition] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [statusActive, setStatusActive] = useState(1);
-  const [fileImg, setFileImg] = useState();
+  // // insert new user
+  // const [idcard, setIdcard] = useState("");
+  // const [titalname, setTitalname] = useState("");
+  // const [name, setName] = useState("");
+  // const [lname, setLname] = useState("");
+  // const [birthday, setBirthday] = useState("");
+  // const [position, setPosition] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [permition, setPermition] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  // const [statusActive, setStatusActive] = useState(1);
+  // const [fileImg, setFileImg] = useState();
 
   // insert User Function
 
-  const handleSubmitFormInsert = async (event) => {
+  const handleSubmitFormUpdate = async (event) => {
     event.preventDefault();
     console.log("qwe");
     const format2 = "YYYY-MM-DD";
@@ -111,23 +111,18 @@ function Manage_users_add() {
     formData.append("user_phone", DataByID.user_phone);
     formData.append("user_active", DataByID.user_active);
     // console.log(DataByID);
-    Insert_Edit_User_Add(formData);
-    // if (responsive.status == 1) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Oops...",
-    //     text: "ชื่อผู้ใช้งานซ้ำ!!",
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     icon: "success",
-    //     title: "บันทึกข้อมูลสำเร็จ",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   }).then(() => {
-    //     navigate("/Dashboard/User");
-    //   });
-    // }
+    const res = await Insert_Edit_User_Add(formData);
+    // console.log(res);
+    if (res.status == "success") {
+      Swal.fire({
+        icon: "success",
+        title: "บันทึกข้อมูลสำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        navigate("/Dashboard/User");
+      });
+    }
   };
 
   const handleSubmitFormEdit = async (event) => {
@@ -171,7 +166,7 @@ function Manage_users_add() {
                   </div>
                 </div>
               </div>
-              <form onSubmit={handleSubmitFormInsert}>
+              <form onSubmit={handleSubmitFormUpdate}>
                 <div className="row px-3">
                   <div className="col-md-8">
                     <div className="row">
@@ -626,7 +621,7 @@ function Manage_users_add() {
                 </div>
               </div>
             </div>
-            <form onSubmit={handleSubmitFormInsert}>
+            <form onSubmit={handleSubmitFormUpdate}>
               <div className="row px-3">
                 <div className="col-md-8">
                   <div className="row">
@@ -642,10 +637,13 @@ function Manage_users_add() {
                           type="text"
                           className="form-control"
                           required
-                          defaultValue={idcard ? idcard : idcard}
+                          value={DataByID.user_idcard}
                           placeholder="รหัสประจำตัวประชาชน"
                           onChange={(e) => {
-                            setIdcard(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_idcard: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -666,11 +664,12 @@ function Manage_users_add() {
                               className="form-select"
                               aria-label="Default select example"
                               required
-                              value={
-                                titalname ? titalname : DataByID.user_prename
-                              }
+                              value={DataByID.user_prename}
                               onChange={(e) => {
-                                setTitalname(e.target.value);
+                                setDataByID({
+                                  ...DataByID,
+                                  user_prename: e.target.value,
+                                });
                               }}
                             >
                               <option value="">เลือก</option>
@@ -697,11 +696,12 @@ function Manage_users_add() {
                               className="form-control"
                               placeholder="ชื่อ"
                               required
-                              defaultValue={
-                                name ? name : DataByID.user_firstname
-                              }
+                              defaultValue={DataByID.user_firstname}
                               onChange={(e) => {
-                                setName(e.target.value);
+                                setDataByID({
+                                  ...DataByID,
+                                  user_firstname: e.target.value,
+                                });
                               }}
                             />
                           </div>
@@ -721,9 +721,12 @@ function Manage_users_add() {
                           className="form-control"
                           placeholder="นามสกุล"
                           required
-                          defaultValue={lname ? lname : DataByID.user_lastname}
+                          defaultValue={DataByID.user_lastname}
                           onChange={(e) => {
-                            setLname(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_lastname: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -744,10 +747,10 @@ function Manage_users_add() {
                             className="form-control"
                             label="วัน/เดือน/ปี"
                             value={dayjs(DataByID.user_birthday)}
-                            onChange={(e) => {
+                            onChange={(newDate) => {
                               setDataByID({
                                 ...DataByID,
-                                user_birthday: e.target.value,
+                                user_birthday: dayjs(newDate),
                               });
                             }}
                             slotProps={{ textField: { size: "small" } }}
@@ -768,9 +771,12 @@ function Manage_users_add() {
                           className="form-control"
                           placeholder="ตำแหน่ง"
                           required
-                          defaultValue=""
+                          defaultValue={DataByID.user_position}
                           onChange={(e) => {
-                            setPosition(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_position: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -788,9 +794,12 @@ function Manage_users_add() {
                           className="form-control"
                           placeholder="เบอร์โทรศัพท์"
                           required
-                          defaultValue=""
+                          defaultValue={DataByID.user_phone}
                           onChange={(e) => {
-                            setPhone(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_phone: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -806,11 +815,14 @@ function Manage_users_add() {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue=""
+                          defaultValue={DataByID.user_email}
                           required
                           placeholder="อีเมล"
                           onChange={(e) => {
-                            setEmail(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_email: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -826,10 +838,13 @@ function Manage_users_add() {
                         <select
                           className="form-select"
                           aria-label="Default select example"
-                          defaultValue=""
+                          defaultValue={DataByID.user_permission}
                           required
                           onChange={(e) => {
-                            setPermition(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_permission: e.target.value,
+                            });
                           }}
                         >
                           <option value={""}>เลือก</option>
@@ -864,7 +879,10 @@ function Manage_users_add() {
                           type="file"
                           id="formFile"
                           onChange={(e) => {
-                            setFileImg(e.target.files[0]);
+                            setDataByID({
+                              ...DataByID,
+                              user_img: e.target.value,
+                            });
                             setShowImg(URL.createObjectURL(e.target.files[0]));
                           }}
                         />
@@ -882,9 +900,13 @@ function Manage_users_add() {
                           type="text"
                           className="form-control"
                           placeholder="ชื่อผู้ใช้งาน"
+                          defaultValue={DataByID.user_username}
                           required
                           onChange={(e) => {
-                            setUsername(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_username: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -901,9 +923,13 @@ function Manage_users_add() {
                           type="password"
                           className="form-control"
                           placeholder="รหัสผ่าน"
+                          defaultValue={DataByID.user_password}
                           required
                           onChange={(e) => {
-                            setPassword(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_password: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -920,9 +946,13 @@ function Manage_users_add() {
                           type="password"
                           className="form-control"
                           placeholder="ยืนยันรหัสผ่าน"
+                          defaultValue={DataByID.user_confirmpassword}
                           required
                           onChange={(e) => {
-                            setConfirmPassword(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_confirmpassword: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -939,8 +969,12 @@ function Manage_users_add() {
                           className="form-select"
                           aria-label="Default select example"
                           required
+                          value={DataByID.user_active}
                           onChange={(e) => {
-                            setStatusActive(e.target.value);
+                            setDataByID({
+                              ...DataByID,
+                              user_active: e.target.value,
+                            });
                           }}
                         >
                           <option value={1}>ใช้งาน</option>

@@ -50,9 +50,9 @@ function App() {
       <Route path="Dashboard" element={<Dashboard />}>
         <Route index path="" element={<IndexPage />} />
         <Route path="Dashboard" element={<IndexPage />} />
-
         <Route path="Apply" element={<Manage_register />} />
         <Route path="Apply/edit" element={<Add_register />} />
+        <Route path="Apply/edit/:id" element={<Add_register />} />
         <Route path="Apply/apply_check/:id" element={<Apply_check />} />
 
         <Route path="ManagePosition" element={<Manage_position />} />

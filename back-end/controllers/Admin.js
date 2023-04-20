@@ -215,7 +215,7 @@ const Insert_Edit_User = (req, res) => {
                         // console.log(req.file);
                         if (!req.file) {
                             let sql = `
-                        INSERT INTO cmpao.user (user_idcard, user_prename, user_firstname, user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_img) 
+                        INSERT INTO cmpao.user (user_idcard, user_prename, user_firstname,user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_img) 
                         VALUES ('${user_idcard}', ${user_prename},'${user_firstname}','${user_lastname}','${user_username}','${HashPassword}',
                         '${user_birthday}', '${user_position}',${user_permission},'${user_email}','${user_phone}',${user_active},null)`;
                             mysqlConnection.query(sql, function (err, result) {
@@ -244,6 +244,8 @@ const Insert_Edit_User = (req, res) => {
         })
     } else {
         // const { user_idcard, user_prename, user_firstname, user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_id } = req.body;
+        console.log(req.body);
+
         let sqlCheck = `SELECT * FROM cmpao.user WHERE user_username = '${user_username}'`;
         mysqlConnection.query(sqlCheck, async function (err, result) {
             if (!err) {
@@ -254,7 +256,17 @@ const Insert_Edit_User = (req, res) => {
                     if (!req.fileValidationError) {
                         // console.log(req.file);
                         if (!req.file) {
-                            let sql = `UPDATE user SET user_idcard = '${user_idcard}', user_prename = '${user_prename}', user_firstname = '${user_firstname}', user_lastname = '${user_lastname}', user_username = '${user_username}', user_birthday = '${user_birthday}', user_position = '${user_position}', user_permission = '${user_permission}', user_email = '${user_email}', user_phone = '${user_phone}', user_active = '${user_active}',user_img= '' WHERE user_id = '${user_id}'`;
+                            const { img } = req.body
+                            var splitData = null
+                            var DataImg = null
+                            if (!img) {
+                                splitData = null
+                            } else {
+                                splitData = img.split('/')
+                                DataImg = splitData[5]
+                            }
+                            // console.log(splitData[5]);
+                            let sql = `UPDATE user SET user_idcard = '${user_idcard}', user_prename = '${user_prename}', user_firstname = '${user_firstname}', user_lastname = '${user_lastname}', user_username = '${user_username}', user_birthday = '${user_birthday}', user_position = '${user_position}', user_permission = '${user_permission}', user_email = '${user_email}', user_phone = '${user_phone}', user_active = '${user_active}',user_img= '${DataImg}' WHERE user_id = '${user_id}'`;
                             mysqlConnection.query(sql, function (err, result) {
                                 if (!err) {
                                     res.json({ status: 'success' });
@@ -338,9 +350,6 @@ const CreateMember = (req, res) => {
 }
 // End Member
 
-
-
-
 const GetApplyAll = (req, res) => {
     let sql = "SELECT job_calendar.*, type_position.name as position_name,(SELECT SUM(job_amount) FROM jobs INNER JOIN position ON jobs.job_position = position.p_id WHERE jobs.jc_id = job_calendar.jc_id) AS count_position,(SELECT COUNT(*) FROM job_application JOIN jobs ON jobs.job_id = job_application.job_id WHERE job_calendar.jc_id = jobs.jc_id) AS count_apply FROM job_calendar JOIN type_position ON type_position.id = job_calendar.jc_type ORDER BY job_calendar.jc_id DESC";
     mysqlConnection.query(sql, function (err, result) {
@@ -377,7 +386,6 @@ const Apply_Applycheck = (req, res) => {
     FROM job_calendar
     JOIN type_position ON type_position.id = job_calendar.jc_type
     WHERE jc_id = ${id} `;
-
     mysqlConnection.query(sql, function (err, result) {
         if (!err) res.json(result);
         if (err) console.log(err);
@@ -442,14 +450,32 @@ const DeleteType_position = (req, res) => {
 }
 
 
-// permission 
-// const Permission = (req, res) => {
-//     let sql = "SELECT * FROM admin_menu ORDER BY adm_id ASC";
-//     mysqlConnection.query(sql, function (err, result) {
-//         if (!err) res.json(result);
-//         if (err) console.log(err);
-//     })
-// }
+// permission
+const PermissionsGetAll = (req, res) => {
+    let sql = "SELECT * FROM user_permission ORDER BY permiss_id ASC";
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) res.json(result);
+        if (err) console.log(err);
+    })
+}
+const GetCheckPermissionsAll = (req, res) => {
+    let sql = "SELECT * FROM permission ORDER BY per_id ASC";
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) {
+            const data = [];
+
+            result.forEach((value) => {
+                if (!data[value.per_user]) {
+                    data[value.per_user] = [];
+                }
+                data[value.per_user][value.per_menu] = 1;
+            });
+            res.json(data);
+        };
+        if (err) console.log(err);
+    })
+}
+
 
 module.exports = {
     GetMenuAdmin,
@@ -476,6 +502,8 @@ module.exports = {
     FindUserByID,
     InsertApply,
     Edit_position,
-    DeleteType_position
+    DeleteType_position,
+    PermissionsGetAll,
+    GetCheckPermissionsAll
     // Permission
 }

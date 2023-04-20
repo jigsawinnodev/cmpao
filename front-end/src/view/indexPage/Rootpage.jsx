@@ -6,16 +6,217 @@ import Bg from "../../assets/img/bg-04.png";
 import Avatar from "../../assets/img/avatar.svg";
 import Swal from "sweetalert2";
 import { NavLink } from "react-router-dom";
-
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
+import Table from "react-bootstrap/Table";
+import CountdownTimer from "./CountDown/CountdownTimer";
 function Rootpage() {
+  const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+  const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
+  const NOW_IN_MS = new Date().getTime();
+
+  const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
+  const dateTimeAfterSevenDays = NOW_IN_MS + SEVEN_DAYS_IN_MS;
   return (
     <>
       <div>
         <img className="wave" src={Wave} />
         <div className="container">
-          <div className="img">
-            <img src={Bg} />
+          {/* <div className="img"> */}
+          <div className="row pt-3 my-auto">
+            <div className="col-md-12">
+              <div className="row gy-3">
+                <div className="col-md-6 ">
+                  <div
+                    className="box shadow-lg d-flex justify-content-between h-100 rounded-3 py-3"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <div className="right-side my-auto px-4">
+                      <div className="box-topic d-flex">
+                        จำนวนผู้สมัคร
+                        <p className="m-0" style={{ color: "red" }}>
+                          (รายวัน)
+                        </p>
+                      </div>
+                      <h3 className="">578 คน</h3>
+                      <div className="indicator">
+                        <p
+                          className="m-0 text-start"
+                          style={{ fontSize: "14px" }}
+                        >
+                          อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="px-2 my-auto rounded mx-4"
+                      style={{ backgroundColor: "#cce5ff" }}
+                    >
+                      <i
+                        className="bi bi-person-fill-add cart my-auto text-center"
+                        style={{ fontSize: "30px", color: "#66b0ff" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div
+                    className="box shadow-lg d-flex justify-content-between h-100 rounded py-3"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <div className="right-side my-auto px-4">
+                      <div className="box-topic">จำนวนผู้สมัครทั้งหมด</div>
+                      <h3 className="">1,075 คน</h3>
+                      <div className="indicator">
+                        <p
+                          className="m-0 text-start"
+                          style={{ fontSize: "14px" }}
+                        >
+                          อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="px-2 my-auto rounded mx-4"
+                      style={{ backgroundColor: "#c0f2d8" }}
+                    >
+                      <i
+                        className="bi bi-person-fill-add cart my-auto text-center"
+                        style={{ fontSize: "30px", color: "#2bd47d" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div
+                    className="box shadow-lg d-flex justify-content-between h-100 rounded py-3 "
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <div className="right-side my-auto ps-4">
+                      <div className="box-topic" style={{ fontSize: "15px" }}>
+                        จำนวนผู้ที่เอกสารไม่สมบูรณ์
+                      </div>
+                      <h3 className="">478 คน</h3>
+                      <div className="indicator">
+                        <p
+                          className="m-0 text-start"
+                          style={{ fontSize: "14px" }}
+                        >
+                          อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="px-2 my-auto rounded mx-4"
+                      style={{ backgroundColor: "#ffe8b3" }}
+                    >
+                      <i
+                        className="bi bi-person-fill-exclamation cart my-auto text-center"
+                        style={{ fontSize: "30px", color: "#ffc233" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div
+                    className="box shadow-lg d-flex justify-content-between h-100 rounded py-3"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <div className="right-side my-auto px-4">
+                      <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
+                      <h3 className="">105 คน</h3>
+                      <div className="indicator">
+                        <p
+                          className="m-0 text-start"
+                          style={{ fontSize: "14px" }}
+                        >
+                          อัพเดทวันที่ {moment().add(543, "year").format("ll")}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="px-2 my-auto rounded mx-4"
+                      style={{ backgroundColor: "#f7d4d7" }}
+                    >
+                      <i
+                        className="bi bi-person-fill-x cart my-auto text-center"
+                        style={{ fontSize: "30px", color: "#e05260" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <div
+                    className="recent-sales box shadow rounded"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    {/* <div className="title">Recent Sales</div> */}
+                    <div
+                      className="sales-details px-3"
+                      style={{ fontSize: "16px" }}
+                    >
+                      <h5 className="text-center py-4">
+                        ตำเเหน่งที่เปิดรับสมัคร
+                      </h5>
+                      <div
+                        className="table-responsive"
+                        style={{ maxHeight: "240px" }}
+                      >
+                        <Table responsive hover style={{ fontSize: "16px" }}>
+                          <thead style={{ backgroundColor: "#F6F1E9" }}>
+                            <tr className="text-center">
+                              <th>ตำเเหน่ง</th>
+                              <th>จำนวนที่รับ</th>
+                              <th>จำนวนผู้สมัคร</th>
+                              {/* <th>ระยะเวลา</th> */}
+                            </tr>
+                          </thead>
+                          <tbody className="overflow-auto">
+                            <tr>
+                              <td>พนักงานธุรการ</td>
+                              <td className="text-center">1 ตำเเหน่ง</td>
+                              <td className="text-center">168 ราย</td>
+                            </tr>
+                            <tr>
+                              <td>พนักงานการเกษตร</td>
+                              <td className="text-center">3 ตำเเหน่ง</td>
+                              <td className="text-center">122 ราย</td>
+                            </tr>
+                            <tr>
+                              <td>พนักงานดับเพลิง</td>
+                              <td className="text-center">5 ตำเเหน่ง</td>
+                              <td className="text-center">178 ราย</td>
+                            </tr>
+                            <tr>
+                              <td>เจ้าหน้าที่ประชาสัมพันธ์</td>
+                              <td className="text-center">2 ตำเเหน่ง</td>
+                              <td className="text-center">90 ราย</td>
+                            </tr>
+                            <tr>
+                              <td>พนักงานคอมพิวเตอร์</td>
+                              <td className="text-center">5 ตำเเหน่ง</td>
+                              <td className="text-center">156 ราย</td>
+                            </tr>
+                            <tr>
+                              <td>พนักราชการ</td>
+                              <td className="text-center">2 ตำเเหน่ง</td>
+                              <td className="text-center">580 ราย</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
+                      <div className="py-2">
+                        <CountdownTimer targetDate={dateTimeAfterThreeDays} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          {/* <img src={Bg} /> */}
+          {/* </div> */}
           <div className="login-content mx-auto">
             <form className="fromlogin">
               <img src={Icon} className="img-fluid py-2" />
@@ -24,7 +225,7 @@ function Rootpage() {
               <div className="input-div one py-2">
                 <div className="d-flex">
                   <i
-                    class="bi bi-person-fill my-auto mx-2"
+                    className="bi bi-person-fill my-auto mx-2"
                     style={{ fontSize: "20px" }}
                   ></i>
                   <input
@@ -37,7 +238,7 @@ function Rootpage() {
               <div className="input-div pass py-2">
                 <div className="d-flex">
                   <i
-                    class="bi bi-key-fill my-auto mx-2"
+                    className="bi bi-key-fill my-auto mx-2"
                     style={{ fontSize: "20px" }}
                   ></i>
                   <input
@@ -59,7 +260,7 @@ function Rootpage() {
                   ลงทะเบียน
                 </NavLink>
               </div>
-              <div>
+              <div className="pb-5">
                 คู่มือสำหรับผู้สมัครสอบ
                 <a href="" className="text-decoration-none">
                   คลิก
