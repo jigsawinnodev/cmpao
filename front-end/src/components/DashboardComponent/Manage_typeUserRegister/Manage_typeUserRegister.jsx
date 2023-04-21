@@ -3,12 +3,50 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import { createContext } from "react";
 import {
   GetType_position,
   Insert_position,
   Delete_type_position,
 } from "../../../service/api";
+import ModalAlert from "./component/ModalAlert";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
+const NameContext = createContext();
+
 function Manage_typeUserRegister() {
+  const [DataTypePosition, setDataTypePosition] = useState([]);
+  const [Edit_name, setEdit_name] = useState("");
+  const [search, setSearch] = useState("");
+
+  const [show, setShow] = useState(false);
+  const [DataForm, setDataForm] = useState({
+    id: "",
+    name: "",
+  });
+
+  const handleFormEdit = (e) => {
+    e.preventDefault();
+    Insert_position({
+      name: DataForm.name,
+      id: DataForm.id,
+    });
+    setShow(false);
+    setShowInsert(false);
+    setDataForm({
+      id: "",
+      name: "",
+    });
+  };
+  const handleClose = () => setShow(false);
+  const handleShow = (data) => {
+    setDataForm({
+      name: data.name,
+      id: data.id,
+    });
+    setShow(true);
+  };
   const columns = [
     {
       name: "ลำดับ",
@@ -34,7 +72,7 @@ function Manage_typeUserRegister() {
             type="button"
             className="btn btn-warning mx-1"
             onClick={() => {
-              EditTypePosition(row);
+              handleShow(row);
             }}
           >
             <i className="bi bi-pencil"></i>
@@ -48,42 +86,73 @@ function Manage_typeUserRegister() {
           >
             <i className="bi bi-trash-fill"></i>
           </button>
+          <Modal show={show} onHide={handleClose} size="lg">
+            <form onSubmit={handleFormEdit}>
+              <Modal.Header closeButton>
+                <Modal.Title>แก้ไขตำแหน่ง</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <input type="hidden" value={DataForm.id} />
+                <div>
+                  <div className="mb-3 text-start">
+                    <label className="form-label">ชื่อตำแหน่ง</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="nameInSert"
+                      aria-describedby="emailHelp"
+                      placeholder="ชื่อตำแหน่ง"
+                      required
+                      value={DataForm.name}
+                      onChange={(e) => {
+                        setDataForm({
+                          ...DataForm,
+                          name: e.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <div className="row w-100">
+                  <div className="col-md-12 text-center ">
+                    <button
+                      type="submit"
+                      className="button_Add_Regiser mx-1 py-2"
+                    >
+                      Save Changes
+                    </button>
+                    <button
+                      variant="secondary"
+                      className="button_Back mx-1"
+                      onClick={handleClose}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </Modal.Footer>
+            </form>
+          </Modal>
         </div>
       ),
       sortable: true,
       width: "50%",
     },
   ];
-  const [DataTypePosition, setDataTypePosition] = useState([]);
-  const [search, setSearch] = useState("");
-  const [name, setName] = useState("");
+
   const GetData = async () => {
     let response = await GetType_position();
-    console.log(response);
     setDataTypePosition(response);
   };
-  const EditTypePosition = (data) => {
-    // console.log(data.name);
-    setName(data.name);
-    Swal.fire({
-      width: "750px",
-      title: "เเก้ไขตำเเหน่ง",
-      html: `
-      <div class="mb-3 text-start">
-      <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="text" class="form-control" id="edit_name" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
-      </div>`,
-      showCancelButton: true,
-      cancelButtonText: "ยกเลิก",
-      confirmButtonText: "บันทึก",
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-    }).then((result) => {
-      console.log(result);
-    });
-  };
+  const [showInsert, setShowInsert] = useState(false);
+
+  const handleCloseInsert = () => setShowInsert(false);
+  const handleShowInsert = () => setShowInsert(true);
+
   const DeleteTypePosition = (id) => {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
       title: "ยืนยันการลบข้อมูล?",
       text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
@@ -115,31 +184,7 @@ function Manage_typeUserRegister() {
       }
     });
   };
-  const AddUserRegister = () => {
-    Swal.fire({
-      // position: "center",
-      width: "750px",
-      title: "เพิ่มตำแหน่ง",
-      html: `
-      <div class="mb-3 text-start">
-      <label for="exampleInputEmail1" class="form-label">ชื่อตำแหน่ง</label>
-      <input type="text" class="form-control" id="nameInSert" aria-describedby="emailHelp" placeholder="ชื่อตำแหน่ง">
-      </div>`,
-      showCancelButton: true,
-      cancelButtonText: "ยกเลิก",
-      confirmButtonText: "บันทึก",
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      preConfirm: () => {
-        const name = Swal.getPopup().querySelector("#nameInSert").value;
-        // console.log(name);
-        return { name: name };
-      },
-    }).then((result) => {
-      Insert_position(result.value.name);
-      GetData();
-    });
-  };
+
   useEffect(() => {
     GetData();
   }, [DataTypePosition]);
@@ -158,17 +203,59 @@ function Manage_typeUserRegister() {
               </div>
               <div className="col-md-2">
                 <div className="float-end">
-                  <a to="add">
-                    <button
-                      className="Btn_Add_user"
-                      onClick={() => {
-                        AddUserRegister();
-                      }}
-                    >
-                      เพิ่มใบสมัคร
-                    </button>
-                    {/* <button className="Btn_Add_user">เพิ่มข้อมูล</button> */}
-                  </a>
+                  <button className="Btn_Add_user" onClick={handleShowInsert}>
+                    เพิ่มใบสมัคร
+                  </button>
+                  <Modal show={showInsert} onHide={handleCloseInsert} size="lg">
+                    <form onSubmit={handleFormEdit}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>แก้ไขตำแหน่ง</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <input type="hidden" value={DataForm.id} />
+                        <div>
+                          <div className="mb-3 text-start">
+                            <label className="form-label">ชื่อตำแหน่ง</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="nameInSert"
+                              aria-describedby="emailHelp"
+                              placeholder="ชื่อตำแหน่ง"
+                              required
+                              value={DataForm.name}
+                              onChange={(e) => {
+                                setDataForm({
+                                  ...DataForm,
+                                  name: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <div className="row w-100">
+                          <div className="col-md-12 text-center ">
+                            <button
+                              type="submit"
+                              className="button_Add_Regiser mx-1 py-2"
+                            >
+                              Save Changes
+                            </button>
+                            <button
+                              type="button"
+                              variant="secondary"
+                              className="button_Back mx-1"
+                              onClick={handleCloseInsert}
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </Modal.Footer>
+                    </form>
+                  </Modal>
                 </div>
               </div>
             </div>
@@ -178,7 +265,7 @@ function Manage_typeUserRegister() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                    <div className="input-wrapper  py-1 w-100 float-end">
                       <button className="icon">
                         <i
                           className="bi bi-search"

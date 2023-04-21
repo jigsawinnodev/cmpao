@@ -3,7 +3,8 @@ const router = express.Router();
 const RootController = require('../controllers/root')
 const Admin = require('../controllers/Admin');
 const multer = require('multer');
-
+const TypePosition = require('.././controllers/TypePosition/TypePosition');
+const User = require("../controllers/User/User");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -42,9 +43,9 @@ router.get('/GetTbl_religion', Admin.GetTbl_religion);
 
 
 // router TypePosition
-router.get('/GetType_position', Admin.GetType_position);
-router.post('/Edit_type_position', Admin.Edit_position);
-router.post('/Delete_type_position/:id', Admin.DeleteType_position);
+router.get('/GetType_position', TypePosition.GetType_position);
+router.post('/Edit_type_position', TypePosition.Edit_position);
+router.post('/Delete_type_position/:id', TypePosition.DeleteType_position);
 
 
 
@@ -53,7 +54,9 @@ router.post('/Delete_type_position/:id', Admin.DeleteType_position);
 // router Apply
 router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 router.get('/GetApplyAll', Admin.GetApplyAll);
-router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
+// router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
+router.post('/insertApply', Admin.Insert_Apply);
+router.post('/deleteApply/:id', Admin.Delete_Apply);
 
 
 // router ManagePositions
@@ -62,11 +65,11 @@ router.post('/Edit_Add_Position', upload.single('file'), Admin.manage_Position);
 router.post('/Delete_position/:id', Admin.Delete_positions);
 
 // router User
-router.get('/GetUser', Admin.user_all);
-router.get('/GetUser_permission', Admin.GetUser_permission);
-router.post('/Insert_Edit_User', upload.single('img'), Admin.Insert_Edit_User);
-router.get('/FindUserByID/:id', Admin.FindUserByID);
-
+router.get('/GetUser', User.user_all);
+router.get('/GetUser_permission', User.GetUser_permission);
+router.post('/Insert_Edit_User', upload.single('img'), User.Insert_Edit_User);
+router.get('/FindUserByID/:id', User.FindUserByID);
+router.post('/Delete_user/:id', User.Delete_User);
 
 // router Member
 router.get('/selectMemberAll', Admin.selectMemberAll);

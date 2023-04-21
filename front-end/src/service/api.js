@@ -245,8 +245,9 @@ export async function GetType_position(id = "") {
     return response.data;
 }
 export async function Insert_position(data) {
+    // console.log(data);
     let response = await axios.post(`${BaseUrl}/api/Edit_type_position`, {
-        name: data
+        data: data
     });
     return response.data;
 }
@@ -257,6 +258,11 @@ export async function Delete_type_position(id) {
 
 export async function GetAllpermissions() {
     let response = await axios.get(`${BaseUrl}/api/permissionsAll`);
+    return response.data;
+}
+
+export async function Delete_user(id) {
+    let response = await axios.post(`${BaseUrl}/api/Delete_user/${id}`);
     return response.data;
 }
 

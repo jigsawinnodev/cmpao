@@ -51,16 +51,16 @@ function Manage_users_add() {
   const [preName, setpreName] = useState([]);
   const [G_permission, Getpermission] = useState([]);
   const [showImg, setShowImg] = useState();
-
+  const [fileImg, setFileImg] = useState();
   // for edit
   const [DataByID, setDataByID] = useState({
-    user_active: "",
+    user_active: 1,
     user_birthday: "",
     user_email: "",
     user_firstname: "",
     user_id: "",
     user_idcard: "",
-    user_img: "",
+    user_img: null,
     user_lastname: "",
     user_password: "",
     user_permission: "",
@@ -112,7 +112,7 @@ function Manage_users_add() {
     formData.append("user_active", DataByID.user_active);
     // console.log(DataByID);
     const res = await Insert_Edit_User_Add(formData);
-    // console.log(res);
+    console.log(res);
     if (res.status == "success") {
       Swal.fire({
         icon: "success",
@@ -574,8 +574,8 @@ function Manage_users_add() {
                               });
                             }}
                           >
-                            <option value="1">ใช้งาน</option>
-                            <option value="0">ไม่ใช้งาน</option>
+                            <option value={1}>ใช้งาน</option>
+                            <option value={0}>ไม่ใช้งาน</option>
                           </select>
                         </div>
                       </div>
@@ -753,7 +753,9 @@ function Manage_users_add() {
                                 user_birthday: dayjs(newDate),
                               });
                             }}
-                            slotProps={{ textField: { size: "small" } }}
+                            slotProps={{
+                              textField: { size: "small" },
+                            }}
                           />
                         </LocalizationProvider>
                       </div>
@@ -881,7 +883,7 @@ function Manage_users_add() {
                           onChange={(e) => {
                             setDataByID({
                               ...DataByID,
-                              user_img: e.target.value,
+                              user_img: e.target.files[0],
                             });
                             setShowImg(URL.createObjectURL(e.target.files[0]));
                           }}

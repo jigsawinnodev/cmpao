@@ -18,6 +18,16 @@ function Manage_privilege() {
   const checkHandler = () => {
     console.log("qwe");
   };
+  const HandelSubmitForm = (e) => {
+    e.preventDefault();
+    for (let index = 0; index < MenuAdmin.length; index++) {
+      const menu = MenuAdmin[index];
+      for (let index = 0; index < Allpermissions.length; index++) {
+        const role = Allpermissions[index];
+        console.log(CheckAllPermissions[role.permiss_id][menu.adm_id]);
+      }
+    }
+  };
 
   const GetMenu = async () => {
     const res = await GetMenuAdmin();
@@ -52,90 +62,94 @@ function Manage_privilege() {
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
-                  <div className="col-md-12 px-3">
-                    <table className="table-lg">
-                      <thead
-                        style={{ backgroundColor: "#eaecf4", color: "#6e707e" }}
-                      >
-                        <tr>
-                          <th className="text-center">ลำดับ</th>
-                          <th className="text-start">ชื่อเมนู</th>
-                          {Allpermissions.map((role, idx) => {
-                            // console.log(role);
-                            //role
-                            return (
-                              <th className="text-center">
-                                {role.permiss_name}
-                              </th>
-                            );
-                          })}
-                          {/* <th className="text-center">ผู้บริหาร</th>
+                  <form onSubmit={HandelSubmitForm}>
+                    <div className="col-md-12 px-3">
+                      <table className="table-lg">
+                        <thead
+                          style={{
+                            backgroundColor: "#eaecf4",
+                            color: "#6e707e",
+                          }}
+                        >
+                          <tr>
+                            <th className="text-center">ลำดับ</th>
+                            <th className="text-start">ชื่อเมนู</th>
+                            {Allpermissions.map((role, idx) => {
+                              // console.log(role);
+                              //role
+                              return (
+                                <th className="text-center">
+                                  {role.permiss_name}
+                                </th>
+                              );
+                            })}
+                            {/* <th className="text-center">ผู้บริหาร</th>
                           <th className="text-center">การเงิน</th>
                           <th className="text-center">บุคคล</th>
                           <th className="text-center">ผู้ดูแลระบบ</th> */}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {MenuAdmin.map((menu, idx) => {
-                          //เมนู
-                          // console.log(menu.adm_id);
-                          return (
-                            <tr className="border-bottom" key={idx + 1}>
-                              <td className="text-center align-middle">
-                                {idx + 1}
-                              </td>
-                              <td className="align-middle">
-                                <div>
-                                  <p className="m-0">{menu.adm_name}</p>
-                                </div>
-                              </td>
-                              {Allpermissions.map((role, idx) => {
-                                // console.log(role);
-                                return (
-                                  <td className="text-center" key={idx}>
-                                    <div className="text-center">
-                                      <div className="checkbox-wrapper-31">
-                                        <input
-                                          // name={`per_menu[${role.permiss_id}][${menu.adm_id}]`}
-                                          // value={menu.adm_id}
-                                          checked={
-                                            CheckAllPermissions[
-                                              role.permiss_id
-                                            ][menu.adm_id] === 1
-                                              ? true
-                                              : false
-                                          }
-                                          // onChange={checkHandler}
-                                          type="checkbox"
-                                        />
-                                        <svg viewBox="0 0 35.6 35.6">
-                                          <circle
-                                            className="background"
-                                            cx="17.8"
-                                            cy="17.8"
-                                            r="17.8"
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {MenuAdmin.map((menu, idx) => {
+                            //เมนู
+                            // console.log(menu.adm_id);
+                            return (
+                              <tr className="border-bottom" key={idx + 1}>
+                                <td className="text-center align-middle">
+                                  {idx + 1}
+                                </td>
+                                <td className="align-middle">
+                                  <div>
+                                    <p className="m-0">{menu.adm_name}</p>
+                                  </div>
+                                </td>
+                                {Allpermissions.map((role, idx) => {
+                                  // console.log(role);
+                                  return (
+                                    <td className="text-center" key={idx}>
+                                      <div className="text-center">
+                                        <div className="checkbox-wrapper-31">
+                                          <input
+                                            name={`per_menu[${role.permiss_id}][${menu.adm_id}]`}
+                                            value={menu.adm_id}
+                                            checked={
+                                              CheckAllPermissions[
+                                                role.permiss_id
+                                              ][menu.adm_id] === 1
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={checkHandler}
+                                            type="checkbox"
                                           />
-                                          <circle
-                                            className="stroke"
-                                            cx="17.8"
-                                            cy="17.8"
-                                            r="14.37"
-                                          />
-                                          <polyline
-                                            className="check"
-                                            points="11.78 18.12 15.55 22.23 25.17 12.87"
-                                          />
-                                        </svg>
+                                          <svg viewBox="0 0 35.6 35.6">
+                                            <circle
+                                              className="background"
+                                              cx="17.8"
+                                              cy="17.8"
+                                              r="17.8"
+                                            />
+                                            <circle
+                                              className="stroke"
+                                              cx="17.8"
+                                              cy="17.8"
+                                              r="14.37"
+                                            />
+                                            <polyline
+                                              className="check"
+                                              points="11.78 18.12 15.55 22.23 25.17 12.87"
+                                            />
+                                          </svg>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                        })}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
 
-                        {/* <tr className="border-bottom">
+                          {/* <tr className="border-bottom">
                           <td className="text-center align-middle">1</td>
                           <td className="align-middle">
                             <div>
@@ -1303,14 +1317,17 @@ function Manage_privilege() {
                             </div>
                           </td>
                         </tr> */}
-                      </tbody>
-                    </table>
-                    <div className="text-end py-4">
-                      <button className="button_Regiser mx-1">บันทึก</button>
+                        </tbody>
+                      </table>
+                      <div className="text-end py-4">
+                        <button type="submit" className="button_Regiser mx-1">
+                          บันทึก
+                        </button>
 
-                      <button className="button_Back">รีเซ็ต</button>
+                        <button className="button_Back">รีเซ็ต</button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>

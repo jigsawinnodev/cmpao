@@ -10,12 +10,7 @@ const GetMenuAdmin = (req, res) => {
         res.json(result)
     })
 }
-const GetType_position = (req, res) => {
-    let sql = "SELECT * FROM type_position WHERE status = 1";
-    mysqlConnection.query(sql, function (err, result) {
-        res.json(result)
-    })
-}
+
 
 const GetpreName = (req, res) => {
     let sql = 'SELECT * FROM prename';
@@ -171,151 +166,6 @@ const Delete_positions = (req, res) => {
 
 // end_positions
 
-
-
-// user
-const user_all = (req, res) => {
-    let sql = ` SELECT *
-                FROM user
-                JOIN user_permission ON user.user_permission = user_permission.permiss_id
-                JOIN prename ON user.user_prename = prename.prename_id
-                WHERE user_active = 1
-                ORDER BY user_id ASC`;
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) {
-            // console.log(result);
-            res.json(result);
-        };
-        if (err) console.log(err);
-    })
-}
-
-const GetUser_permission = (req, res) => {
-    let sql = `SELECT * FROM user_permission WHERE permiss_id != 4 ORDER BY permiss_id ASC`;
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) {
-            res.json(result);
-        };
-        if (err) console.log(err);
-    })
-}
-
-const Insert_Edit_User = (req, res) => {
-    console.log("qweqxxxxxxxxxxxxxxxxxxxwe");
-    const { user_idcard, user_prename, user_firstname, user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_id } = req.body;
-    if (!user_id) {
-        let sqlCheck = `SELECT * FROM cmpao.user WHERE user_username = '${user_username}'`;
-        mysqlConnection.query(sqlCheck, async function (err, result) {
-            if (!err) {
-                if (result.length > 0) {
-                    res.json({ status: "1" });
-                } else {
-                    const HashPassword = await bcrypt.hash(user_password, 10);
-                    if (!req.fileValidationError) {
-                        // console.log(req.file);
-                        if (!req.file) {
-                            let sql = `
-                        INSERT INTO cmpao.user (user_idcard, user_prename, user_firstname,user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_img) 
-                        VALUES ('${user_idcard}', ${user_prename},'${user_firstname}','${user_lastname}','${user_username}','${HashPassword}',
-                        '${user_birthday}', '${user_position}',${user_permission},'${user_email}','${user_phone}',${user_active},null)`;
-                            mysqlConnection.query(sql, function (err, result) {
-                                if (!err) {
-                                    res.json({ status: 'success' });
-                                };
-                                if (err) console.log(err);
-                            })
-                        } else {
-                            let sql = `
-                        INSERT INTO cmpao.user (user_idcard, user_prename, user_firstname, user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_img) 
-                        VALUES ('${user_idcard}', ${user_prename},'${user_firstname}','${user_lastname}','${user_username}','${HashPassword}',
-                        '${user_birthday}', '${user_position}',${user_permission},'${user_email}','${user_phone}',${user_active},'${req.file.filename}')`;
-
-                            mysqlConnection.query(sql, function (err, result) {
-                                if (!err) {
-                                    res.json({ status: 'success' });
-                                };
-                                if (err) console.log(err);
-                            })
-                        }
-                    }
-                }
-            };
-            if (err) console.log(err);
-        })
-    } else {
-        // const { user_idcard, user_prename, user_firstname, user_lastname, user_username, user_password, user_birthday, user_position, user_permission, user_email, user_phone, user_active, user_id } = req.body;
-        console.log(req.body);
-
-        let sqlCheck = `SELECT * FROM cmpao.user WHERE user_username = '${user_username}'`;
-        mysqlConnection.query(sqlCheck, async function (err, result) {
-            if (!err) {
-                if (result.length < 0) {
-                    // res.json({ status: "1" });
-                    console.log(result.length);
-                } else {
-                    if (!req.fileValidationError) {
-                        // console.log(req.file);
-                        if (!req.file) {
-                            const { img } = req.body
-                            var splitData = null
-                            var DataImg = null
-                            if (!img) {
-                                splitData = null
-                            } else {
-                                splitData = img.split('/')
-                                DataImg = splitData[5]
-                            }
-                            // console.log(splitData[5]);
-                            let sql = `UPDATE user SET user_idcard = '${user_idcard}', user_prename = '${user_prename}', user_firstname = '${user_firstname}', user_lastname = '${user_lastname}', user_username = '${user_username}', user_birthday = '${user_birthday}', user_position = '${user_position}', user_permission = '${user_permission}', user_email = '${user_email}', user_phone = '${user_phone}', user_active = '${user_active}',user_img= '${DataImg}' WHERE user_id = '${user_id}'`;
-                            mysqlConnection.query(sql, function (err, result) {
-                                if (!err) {
-                                    res.json({ status: 'success' });
-                                };
-                                if (err) console.log(err);
-                            })
-                        } else {
-                            let sql = `UPDATE user SET user_idcard = '${user_idcard}', user_prename = '${user_prename}', user_firstname = '${user_firstname}', user_lastname = '${user_lastname}', user_username = '${user_username}', user_birthday = '${user_birthday}', user_position = '${user_position}', user_permission = '${user_permission}', user_email = '${user_email}', user_phone = '${user_phone}', user_active = '${user_active}',user_img= '${req.file.filename}' 
-                            WHERE user_id = '${user_id}'`;
-                            mysqlConnection.query(sql, function (err, result) {
-                                if (!err) {
-                                    res.json({ status: 'success' });
-                                };
-                                if (err) console.log(err);
-                            })
-                        }
-                    }
-                }
-            }
-        });
-    }
-}
-const FindUserByID = (req, res) => {
-    const { id } = req.params;
-    if (id != undefined) {
-        let sql = `SELECT * FROM user WHERE user_id = ${id}`;
-        mysqlConnection.query(sql, function (err, result) {
-            if (!err) {
-
-                let data = [];
-                for (let index = 0; index < result.length; index++) {
-                    result[index].user_img = `${baseURL_IMG}${result[index].user_img}`
-                    data.push(result[index]);
-                }
-                // console.log(data);
-                res.json(data)
-            }
-            if (err) console.log(err);
-        });
-    } else {
-        res.json("Error")
-    }
-
-};
-
-
-
-
-
 // Member
 const selectMemberAll = (req, res) => {
     let sql = `SELECT member.*, (
@@ -351,7 +201,7 @@ const CreateMember = (req, res) => {
 // End Member
 
 const GetApplyAll = (req, res) => {
-    let sql = "SELECT job_calendar.*, type_position.name as position_name,(SELECT SUM(job_amount) FROM jobs INNER JOIN position ON jobs.job_position = position.p_id WHERE jobs.jc_id = job_calendar.jc_id) AS count_position,(SELECT COUNT(*) FROM job_application JOIN jobs ON jobs.job_id = job_application.job_id WHERE job_calendar.jc_id = jobs.jc_id) AS count_apply FROM job_calendar JOIN type_position ON type_position.id = job_calendar.jc_type ORDER BY job_calendar.jc_id DESC";
+    let sql = "SELECT job_calendar.*, type_position.name AS position_name, ( SELECT SUM(job_amount) FROM jobs INNER JOIN POSITION ON jobs.job_position = POSITION.p_id WHERE jobs.jc_id = job_calendar.jc_id ) AS count_position, ( SELECT COUNT(*) FROM job_application JOIN jobs ON jobs.job_id = job_application.job_id WHERE job_calendar.jc_id = jobs.jc_id ) AS count_apply FROM job_calendar JOIN type_position ON type_position.id = job_calendar.jc_type WHERE job_calendar.status = 1 ORDER BY job_calendar.jc_id DESC";
     mysqlConnection.query(sql, function (err, result) {
         if (!err) res.json(result);
         if (err) console.log(err);
@@ -392,62 +242,7 @@ const Apply_Applycheck = (req, res) => {
     })
 }
 
-// INSERT INTO `jobs` (`job_position`, `job_amount`, `job_payment`, `job_no`, `job_file`, `jc_id`) VALUES ('428', '10', '10', '01', '1681272490_52e443783ee01eb2c3a5.pdf', '65')
-const InsertApply = (req, res) => {
-    const { job_position, job_amount, job_payment, job_no, jc_id, job_id } = req.body;
-    console.log(job_position, job_amount, job_payment, job_no, jc_id);
-    if (!job_id) {
-        if (!(job_position && job_amount && job_payment && job_no && req.file && jc_id)) {
-            return res.status(400).send("All input is required");
-        } else {
-            let sql = `INSERT INTO jobs (job_position, job_amount, job_payment, job_no, job_file, jc_id) VALUES(${job_position}, '${job_amount}', ${job_payment}, '${job_no}', '${req.file.filename}',${jc_id})`;
-            mysqlConnection.query(sql, function (err, result) {
-                if (!err) res.json(result);
-                if (err) console.log(err);
-            })
-        }
-    } else {
-        // if (!(job_position && job_amount && job_payment && job_no && job_file && req.file)) {
-        //     return res.status(400).send("All input is required");
-        // } else {
-        //     let sql = `INSERT INTO jobs(job_position, job_amount, job_payment, job_no, job_file) VALUES(${job_position}, ${job_amount}, ${job_payment}, ${job_no}, ${req.file.filename})`;
-        //     mysqlConnection.query(sql, function (err, result) {
-        //         if (!err) res.json(result);
-        //         if (err) console.log(err);
-        //     })
-        // }
-    }
-}
 
-const Edit_position = (req, res) => {
-    const { id, name } = req.body;
-    console.log(id);
-    if (!id) {
-        let sql = `INSERT INTO type_position (name) VALUES ('${name}')`;
-        mysqlConnection.query(sql, function (err, result) {
-            if (!err) {
-                console.log("insert");
-                res.json(result)
-            };
-            if (err) console.log(err);
-        })
-    } else {
-        let sql = `UPDATE type_position SET name = ${name} WHERE id = ${id}`;
-        mysqlConnection.query(sql, function (err, result) {
-            if (!err) res.json(result);
-            if (err) console.log(err);
-        })
-    }
-}
-const DeleteType_position = (req, res) => {
-    const { id } = req.params
-    console.log(id);
-    let sql = `UPDATE type_position SET status = 0 WHERE id = ${id}`;
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) res.json(result);
-        if (err) console.log(err);
-    })
-}
 
 
 // permission
@@ -476,10 +271,55 @@ const GetCheckPermissionsAll = (req, res) => {
     })
 }
 
+const Insert_Apply = (req, res) => {
+    const { jc_type, jc_start, jc_end, create_at, jc_id, update_at } = req.body
+    const { job_position, job_amount, job_payment, job_no } = req.body;
+
+    if (!jc_id) {
+        let sql = `INSERT INTO job_calendar (jc_type, jc_start, jc_end,create_at) VALUES 
+        (${jc_type}, '${jc_start}', '${jc_end}', '${create_at}')`;
+        mysqlConnection.query(sql, function (err, result) {
+            if (!err) {
+                if (!req.fileValidationError) {
+                    if (!req.file) {
+                        let sql = `INSERT INTO jobs (job_position, job_amount, job_payment, job_no, job_file, jc_id) 
+                VALUES ('${job_position}', '${job_amount}', '${job_payment}', '${job_no}, 'null', '${result.insertId}')`;
+                        mysqlConnection.query(sql, function (err, result) {
+                            if (!err) res.json("Inserted successfully no file");
+                            if (err) console.log(err);
+                        })
+                    } else {
+                        let sql = `INSERT INTO jobs (job_position, job_amount, job_payment, job_no, job_file, jc_id) 
+                        VALUES ('${job_position}', '${job_amount}', '${job_payment}', '${job_no}, '${req.file.filename}', '${result.insertId}')`;
+                        mysqlConnection.query(sql, function (err, result) {
+                            if (!err) res.json("Inserted successfully file");
+                            if (err) console.log(err);
+                        })
+                    }
+                }
+            }
+            res.json("Inserted successfully");
+            if (err) console.log(err);
+        })
+    } else {
+        let sql = `UPDATE job_calendar SET jc_type = ${jc_type}, jc_start = '${jc_start}', jc_end = '${jc_end}', update_at =
+                        '${update_at}' WHERE jc_id = ${jc_id}`;
+        mysqlConnection.query(sql, function (err, result) {
+            if (!err) res.json({
+                status: "update successful",
+            })
+            if (err) console.log(err);
+        })
+    }
+}
+
+const Delete_Apply = (req, res) => {
+    // let sql = ``
+}
+
 
 module.exports = {
     GetMenuAdmin,
-    GetType_position,
     GetpreName,
     BloodType,
     Status_relationship,
@@ -496,14 +336,10 @@ module.exports = {
     GetAllPosition,
     manage_Position,
     Delete_positions,
-    user_all,
-    GetUser_permission,
-    Insert_Edit_User,
-    FindUserByID,
-    InsertApply,
-    Edit_position,
-    DeleteType_position,
+    // InsertApply,
     PermissionsGetAll,
-    GetCheckPermissionsAll
+    GetCheckPermissionsAll,
+    Insert_Apply,
+    Delete_Apply
     // Permission
 }
