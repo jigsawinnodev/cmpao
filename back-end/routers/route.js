@@ -67,6 +67,7 @@ router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
 
 
 
+
 // เสร็จ
 // router User
 router.get('/GetUser', User.user_all);

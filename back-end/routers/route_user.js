@@ -10,4 +10,6 @@ router.get('/person_noPayment', login.Show_personNotPayment);
 // register 
 router.post('/register', register.register)
 
+// login
+router.post('/login', login.authLogin)
 module.exports = router;

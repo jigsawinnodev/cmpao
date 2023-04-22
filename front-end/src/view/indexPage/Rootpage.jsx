@@ -15,6 +15,7 @@ import {
   Get_person_NoSuccess,
   Get_person_All,
   Get_person_NoPayment,
+  LoginUser,
 } from "../../service/for_user";
 function Rootpage() {
   const [person, SetPerson] = useState({
@@ -22,6 +23,18 @@ function Rootpage() {
     person_all: "",
     person_noPayment: "",
   });
+
+  const [dataForm, SetdataForm] = useState({
+    username: "",
+    password: "",
+  });
+
+  const HandleForm = async (e) => {
+    e.preventDefault();
+    const res = await LoginUser(dataForm);
+    console.log(res);
+  };
+
   const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
   const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();
@@ -243,7 +256,7 @@ function Rootpage() {
           {/* <img src={Bg} /> */}
           {/* </div> */}
           <div className="login-content mx-auto">
-            <form className="fromlogin">
+            <form className="fromlogin" onSubmit={HandleForm}>
               <img src={Icon} className="img-fluid py-2" />
               <h5 className="title m-0">องค์การบริหารส่วนจังหวัดเชียงใหม่</h5>
               <p>Chiang Mai Provincial Administrative Organization</p>
@@ -257,6 +270,13 @@ function Rootpage() {
                     type="text"
                     className="form-control"
                     placeholder="Username"
+                    required
+                    onChange={(e) => {
+                      SetdataForm({
+                        ...dataForm,
+                        username: e.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -270,6 +290,13 @@ function Rootpage() {
                     type="password"
                     className="form-control"
                     placeholder="Password"
+                    required
+                    onChange={(e) => {
+                      SetdataForm({
+                        ...dataForm,
+                        password: e.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -277,7 +304,9 @@ function Rootpage() {
                 Forgot Password?
               </a>
               <div className="mx-auto px-5">
-                <button className="btnLogin">เข้าสู่ระบบ</button>
+                <button type="submit" className="btnLogin">
+                  เข้าสู่ระบบ
+                </button>
               </div>
               <div className="mx-auto">
                 หากท่านยังไม่มี username/password คลิก

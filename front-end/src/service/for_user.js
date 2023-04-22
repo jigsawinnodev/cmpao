@@ -25,5 +25,18 @@ export const RegisterNewUser = async (data) => {
         console.log(response);
         return response.data;
     })
-    return response.data;
+}
+
+export const LoginUser = async (data) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/login`,
+        data: data,
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+
 }

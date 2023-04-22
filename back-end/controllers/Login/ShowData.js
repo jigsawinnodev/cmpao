@@ -1,5 +1,8 @@
 
 const { mysqlConnection } = require('../../Config/DB')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 const Show_personNotSuccess = (req, res) => {
@@ -32,6 +35,35 @@ const Show_personNotPayment = (req, res) => {
     })
 }
 
+const authLogin = (req, res) => {
+    // console.log(req.body);
+    const { username, password } = req.body;
+    // console.log(username, password);
+    let sql = `SELECT * FROM member WHERE m_username = '${username}'`
+    mysqlConnection.query(sql, async function (err, result) {
+        if (!err) {
+            // console.log(result[0].m_password);
+            const checkPassword = await bcrypt.compare(password, result[0].m_password);
+            // console.log(checkPassword);
+            if (checkPassword) {
+                // console.log(process.env.TOKEN_KEY);
+                const token = jwt.sign(
+                    { email: username },
+                    process.env.TOKEN_KEY,
+                    {
+                        algorithm: "HS256",
+                        expiresIn: "2d"
+                    }
+                )
+                return res.json({
+                    token: token
+                })
+            }
+        };
+        if (err) console.log(err);
+    })
+}
+
 
 
 
@@ -41,5 +73,6 @@ const Show_personNotPayment = (req, res) => {
 module.exports = {
     Show_personNotSuccess,
     Show_personAll,
-    Show_personNotPayment
+    Show_personNotPayment,
+    authLogin
 }
