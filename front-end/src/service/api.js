@@ -37,7 +37,7 @@ export const GetTbl_country = () => {
         });
 };
 
-export const GetTbl_district = () => {
+export const GetTbl_district = () => {  
     return axios
         .get(`${BaseUrl}/api/GetTbl_district`)
         .then((res) => {

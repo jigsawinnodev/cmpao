@@ -19,4 +19,8 @@ app.use(cors('*'));
 const router = require('./routers/route');
 app.use('/api', router);
 
+const routerUser = require('./routers/route_user');
+app.use('/api/user', routerUser);
+
+
 module.exports = app;

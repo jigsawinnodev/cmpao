@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./indexPage.css";
 import Icon from "../../assets/img/img_nav.png";
 import Wave from "../../assets/img/bg-03.png";
@@ -11,13 +11,38 @@ import "moment/locale/th";
 moment.locale("th");
 import Table from "react-bootstrap/Table";
 import CountdownTimer from "./CountDown/CountdownTimer";
+import {
+  Get_person_NoSuccess,
+  Get_person_All,
+  Get_person_NoPayment,
+} from "../../service/for_user";
 function Rootpage() {
+  const [person, SetPerson] = useState({
+    count: "",
+    person_all: "",
+    person_noPayment: "",
+  });
   const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
   const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
   const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
   const dateTimeAfterSevenDays = NOW_IN_MS + SEVEN_DAYS_IN_MS;
+  const GetData = async () => {
+    const res = await Get_person_NoSuccess();
+    const p_all = await Get_person_All();
+    const p_NoPayment = await Get_person_NoPayment();
+    console.log(p_NoPayment);
+    SetPerson({
+      count: res[0].person,
+      person_all: p_all[0].person,
+      person_noPayment: p_NoPayment[0].person_NotPay,
+    });
+  };
+
+  useEffect(() => {
+    GetData();
+  }, []);
   return (
     <>
       <div>
@@ -67,7 +92,7 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้สมัครทั้งหมด</div>
-                      <h3 className="">1,075 คน</h3>
+                      <h3 className="">{person.person_all} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -97,7 +122,7 @@ function Rootpage() {
                       <div className="box-topic" style={{ fontSize: "15px" }}>
                         จำนวนผู้ที่เอกสารไม่สมบูรณ์
                       </div>
-                      <h3 className="">478 คน</h3>
+                      <h3 className="">{person.count} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -125,7 +150,7 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
-                      <h3 className="">105 คน</h3>
+                      <h3 className="">{person.person_noPayment} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
