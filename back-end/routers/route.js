@@ -5,6 +5,9 @@ const Admin = require('../controllers/Admin');
 const multer = require('multer');
 const TypePosition = require('.././controllers/TypePosition/TypePosition');
 const User = require("../controllers/User/User");
+const Member = require("../controllers/Member/Member");
+
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -41,16 +44,6 @@ router.get('/GetTbl_religion', Admin.GetTbl_religion);
 
 
 
-
-// router TypePosition
-router.get('/GetType_position', TypePosition.GetType_position);
-router.post('/Edit_type_position', TypePosition.Edit_position);
-router.post('/Delete_type_position/:id', TypePosition.DeleteType_position);
-
-
-
-
-
 // router Apply
 router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 router.get('/GetApplyAll', Admin.GetApplyAll);
@@ -64,6 +57,14 @@ router.get('/GetAllPosition', Admin.GetAllPosition);
 router.post('/Edit_Add_Position', upload.single('file'), Admin.manage_Position);
 router.post('/Delete_position/:id', Admin.Delete_positions);
 
+
+// router Permissions
+router.get('/permissionsAll', Admin.PermissionsGetAll);
+router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
+
+
+
+// เสร็จ
 // router User
 router.get('/GetUser', User.user_all);
 router.get('/GetUser_permission', User.GetUser_permission);
@@ -71,16 +72,17 @@ router.post('/Insert_Edit_User', upload.single('img'), User.Insert_Edit_User);
 router.get('/FindUserByID/:id', User.FindUserByID);
 router.post('/Delete_user/:id', User.Delete_User);
 
+// router TypePosition
+router.get('/GetType_position', TypePosition.GetType_position);
+router.post('/Edit_type_position', TypePosition.Edit_position);
+router.post('/Delete_type_position/:id', TypePosition.DeleteType_position);
+
+
 // router Member
-router.get('/selectMemberAll', Admin.selectMemberAll);
-router.post('/CreateMember', Admin.CreateMember);
-router.post('/DeleteMember/:id', Admin.Delete_Member);
-
-
-
-// router Permissions
-router.get('/permissionsAll', Admin.PermissionsGetAll);
-router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
+router.get('/selectMemberAll', Member.selectMemberAll);
+router.post('/CreateMember', upload.single('img'), Member.CreateMember);
+router.get('/selectMember/:id', Member.selectMemberById);
+router.post('/DeleteMember/:id', Member.Delete_Member);
 
 
 module.exports = router;

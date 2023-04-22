@@ -59,8 +59,8 @@ function App() {
         <Route path="Organization" element={<Manage_agency />} />
 
         <Route path="Member" element={<Manage_userRegister />} />
-        <Route path="Member/add/:id" element={<UserRegister_Add />} />
         <Route path="Member/add" element={<UserRegister_Add />} />
+        <Route path="Member/add/:id" element={<UserRegister_Add />} />
 
         <Route path="User" element={<Manage_users />} />
         <Route path="User/add" element={<Manage_users_add />} />

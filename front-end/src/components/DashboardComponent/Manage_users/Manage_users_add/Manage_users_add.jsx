@@ -10,6 +10,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DayjsUtils from "@date-io/dayjs";
 import { th } from "date-fns/locale";
 import dayjs from "dayjs";
+
 import {
   GetpreName,
   Get_permission,
@@ -125,9 +126,9 @@ function Manage_users_add() {
     }
   };
 
-  const handleSubmitFormEdit = async (event) => {
-    event.preventDefault();
-  };
+  // const handleSubmitFormEdit = async (event) => {
+  //   event.preventDefault();
+  // };
   const DataPreName = async () => {
     let data = await GetpreName();
     let permition = await Get_permission();

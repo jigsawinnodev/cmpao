@@ -1,6 +1,9 @@
 const { mysqlConnection } = require('../../Config/DB')
 var baseURL_IMG = 'http://localhost:9500/public/img/'
 var baseURL_PDF = 'http://localhost:9500/public/pdf/'
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 const user_all = (req, res) => {
     let sql = ` SELECT *
                 FROM user
@@ -76,9 +79,10 @@ const Insert_Edit_User = (req, res) => {
         let sqlCheck = `SELECT * FROM cmpao.user WHERE user_username = '${user_username}'`;
         mysqlConnection.query(sqlCheck, async function (err, result) {
             if (!err) {
-                if (result.length < 0) {
-                    // res.json({ status: "1" });
-                    console.log(result.length);
+                if (result.length < 1) {
+                    res.json({
+                        status: "username_is_ready"
+                    })
                 } else {
                     if (!req.fileValidationError) {
                         // console.log(req.file);
@@ -93,6 +97,7 @@ const Insert_Edit_User = (req, res) => {
                                 DataImg = splitData[5]
                             }
                             // console.log(splitData[5]);
+
                             let sql = `UPDATE user SET user_idcard = '${user_idcard}', user_prename = '${user_prename}', user_firstname = '${user_firstname}', user_lastname = '${user_lastname}', user_username = '${user_username}', user_birthday = '${user_birthday}', user_position = '${user_position}', user_permission = '${user_permission}', user_email = '${user_email}', user_phone = '${user_phone}', user_active = '${user_active}',user_img= '${DataImg}' WHERE user_id = '${user_id}'`;
                             mysqlConnection.query(sql, function (err, result) {
                                 if (!err) {

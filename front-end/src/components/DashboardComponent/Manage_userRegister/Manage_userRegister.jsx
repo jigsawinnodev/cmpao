@@ -10,14 +10,6 @@ import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
 function Manage_userRegister() {
-  // var tooltipTriggerList = [].slice.call(
-  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
-  // );
-
-  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  //   return new Tooltip(tooltipTriggerEl);
-  // });
-
   const columns = [
     {
       name: "ลำดับ",
@@ -105,12 +97,10 @@ function Manage_userRegister() {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
-          () => {
-            DeleteMember(id);
-            Get_tbl_Member();
-          }
-        );
+        Swal.fire("ลบข้อมูลสำเร็จ", "", "success").then(() => {
+          DeleteMember(id);
+          Get_tbl_Member();
+        });
       }
     });
   };

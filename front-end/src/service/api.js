@@ -61,14 +61,18 @@ export const GetTbl_religion = async () => {
     // console.log(response);
     return response.data;
 }
-export const CreateMember = () => {
-    return axios.post(`${BaseUrl}/api/CreateMember`)
-        .then((res) => {
-            // console.log("Insert Data Success");
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+export const CreateMember = (data) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/CreateMember`,
+        data: data,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        //handle error
+        console.log(response);
+    });
 }
 
 
@@ -92,12 +96,11 @@ export const GetMemberAll = async () => {
         });
 }
 export const DeleteMember = async (id) => {
-    axios.post(`${BaseUrl}/api/DeleteMember/${id}`, {
+    return axios.post(`${BaseUrl}/api/DeleteMember/${id}`, {
     }).then((res) => {
-        console.log(res);
-
+        return res.data
     }).catch((err) => {
-        // console.log(err);
+        console.log(err);
     });
 }
 export const Apply_Applycheck = (id) => {
@@ -263,6 +266,12 @@ export async function GetAllpermissions() {
 
 export async function Delete_user(id) {
     let response = await axios.post(`${BaseUrl}/api/Delete_user/${id}`);
+    return response.data;
+}
+
+export async function Get_memberby_id(id) {
+    // console.log(id);
+    let response = await axios.get(`${BaseUrl}/api/selectMember/${id}`);
     return response.data;
 }
 
