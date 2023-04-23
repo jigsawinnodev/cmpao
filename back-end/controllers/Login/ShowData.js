@@ -2,6 +2,11 @@
 const { mysqlConnection } = require('../../Config/DB')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
+// const moment = require('moment/min/moment-with-locale');
+// import moment from "moment/min/moment-with-locales";
+// const "moment/locale/th";
+moment.locale("th");
 require('dotenv').config();
 
 
@@ -38,31 +43,54 @@ const Show_personNotPayment = (req, res) => {
 const authLogin = (req, res) => {
     // console.log(req.body);
     const { username, password } = req.body;
-    // console.log(username, password);
+    console.log(username, password);
     let sql = `SELECT * FROM member WHERE m_username = '${username}'`
     mysqlConnection.query(sql, async function (err, result) {
         if (!err) {
-            // console.log(result[0].m_password);
-            const checkPassword = await bcrypt.compare(password, result[0].m_password);
-            // console.log(checkPassword);
-            if (checkPassword) {
-                // console.log(process.env.TOKEN_KEY);
-                const token = jwt.sign(
-                    { email: username },
-                    process.env.TOKEN_KEY,
-                    {
-                        algorithm: "HS256",
-                        expiresIn: "2d"
-                    }
-                )
+            // console.log(result);
+
+            if (result.length > 0) {
+                const checkPassword = await bcrypt.compare(password, result[0].m_password);
+                // console.log(checkPassword);
+                if (checkPassword) {
+                    console.log(moment().locale('th').add(543, 'year').format());
+                    let sql_UpdateTime = `UPDATE member SET login_time = '${moment().add(543, 'year').format()}' WHERE m_id = ${result[0].m_id}`;
+                    mysqlConnection.query(sql_UpdateTime, function (err, result1) {
+                        if (!err) {
+                            console.log(result1);
+                        };
+                        if (err) console.log(err);
+                    })
+                    const token = jwt.sign(
+                        { username: username },
+                        process.env.TOKEN_KEY,
+                        {
+                            algorithm: "HS256",
+                            expiresIn: "2d"
+                        }
+                    )
+                    const { is_accept } = result[0];
+                    return res.json({
+                        status: "success",
+                        token: token,
+                        is_accept: is_accept
+                    })
+                } else {
+                    return res.json({
+                        status: "not_success"
+                    })
+                }
+            } else {
                 return res.json({
-                    token: token
+                    status: "not_success"
                 })
             }
         };
         if (err) console.log(err);
     })
 }
+
+
 
 
 

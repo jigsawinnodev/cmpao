@@ -33,12 +33,15 @@ import Edit_profile from "./components/Edit_profile";
 import moment from "moment";
 import "moment/locale/th";
 import Manage_apply_check from "./components/DashboardComponent/Manage_document/Manage_apply_check/Manage_apply_check";
+import Is_accept from "./view/is_accept";
+import NotFound from "./view/NotFound/NotFound";
 moment.locale("th");
 function App() {
   return (
     <Routes>
       <Route exact path="/" element={<Rootpage />} />
       <Route exact path="Newuser" element={<NewUser />} />
+      <Route exact path="is_accept" element={<Is_accept />} />
       <Route path="Register" element={<Register />}>
         <Route index path="" element={<EmptyWork />} />
         <Route path="Edit_profile" element={<Edit_profile />} />
@@ -83,6 +86,7 @@ function App() {
 
         <Route path="Information" element={<Manage_search />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -40,3 +40,16 @@ export const LoginUser = async (data) => {
     });
 
 }
+
+
+export const Vertify_token = async (token) => {
+    return axios.get(`${BaseUrl}/me`, {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch((error) => {
+        console.error(error)
+    })
+}

@@ -103,6 +103,13 @@ function Register() {
         console.log("teststeset");
         const res = await RegisterNewUser(dataForm);
         console.log(res.status);
+        if (res.status == "username_already") {
+          Swal.fire({
+            icon: "error",
+            title: "Username*สำหรับการเข้าสู่ระบบมีผู้ใช้งานเเล้ว",
+            text: "",
+          });
+        }
         if (res.status == "success") {
           Swal.fire("บันทึกข้อมูลสำเร็จ", "", "success").then(() => {
             navigate("/");

@@ -1,4 +1,4 @@
-import { React } from "react";
+import React, { useEffect, useState } from "react";
 import Ball from "../../assets/img/ball.png";
 import Icon1 from "../../assets/img/icon_1.png";
 import Icon2 from "../../assets/img/icon_2.png";
@@ -11,11 +11,35 @@ import EmptyWork from "../EmptyWork/EmptyWork";
 import FormWork from "../FormWork/FormWork";
 import VertyfyStatus from "../VertifyStatus/VertyfyStatus";
 import DetailWork from "../DetailWork/DetailWork";
-
 import style from "./Menu.module.css";
 import { color } from "@mui/system";
+import { useNavigate } from "react-router-dom";
+import { Vertify_token } from "../../service/for_user";
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
 
 function Menu() {
+  const [dataVertify, setDataVertify] = useState({});
+  const Verifytoken = async () => {
+    const token = localStorage.getItem("token");
+    const resVerify = await Vertify_token(token);
+    if (resVerify.status) {
+      setDataVertify(resVerify);
+    } else {
+      navigate("/");
+    }
+  };
+
+  const navigate = useNavigate();
+  const LogOut = () => {
+    // console.log("test");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+  useEffect(() => {
+    Verifytoken();
+  }, []);
   return (
     <>
       <div className="container-fluid p-0 ">
@@ -298,11 +322,13 @@ function Menu() {
                   <div className="col-md-12">
                     <div className="">
                       <p className="m-0 text-md-start text-center py-2">
-                        ชื่อ : มากศรี มีสุก
+                        ชื่อ :{" "}
+                        {dataVertify.m_firstname + " " + dataVertify.m_lastname}
                       </p>
                       <p className="m-0 text-md-start text-center">
-                        ที่อยู่ 123/456 ตำบล ช้างเผือก อำเภอ เมือง จังหวัด
-                        เชียงใหม่
+                        ที่อยู่{" "}
+                        {dataVertify.m_house_no + "/" + dataVertify.m_moo} ตำบล
+                        ช้างเผือก อำเภอ เมือง จังหวัด เชียงใหม่
                       </p>
                     </div>
                   </div>
@@ -314,11 +340,13 @@ function Menu() {
                             เเก้ไขข้อมูล
                           </button>
                         </NavLink>
-                        <NavLink to="/">
-                          <button className={style.logoutUser}>
-                            ออกจากระบบ
-                          </button>
-                        </NavLink>
+
+                        <button
+                          className={style.logoutUser + " mx-auto"}
+                          onClick={() => LogOut()}
+                        >
+                          ออกจากระบบ
+                        </button>
                       </div>
                     </div>
                   </div>

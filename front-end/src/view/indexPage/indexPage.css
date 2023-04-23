@@ -9,8 +9,8 @@
 .container {
   width: 100vw;
   height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* display: grid; */
+  /* grid-template-columns: repeat(2, 1fr); */
   grid-gap: 2rem;
   padding: 0 2rem;
 }
@@ -23,7 +23,7 @@
 
 .login-content {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   text-align: center;
 }

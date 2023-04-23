@@ -17,7 +17,9 @@ import {
   Get_person_NoPayment,
   LoginUser,
 } from "../../service/for_user";
+import { useNavigate } from "react-router-dom";
 function Rootpage() {
+  const navigate = useNavigate();
   const [person, SetPerson] = useState({
     count: "",
     person_all: "",
@@ -33,6 +35,20 @@ function Rootpage() {
     e.preventDefault();
     const res = await LoginUser(dataForm);
     console.log(res);
+    if (res.status == "success") {
+      localStorage.setItem("token", res.token);
+      if (res.is_accept == null) {
+        navigate("is_accept");
+      } else {
+        navigate("register");
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "",
+        text: "Username หรือ Password ผิด กรุณากรอกใหม่",
+      });
+    }
   };
 
   const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
@@ -62,8 +78,8 @@ function Rootpage() {
         <img className="wave" src={Wave} />
         <div className="container">
           {/* <div className="img"> */}
-          <div className="row pt-3 my-auto">
-            <div className="col-md-12">
+          <div className="row pt-3 my-auto  h-100">
+            <div className="col-md-6 my-auto px-3 order-2 order-md-1 py-3">
               <div className="row gy-3">
                 <div className="col-md-6 ">
                   <div
@@ -252,10 +268,81 @@ function Rootpage() {
                 </div>
               </div>
             </div>
+            <div className="col-md-6 text-center px-3 my-auto py-3 order-1 order-md-2 ">
+              <div className="login-content mx-auto ">
+                <form className="fromlogin" onSubmit={HandleForm}>
+                  <img src={Icon} className="img-fluid py-2" />
+                  <h5 className="title m-0">
+                    องค์การบริหารส่วนจังหวัดเชียงใหม่
+                  </h5>
+                  <p>Chiang Mai Provincial Administrative Organization</p>
+                  <div className="input-div one py-2">
+                    <div className="d-flex">
+                      <i
+                        className="bi bi-person-fill my-auto mx-2"
+                        style={{ fontSize: "20px" }}
+                      ></i>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Username"
+                        required
+                        onChange={(e) => {
+                          SetdataForm({
+                            ...dataForm,
+                            username: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="input-div pass py-2">
+                    <div className="d-flex">
+                      <i
+                        className="bi bi-key-fill my-auto mx-2"
+                        style={{ fontSize: "20px" }}
+                      ></i>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        required
+                        onChange={(e) => {
+                          SetdataForm({
+                            ...dataForm,
+                            password: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <a href="#" className="float-end py-2 text-dark px-1">
+                    Forgot Password?
+                  </a>
+                  <div className="mx-auto px-5">
+                    <button type="submit" className="btnLogin">
+                      เข้าสู่ระบบ
+                    </button>
+                  </div>
+                  <div className="mx-auto">
+                    หากท่านยังไม่มี username/password คลิก
+                    <NavLink to={"Newuser"} className="text-decoration-none">
+                      ลงทะเบียน
+                    </NavLink>
+                  </div>
+                  <div className="pb-2">
+                    คู่มือสำหรับผู้สมัครสอบ
+                    <a href="" className="text-decoration-none" download>
+                      คลิก
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
           {/* <img src={Bg} /> */}
           {/* </div> */}
-          <div className="login-content mx-auto">
+          {/* <div className="login-content mx-auto order-1 order-md-">
             <form className="fromlogin" onSubmit={HandleForm}>
               <img src={Icon} className="img-fluid py-2" />
               <h5 className="title m-0">องค์การบริหารส่วนจังหวัดเชียงใหม่</h5>
@@ -316,12 +403,12 @@ function Rootpage() {
               </div>
               <div className="pb-5">
                 คู่มือสำหรับผู้สมัครสอบ
-                <a href="" className="text-decoration-none">
+                <a href="" className="text-decoration-none" download>
                   คลิก
                 </a>
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
