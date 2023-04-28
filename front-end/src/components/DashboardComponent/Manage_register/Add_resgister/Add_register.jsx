@@ -14,7 +14,12 @@ import "dayjs/locale/th";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import { Link, NavLink } from "react-router-dom";
-import { GetAllApply, GetType_position } from "../../../../service/api";
+import {
+  GetAllApply,
+  GetType_position,
+  getPositionINtype,
+  InsertAndEditApply,
+} from "../../../../service/api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
@@ -26,6 +31,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import dayjs from "dayjs";
 const bfsSearch = (graph, targetId) => {
   const queue = [...graph];
 
@@ -40,6 +46,18 @@ const bfsSearch = (graph, targetId) => {
   }
   return [];
 };
+
+const initalStatePosition = {
+  job_id: "",
+  job_position: "",
+  job_amount: "",
+  job_payment: "",
+  job_no: "",
+  job_name: "",
+  job_file: "",
+  jc_id: "",
+};
+
 function Add_register() {
   let { id } = useParams();
   const nodeTree = [
@@ -310,41 +328,91 @@ function Add_register() {
     C_type: "",
     C_startDate: "",
     C_endDate: "",
-    C_position: "",
-    C_countPositions: "",
-    C_moneyRegister: "",
-    C_idPosition: "",
-    C_file: "",
-    C_detailsIMG: "",
-    C_detailsHouseRegister: "",
-    C_detailsIdCard: "",
-    C_detailDoctor: "",
-    C_detailsSoldier: "",
-    C_detailCar: "",
-    C_detailOther: "",
-    C_detailEducation: "",
   });
+  const [detailPosition, SetdetailPosition] = useState(initalStatePosition);
   const [stateForDataTable, SetStateForDataTable] = useState([]);
-  const [startDate, setStartDate] = useState();
+  const [DataAll, setDataAll] = useState([]);
+  const [DataAllTree, setDataAllTree] = useState([]);
+  const [startDate, setStartDate] = useState([]);
   const [endDate, setEndDate] = useState();
+  const [selectCheck, setSelectCheck] = useState({
+    checkData: [],
+  });
+  const [postion, setposition] = useState([]);
 
   const GetData = async () => {
     const data = await GetAllApply();
     const typePosition = await GetType_position();
-
     SetpositionType(typePosition);
     setGetAllApply(data);
   };
 
-  const HandleFromInsertOrEdit = (e) => {
+  const HandleFromInsertOrEdit = async (e) => {
     e.preventDefault();
-    console.log("insert");
+    setDataAll([
+      ...DataAll,
+      {
+        positionAllData: detailPosition,
+        select: selectCheck,
+        tree: selectedNodes,
+      },
+    ]);
+    setShow(false);
+    // Datafrom.append("file", C_insertApply.C_file);
+    // Datafrom.append("jc_id", C_insertApply.C_id);
+    // Datafrom.append("jc_start", C_insertApply.C_startDate);
+    // Datafrom.append("jc_end", C_insertApply.C_endDate);
+    // Datafrom.append("jc_type", C_insertApply.C_type);
+    // Datafrom.append("job_position", C_insertApply.C_position);
+    // Datafrom.append("job_amount", C_insertApply.C_countPositions);
+    // Datafrom.append("job_payment", C_insertApply.C_moneyRegister);
+    // Datafrom.append("job_no", C_insertApply.C_idPosition);
+
+    // Datafrom.append("C_detailsIMG", C_insertApply.C_detailsIMG);
+    // Datafrom.append(
+    //   "C_detailsHouseRegister",
+    //   C_insertApply.C_detailsHouseRegister
+    // );
+    // Datafrom.append("C_detailsIdCard", C_insertApply.C_detailsIdCard);
+    // Datafrom.append("C_detailDoctor", C_insertApply.C_detailDoctor);
+    // Datafrom.append("C_detailsSoldier", C_insertApply.C_detailsSoldier);
+    // Datafrom.append("C_detailCar", C_insertApply.C_detailCar);
+    // Datafrom.append("C_detailOther", C_insertApply.C_detailOther);
+    // Datafrom.append("C_detailEducation", C_insertApply.C_detailEducation);
+  };
+
+  const HandelSubmitData = async (e) => {
+    e.preventDefault();
+    const DataForm = new FormData();
+    DataForm.append("data", DataAll);
+
+    const res = await InsertAndEditApply(DataForm, C_insertApply);
+    console.log(res);
+
+    SetdetailPosition(initalStatePosition);
+    setSelectedNodes([]);
+    setSelectCheck([]);
   };
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    if (
+      C_insertApply.C_type != "" &&
+      C_insertApply.C_startDate != "" &&
+      C_insertApply.C_endDate != ""
+    ) {
+      setShow(true);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "",
+        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+      });
+      setShow(false);
+    }
+  };
 
   const columns = [
     {
@@ -356,41 +424,33 @@ function Add_register() {
       center: true,
     },
     {
-      name: "ประเภท",
-      selector: (row) => row.position_name,
+      name: "ตำเเหน่ง",
+      selector: (row, idx) => row.job_name,
       width: "15%",
-      cell: (row) => row.position_name,
+      cell: (row, idx) => row.job_name,
       sortable: true,
     },
     {
-      name: "วันที่เริ่มต้น",
-      selector: (row) => moment(row.jc_start).add(543, "year").format("ll"),
+      name: "รหัสประจำตำเเหน่ง",
+      selector: (row) => row.job_no,
       width: "15%",
-      cell: (row) => moment(row.jc_start).add(543, "year").format("ll"),
+      cell: (row) => row.job_no,
       sortable: true,
       center: true,
     },
     {
-      name: "วันที่สิ้นสุด",
-      selector: (row) => moment(row.jc_end).add(543, "year").format("ll"),
-      cell: (row) => moment(row.jc_end).add(543, "year").format("ll"),
+      name: "จำนวน",
+      selector: (row) => row.job_amount,
+      cell: (row) => row.job_amount,
       width: "15%",
       sortable: true,
       center: true,
     },
     {
-      name: "จำนวนตำเเหน่ง",
-      selector: (row) => (row.count_position ? row.count_position : "0"),
+      name: "เอกสารเเนบ",
+      selector: (row) => row.job_file.name,
       sortable: true,
-      cell: (row) => (row.count_position ? row.count_position : "0"),
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "จำนวนผู้สมัคร",
-      selector: (row) => (row.count_apply ? row.count_apply : "0"),
-      sortable: true,
-      cell: (row) => (row.count_apply ? row.count_apply : "0"),
+      cell: (row) => row.job_file.name,
       width: "15%",
       center: true,
     },
@@ -772,6 +832,17 @@ function Add_register() {
     });
   };
 
+  const HandelSelectType = async (e) => {
+    const idTypePosition = e.target.value;
+    console.log(idTypePosition);
+    SetC_insertApply({
+      ...C_insertApply,
+      C_type: idTypePosition,
+    });
+    const res = await getPositionINtype(idTypePosition);
+    setposition(res);
+    console.log(res);
+  };
   const handleSearch = (rows) => {
     console.log(rows);
     // return rows.filter((row) => {
@@ -805,6 +876,17 @@ function Add_register() {
     // });
   };
 
+  const handleCheckboxChange = (event) => {
+    let newArray = [...selectCheck.checkData, event.target.id];
+    // console.log(newArray);
+    if (selectCheck.checkData.includes(event.target.id)) {
+      newArray = newArray.filter((day) => day !== event.target.name);
+    }
+    setSelectCheck({
+      checkData: newArray,
+    });
+  };
+
   useEffect(() => {
     GetData();
   }, []);
@@ -825,418 +907,428 @@ function Add_register() {
               </div>
             </nav>
             <div className="row px-3">
-              <div className="col-md-4">
-                <div className="mb-3">
-                  <label className="form-label">ประเภท</label>
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    value={C_insertApply.C_type}
-                    onChange={(e) => {
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_type: e.target.value,
-                      });
-                    }}
-                  >
-                    <option>เลือก</option>
-                    {positionType.map((val, idx) => (
-                      <option key={idx} value={val.id}>
-                        {val.name}
-                      </option>
-                    ))}
-                  </select>
+              <form>
+                <div className="col-md-4">
+                  <div className="mb-3">
+                    <label className="form-label">ประเภท</label>
+                    <select
+                      className="form-select"
+                      aria-label="Default select example"
+                      value={C_insertApply.C_type}
+                      required
+                      onChange={(e) => {
+                        SetC_insertApply({
+                          ...C_insertApply,
+                          C_type: e.target.value,
+                        });
+                      }}
+                    >
+                      <option>เลือก</option>
+                      {positionType.map((val, idx) => (
+                        <option key={idx} value={val.id}>
+                          {val.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">วันที่เริ่ม</label>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale="th"
-                >
-                  <DatePicker
-                    className="form-control"
-                    label="วัน/เดือน/ปี"
-                    inputFormat="dd-MM-yyyy"
-                    value={C_insertApply.C_startDate}
-                    onChange={(newValue) => {
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_startDate: newValue,
-                      });
-                    }}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </LocalizationProvider>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">วันที่สิ้นสุด</label>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale="th"
-                >
-                  <DatePicker
-                    className="form-control"
-                    label="วัน/เดือน/ปี"
-                    inputFormat="dd-MM-yyyy"
-                    value={C_insertApply.C_endDate}
-                    onChange={(newValue) => {
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_endDate: newValue,
-                      });
-                    }}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </LocalizationProvider>
-              </div>
-              <div className="col-md-12 pb-4">
-                <div className="float-end pt-2">
-                  <button
-                    className="button_Add_Regiser mx-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
+                <div className="col-md-4">
+                  <label className="form-label">วันที่เริ่ม</label>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
                   >
-                    เพิ่มใบสมัคร
-                  </button>
-                  <div
-                    className="modal fade"
-                    id="exampleModal"
-                    tabIndex={-1}
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      inputFormat="dd-MM-yyyy"
+                      value={dayjs(C_insertApply.C_startDate)}
+                      onChange={(newValue) => {
+                        SetC_insertApply({
+                          ...C_insertApply,
+                          C_startDate: newValue,
+                        });
+                      }}
+                      slotProps={{
+                        textField: { size: "small", required: true },
+                      }}
+                    />
+                  </LocalizationProvider>
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label">วันที่สิ้นสุด</label>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
                   >
-                    <div className="modal-dialog modal-lg">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1
-                            className="modal-title fs-5"
-                            id="exampleModalLabel"
-                          >
-                            เพิ่มตำแหน่ง
-                          </h1>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          />
-                        </div>
-                        <div className="modal-body">
-                          <div className="">
-                            <ul className="nav nav-tabs" id="myTab">
-                              <li className="nav-item">
-                                <a
-                                  href="#home"
-                                  className="nav-link active"
-                                  data-bs-toggle="tab"
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      inputFormat="dd-MM-yyyy"
+                      value={dayjs(C_insertApply.C_endDate)}
+                      onChange={(newValue) => {
+                        SetC_insertApply({
+                          ...C_insertApply,
+                          C_endDate: newValue,
+                        });
+                      }}
+                      slotProps={{
+                        textField: { size: "small", required: true },
+                      }}
+                    />
+                  </LocalizationProvider>
+                </div>
+                <div className="col-md-12 pb-4">
+                  <div className="float-end pt-2">
+                    <button
+                      type="submit"
+                      className="button_Add_Regiser mx-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                    >
+                      เพิ่มใบสมัคร
+                    </button>
+                    <div
+                      className="modal fade"
+                      id="exampleModal"
+                      tabIndex={-1}
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h1
+                              className="modal-title fs-5"
+                              id="exampleModalLabel"
+                            >
+                              เพิ่มตำแหน่ง
+                            </h1>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            />
+                          </div>
+                          <div className="modal-body">
+                            <div className="">
+                              <ul className="nav nav-tabs" id="myTab">
+                                <li className="nav-item">
+                                  <a
+                                    href="#home"
+                                    className="nav-link active"
+                                    data-bs-toggle="tab"
+                                  >
+                                    หน้าหลัก
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="#profile"
+                                    className="nav-link"
+                                    data-bs-toggle="tab"
+                                  >
+                                    หน่วยงาน
+                                  </a>
+                                </li>
+                              </ul>
+                              <div className="tab-content">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="home"
                                 >
-                                  หน้าหลัก
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  href="#profile"
-                                  className="nav-link"
-                                  data-bs-toggle="tab"
-                                >
-                                  หน่วยงาน
-                                </a>
-                              </li>
-                            </ul>
-                            <div className="tab-content">
-                              <div
-                                className="tab-pane fade show active"
-                                id="home"
-                              >
-                                <form onSubmit={HandleFromInsertOrEdit}>
-                                  <div className="row ">
-                                    <div className="col-md-6 border-end">
-                                      <div className="row ">
-                                        <div className="col-md-12 ">
-                                          <div className="mb-3 mt-2">
-                                            <label
-                                              htmlFor="exampleInputEmail1"
-                                              className="form-label"
-                                            >
-                                              ตำแหน่ง
-                                            </label>
-                                            <select
-                                              className="form-select"
-                                              aria-label="Default select example"
-                                              value={C_insertApply.C_position}
-                                              onChange={(e) => {
-                                                console.log(e);
-                                                SetC_insertApply({
-                                                  ...C_insertApply,
-                                                  C_position: e.target.value,
-                                                });
-                                              }}
-                                            >
-                                              <option value={""}>เลือก</option>
-                                              <option value={1}>One</option>
-                                            </select>
+                                  <form onSubmit={HandleFromInsertOrEdit}>
+                                    <div className="row ">
+                                      <div className="col-md-6 border-end">
+                                        <div className="row ">
+                                          <div className="col-md-12 ">
+                                            <div className="mb-3 mt-2">
+                                              <label
+                                                htmlFor="exampleInputEmail1"
+                                                className="form-label"
+                                              >
+                                                ตำแหน่ง
+                                              </label>
+                                              <select
+                                                className="form-select"
+                                                aria-label="Default select example"
+                                                value={C_insertApply.C_position}
+                                                onChange={(e) => {
+                                                  console.log(e);
+                                                  SetC_insertApply({
+                                                    ...C_insertApply,
+                                                    C_position: e.target.value,
+                                                  });
+                                                }}
+                                              >
+                                                <option value={""}>
+                                                  เลือก
+                                                </option>
+                                                <option value={1}>One</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <div className="mb-3">
+                                              <label
+                                                htmlFor="exampleInputEmail1"
+                                                className="form-label"
+                                              >
+                                                จำนวน
+                                              </label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <div className="mb-3">
+                                              <label
+                                                htmlFor="exampleInputEmail1"
+                                                className="form-label"
+                                              >
+                                                ค่าสมัคร
+                                              </label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                              ></input>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <div className="mb-3">
+                                              <label
+                                                htmlFor="exampleInputEmail1"
+                                                className="form-label"
+                                              >
+                                                รหัสประจำตำแหน่ง
+                                              </label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="รหัสประจำตำแหน่ง"
+                                              ></input>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <div className="mb-3">
+                                              <label
+                                                htmlFor="exampleInputEmail1"
+                                                className="form-label"
+                                              >
+                                                เอกสารไฟล์แนบ
+                                              </label>
+                                              <input
+                                                className="form-control"
+                                                type="file"
+                                                id="formFile"
+                                              />
+                                            </div>
                                           </div>
                                         </div>
-                                        <div className="col-md-12">
-                                          <div className="mb-3">
-                                            <label
-                                              htmlFor="exampleInputEmail1"
-                                              className="form-label"
-                                            >
-                                              จำนวน
-                                            </label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <div className="d-flex justify-content-between mt-2">
+                                          <p>เอกสารที่ต้องแนบ</p>
+                                          <div className="form-check">
                                             <input
-                                              type="text"
-                                              className="form-control"
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              defaultValue
+                                              id="flexCheckDefault"
                                             />
+                                            <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                            >
+                                              เลือกทั้งหมด
+                                            </label>
                                           </div>
                                         </div>
-                                        <div className="col-md-12">
-                                          <div className="mb-3">
-                                            <label
-                                              htmlFor="exampleInputEmail1"
-                                              className="form-label"
-                                            >
-                                              ค่าสมัคร
-                                            </label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                            ></input>
+                                        <div className="row">
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                รูปถ่าย
+                                              </label>
+                                            </div>
                                           </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="mb-3">
-                                            <label
-                                              htmlFor="exampleInputEmail1"
-                                              className="form-label"
-                                            >
-                                              รหัสประจำตำแหน่ง
-                                            </label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              placeholder="รหัสประจำตำแหน่ง"
-                                            ></input>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาทะเบียนบ้าน
+                                              </label>
+                                            </div>
                                           </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="mb-3">
-                                            <label
-                                              htmlFor="exampleInputEmail1"
-                                              className="form-label"
-                                            >
-                                              เอกสารไฟล์แนบ
-                                            </label>
-                                            <input
-                                              className="form-control"
-                                              type="file"
-                                              id="formFile"
-                                            />
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาบัตรประจำตัวประชาชน
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                ใบรับรองแพทย์
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาหลักฐานเกี่ยวกับการเกณฑ์ทหาร
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาใบอนุญาตขับรถยนต์
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาเอกสารหลักฐานอื่นๆ
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div className="col-md-12 mb-3">
+                                            <div className="form-check">
+                                              <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultValue
+                                                id="flexCheckDefault"
+                                              />
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="flexCheckDefault"
+                                              >
+                                                สำเนาวุติการศึกษา
+                                              </label>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="col-md-6">
-                                      <div className="d-flex justify-content-between mt-2">
-                                        <p>เอกสารที่ต้องแนบ</p>
-                                        <div className="form-check">
-                                          <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            defaultValue
-                                            id="flexCheckDefault"
-                                          />
-                                          <label
-                                            className="form-check-label"
-                                            htmlFor="flexCheckDefault"
-                                          >
-                                            เลือกทั้งหมด
-                                          </label>
-                                        </div>
-                                      </div>
-                                      <div className="row">
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              รูปถ่าย
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาทะเบียนบ้าน
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาบัตรประจำตัวประชาชน
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              ใบรับรองแพทย์
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาหลักฐานเกี่ยวกับการเกณฑ์ทหาร
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาใบอนุญาตขับรถยนต์
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาเอกสารหลักฐานอื่นๆ
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                          <div className="form-check">
-                                            <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              defaultValue
-                                              id="flexCheckDefault"
-                                            />
-                                            <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                            >
-                                              สำเนาวุติการศึกษา
-                                            </label>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
-                              </div>
-                              <div className="tab-pane fade" id="profile">
-                                <TreeView
-                                  multiSelect
-                                  defaultCollapseIcon={<ExpandMoreIcon />}
-                                  defaultExpandIcon={<ChevronRightIcon />}
-                                  selected={selectedNodes}
-                                  defaultExpanded={[
-                                    "1",
-                                    "2",
-                                    "7",
-                                    "11",
-                                    "14",
-                                    "19",
-                                    "23",
-                                    "25",
-                                    "28",
-                                    "32",
-                                  ]}
-                                >
-                                  {nodeTree.map((node) => renderTree(node))}
-                                </TreeView>
+                                  </form>
+                                </div>
+                                <div className="tab-pane fade" id="profile">
+                                  <TreeView
+                                    multiSelect
+                                    defaultCollapseIcon={<ExpandMoreIcon />}
+                                    defaultExpandIcon={<ChevronRightIcon />}
+                                    selected={selectedNodes}
+                                    defaultExpanded={[
+                                      "1",
+                                      "2",
+                                      "7",
+                                      "11",
+                                      "14",
+                                      "19",
+                                      "23",
+                                      "25",
+                                      "28",
+                                      "32",
+                                    ]}
+                                  >
+                                    {nodeTree.map((node) => renderTree(node))}
+                                  </TreeView>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="modal-footer">
-                          <div className="col-md-12 text-center">
-                            <button
-                              type="button"
-                              className="button_Add_Regiser mx-1"
-                            >
-                              บันทึก
-                            </button>
-                            <button
-                              type="button"
-                              className="button_Back mx-1"
-                              data-bs-dismiss="modal"
-                            >
-                              ยกเลิก
-                            </button>
+                          <div className="modal-footer">
+                            <div className="col-md-12 text-center">
+                              <button
+                                type="button"
+                                className="button_Add_Regiser mx-1"
+                              >
+                                บันทึก
+                              </button>
+                              <button
+                                type="button"
+                                className="button_Back mx-1"
+                                data-bs-dismiss="modal"
+                              >
+                                ยกเลิก
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
               <div className="col-md-12 my-auto">
                 <div className="d-flex justify-content-between">
                   <div className="py-3">
@@ -1297,28 +1389,25 @@ function Add_register() {
                 </div>
               </div>
             </nav>
+
             <div className="row px-3">
               <div className="col-md-4">
                 <div className="mb-3">
                   <label className="form-label">ประเภท</label>
                   <select
                     className="form-select"
-                    aria-label="Default select example"
                     value={C_insertApply.C_type}
                     required
-                    onChange={(e) => {
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_type: e.target.value,
-                      });
-                    }}
+                    onChange={HandelSelectType}
                   >
-                    <option>เลือก</option>
-                    {positionType.map((val, idx) => (
-                      <option key={idx} value={val.id}>
-                        {val.name}
-                      </option>
-                    ))}
+                    <option value="">เลือก</option>
+                    {positionType.map((val, idx) => {
+                      return (
+                        <option key={idx} value={val.id}>
+                          {val.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
               </div>
@@ -1332,12 +1421,15 @@ function Add_register() {
                     className="form-control"
                     label="วัน/เดือน/ปี"
                     inputFormat="dd-MM-yyyy"
-                    value={C_insertApply.C_startDate}
+                    value={dayjs(C_insertApply.C_startDate)}
                     required
                     onChange={(newValue) => {
+                      let dataDate = moment(newValue)
+                        .add(543, "year")
+                        .format("YYYY/MM/DD");
                       SetC_insertApply({
                         ...C_insertApply,
-                        C_startDate: newValue,
+                        C_startDate: dataDate,
                       });
                     }}
                     slotProps={{ textField: { size: "small" } }}
@@ -1354,12 +1446,15 @@ function Add_register() {
                     className="form-control"
                     label="วัน/เดือน/ปี"
                     inputFormat="dd-MM-yyyy"
-                    value={C_insertApply.C_endDate}
+                    value={dayjs(C_insertApply.C_endDate)}
                     required
                     onChange={(newValue) => {
+                      let dataDate = moment(newValue)
+                        .add(543, "year")
+                        .format("YYYY/MM/DD");
                       SetC_insertApply({
                         ...C_insertApply,
-                        C_endDate: newValue,
+                        C_endDate: dataDate,
                       });
                     }}
                     slotProps={{ textField: { size: "small" } }}
@@ -1370,11 +1465,11 @@ function Add_register() {
                 <div className="float-end pt-2">
                   <button
                     className="button_Add_Regiser mx-1"
-                    type="submit"
                     onClick={handleShow}
                   >
                     เพิ่มใบสมัคร
                   </button>
+
                   <Modal show={show} onHide={handleClose} size="lg">
                     <form onSubmit={HandleFromInsertOrEdit}>
                       <Modal.Header closeButton>
@@ -1404,18 +1499,24 @@ function Add_register() {
                                         value={C_insertApply.C_position}
                                         required
                                         onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_position: e.target.value,
+                                          SetdetailPosition({
+                                            ...detailPosition,
+                                            job_position: e.target.value,
+                                            job_name:
+                                              e.target.selectedOptions[0].text,
                                           });
                                         }}
                                       >
-                                        <option value="">เลือก</option>;
-                                        {positionType.map((value, idx) => {
+                                        <option value="">เลือก</option>
+                                        {postion.map((value, idx) => {
                                           // console.log(value);
                                           return (
-                                            <option value={value.id} key={idx}>
-                                              {value.name}
+                                            <option
+                                              value={value.p_id}
+                                              name={value.p_name}
+                                              key={idx}
+                                            >
+                                              {value.p_name}
                                             </option>
                                           );
                                         })}
@@ -1436,9 +1537,9 @@ function Add_register() {
                                         value={C_insertApply.C_countPositions}
                                         required
                                         onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_countPositions: e.target.value,
+                                          SetdetailPosition({
+                                            ...detailPosition,
+                                            job_amount: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1458,9 +1559,9 @@ function Add_register() {
                                         value={C_insertApply.C_moneyRegister}
                                         required
                                         onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_moneyRegister: e.target.value,
+                                          SetdetailPosition({
+                                            ...detailPosition,
+                                            job_payment: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1481,9 +1582,9 @@ function Add_register() {
                                         value={C_insertApply.C_idPosition}
                                         required
                                         onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_idPosition: e.target.value,
+                                          SetdetailPosition({
+                                            ...detailPosition,
+                                            job_no: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1502,9 +1603,9 @@ function Add_register() {
                                         type="file"
                                         id="formFile"
                                         onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_file: e.target.files[0],
+                                          SetdetailPosition({
+                                            ...detailPosition,
+                                            job_file: e.target.files[0],
                                           });
                                         }}
                                       />
@@ -1536,14 +1637,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue=""
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailsIMG: e.target.checked,
-                                          });
-                                        }}
-                                        id="flexCheckDefault"
+                                        value="1"
+                                        id="1"
+                                        onChange={handleCheckboxChange}
+                                        // id="flexCheckDefault"
                                       />
                                       <label
                                         className="form-check-label"
@@ -1558,15 +1655,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue=""
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailsHouseRegister:
-                                              e.target.checked,
-                                          });
-                                        }}
-                                        id="flexCheckDefault"
+                                        value="2"
+                                        id="2"
+                                        onChange={handleCheckboxChange}
+                                        // id="flexCheckDefault"
                                       />
                                       <label
                                         className="form-check-label"
@@ -1581,14 +1673,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailsIdCard: e.target.checked,
-                                          });
-                                        }}
+                                        value="3"
+                                        id="3"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1603,14 +1691,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailDoctor: e.target.checked,
-                                          });
-                                        }}
+                                        value="4"
+                                        id="4"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1625,14 +1709,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailsSoldier: e.target.checked,
-                                          });
-                                        }}
+                                        value="5"
+                                        id="5"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1647,14 +1727,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailCar: e.target.checked,
-                                          });
-                                        }}
+                                        value="6"
+                                        id="6"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1669,14 +1745,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailOther: e.target.checked,
-                                          });
-                                        }}
+                                        value="7"
+                                        id="7"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1691,14 +1763,10 @@ function Add_register() {
                                       <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        defaultValue
-                                        id="flexCheckDefault"
-                                        onChange={(e) => {
-                                          SetC_insertApply({
-                                            ...C_insertApply,
-                                            C_detailEducation: e.target.checked,
-                                          });
-                                        }}
+                                        value="8"
+                                        id="8"
+                                        // id="flexCheckDefault"
+                                        onChange={handleCheckboxChange}
                                       />
                                       <label
                                         className="form-check-label"
@@ -1747,7 +1815,7 @@ function Add_register() {
                               className="mx-1 button_Add_Regiser"
                               // onClick={handleClose}
                             >
-                              บันทึก {JSON.stringify(selectedNodes)}
+                              บันทึก
                             </Button>
                             <Button
                               // variant="secondary"
@@ -1789,14 +1857,19 @@ function Add_register() {
               <div className="col-md-12">
                 <DataTable
                   columns={columns}
-                  data={stateForDataTable}
+                  data={DataAll.detailPosition}
                   pagination
                   responsive
                 />
               </div>
               <div className="col-md-12">
                 <div className="float-end py-2">
-                  <button className="button_Regiser mx-1">บันทึก</button>
+                  <button
+                    className="button_Regiser mx-1"
+                    onClick={HandelSubmitData}
+                  >
+                    บันทึก
+                  </button>
                   <NavLink to="/Dashboard/Apply">
                     <button className="button_Back mx-1">ย้อนกลับ</button>
                   </NavLink>

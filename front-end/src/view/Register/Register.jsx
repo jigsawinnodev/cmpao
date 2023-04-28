@@ -1,17 +1,33 @@
-import React from "react";
-// import "../App.css";
+import React, { useContext, useState, createContext, useEffect } from "react";
 import style from "./register.module.css";
 import Navbar from "../../components/Navbar";
 import Menu from "../../components/menu/Menu";
+import { Vertify_token } from "../../service/for_user";
+const UserContext = createContext();
 function Register() {
+  const [dataVertify, setDataVertify] = useState({});
+  const Verifytoken = async () => {
+    const token = localStorage.getItem("token");
+    const resVerify = await Vertify_token(token);
+    if (resVerify.status) {
+      setDataVertify(resVerify.data);
+    } else {
+      navigate("/");
+    }
+  };
+  useEffect(() => {
+    Verifytoken();
+  }, []);
   return (
     <>
-      <div className={style.background_body}>
-        <Navbar />
-        <Menu />
-      </div>
+      <UserContext.Provider value={dataVertify}>
+        <div className={style.background_body}>
+          <Navbar />
+          <Menu />
+        </div>
+      </UserContext.Provider>
     </>
   );
 }
-
+export { UserContext };
 export default Register;

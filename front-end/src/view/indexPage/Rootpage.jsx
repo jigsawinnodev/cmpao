@@ -16,16 +16,14 @@ import {
   Get_person_All,
   Get_person_NoPayment,
   LoginUser,
+  ShowDetailDataUser_Last,
+  Show_DetailPositions,
 } from "../../service/for_user";
 import { useNavigate } from "react-router-dom";
 function Rootpage() {
   const navigate = useNavigate();
-  const [person, SetPerson] = useState({
-    count: "",
-    person_all: "",
-    person_noPayment: "",
-  });
-
+  const [person, SetPerson] = useState([]);
+  const [position, setPosition] = useState([]);
   const [dataForm, SetdataForm] = useState({
     username: "",
     password: "",
@@ -34,7 +32,7 @@ function Rootpage() {
   const HandleForm = async (e) => {
     e.preventDefault();
     const res = await LoginUser(dataForm);
-    console.log(res);
+    // console.log(res);
     if (res.status == "success") {
       localStorage.setItem("token", res.token);
       if (res.is_accept == null) {
@@ -51,22 +49,22 @@ function Rootpage() {
     }
   };
 
-  const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
-  const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
+  const THREE_DAYS_IN_MS = 10 * 1000;
+  // const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
   const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
-  const dateTimeAfterSevenDays = NOW_IN_MS + SEVEN_DAYS_IN_MS;
+  // const dateTimeAfterSevenDays = NOW_IN_MS + SEVEN_DAYS_IN_MS;
+
   const GetData = async () => {
     const res = await Get_person_NoSuccess();
     const p_all = await Get_person_All();
     const p_NoPayment = await Get_person_NoPayment();
-    console.log(p_NoPayment);
-    SetPerson({
-      count: res[0].person,
-      person_all: p_all[0].person,
-      person_noPayment: p_NoPayment[0].person_NotPay,
-    });
+    const detailUser = await ShowDetailDataUser_Last();
+    const detailPosition = await Show_DetailPositions();
+    // console.log(detailUser);
+    SetPerson(detailUser);
+    setPosition(detailPosition);
   };
 
   useEffect(() => {
@@ -78,8 +76,8 @@ function Rootpage() {
         <img className="wave" src={Wave} />
         <div className="container">
           {/* <div className="img"> */}
-          <div className="row pt-3 my-auto  h-100">
-            <div className="col-md-6 my-auto px-3 order-2 order-md-1 py-3">
+          <div className="row pt-1 my-auto  h-100">
+            <div className="col-md-6 my-auto px-3 order-2 order-md-1 pb-3 pt-3">
               <div className="row gy-3">
                 <div className="col-md-6 ">
                   <div
@@ -88,12 +86,9 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic d-flex">
-                        จำนวนผู้สมัคร
-                        <p className="m-0" style={{ color: "red" }}>
-                          (รายวัน)
-                        </p>
+                        ตำเเหน่งที่เปิดรับสมัคร
                       </div>
-                      <h3 className="">578 คน</h3>
+                      <h3 className="">50 ตำเเหน่ง</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -121,7 +116,7 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้สมัครทั้งหมด</div>
-                      <h3 className="">{person.person_all} คน</h3>
+                      <h3 className="">{person.count_applicant_all} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -151,7 +146,7 @@ function Rootpage() {
                       <div className="box-topic" style={{ fontSize: "15px" }}>
                         จำนวนผู้ที่เอกสารไม่สมบูรณ์
                       </div>
-                      <h3 className="">{person.count} คน</h3>
+                      <h3 className="">{person.count_warm} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -179,7 +174,7 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
-                      <h3 className="">{person.person_noPayment} คน</h3>
+                      <h3 className="">{person.count_person_pay_no} คน</h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -210,8 +205,16 @@ function Rootpage() {
                       className="sales-details px-3"
                       style={{ fontSize: "16px" }}
                     >
-                      <h5 className="text-center py-4">
+                      <h5 className="text-center py-4 d-flex justify-content-center my-auto">
                         ตำเเหน่งที่เปิดรับสมัคร
+                        {moment(person.jc_end).format("DD/MM/YYYY") >=
+                        moment().add("year", 543).format("DD/MM/YYYY") ? (
+                          <p className="m-0">เปิดรับสมัคร</p>
+                        ) : (
+                          <p className="m-0 mx-1" style={{ color: "red" }}>
+                            ปิดรับสมัคร
+                          </p>
+                        )}
                       </h5>
                       <div
                         className="table-responsive"
@@ -227,36 +230,22 @@ function Rootpage() {
                             </tr>
                           </thead>
                           <tbody className="overflow-auto">
-                            <tr>
-                              <td>พนักงานธุรการ</td>
-                              <td className="text-center">1 ตำเเหน่ง</td>
-                              <td className="text-center">168 ราย</td>
-                            </tr>
-                            <tr>
-                              <td>พนักงานการเกษตร</td>
-                              <td className="text-center">3 ตำเเหน่ง</td>
-                              <td className="text-center">122 ราย</td>
-                            </tr>
-                            <tr>
-                              <td>พนักงานดับเพลิง</td>
-                              <td className="text-center">5 ตำเเหน่ง</td>
-                              <td className="text-center">178 ราย</td>
-                            </tr>
-                            <tr>
-                              <td>เจ้าหน้าที่ประชาสัมพันธ์</td>
-                              <td className="text-center">2 ตำเเหน่ง</td>
-                              <td className="text-center">90 ราย</td>
-                            </tr>
-                            <tr>
-                              <td>พนักงานคอมพิวเตอร์</td>
-                              <td className="text-center">5 ตำเเหน่ง</td>
-                              <td className="text-center">156 ราย</td>
-                            </tr>
-                            <tr>
-                              <td>พนักราชการ</td>
-                              <td className="text-center">2 ตำเเหน่ง</td>
-                              <td className="text-center">580 ราย</td>
-                            </tr>
+                            {position.map((value, idx) => {
+                              // console.log(value);
+                              return (
+                                <tr key={idx}>
+                                  <td>{value.position_name}</td>
+                                  <td className="text-center">
+                                    {value.count_position
+                                      ? value.count_position + " ตำเเหน่ง"
+                                      : 0 + " ตำเเหน่ง"}
+                                  </td>
+                                  <td className="text-center">
+                                    {value.count_apply + " ราย"}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </Table>
                       </div>

@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logo4 from "../../assets/img/icon_4.png";
 import { Link, Routes, Route, NavLink } from "react-router-dom";
 import Style from "./EmptyWork.module.css";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
+import { Getjob_user } from "../../service/for_user";
+
+const token = localStorage.getItem("token");
 function EmptyWork() {
+  const [GetJobAll, setGetJobAll] = useState([]);
+  const [litmit, setlimit] = useState(8);
+  const FetData = async () => {
+    const res = await Getjob_user(8, token);
+    setGetJobAll(res);
+    console.log(res);
+  };
+  useEffect(() => {
+    FetData();
+  }, []);
   return (
     <>
       <div className="">
@@ -29,41 +42,49 @@ function EmptyWork() {
 
           <div className="px-3 py-2">
             <ul className="list-group ">
-              <NavLink to={"DetailWork/1"} className="text-decoration-none">
-                <li className="list-group-item py-2">
-                  <div className="row m-0">
-                    <div className="col-md-1 text-center my-auto">
-                      <i
-                        className="bi bi-megaphone-fill"
-                        style={{ fontSize: "25px" }}
-                      ></i>
-                    </div>
-                    <div className="col-md-7 my-auto text-center text-md-start">
-                      <p className="m-0 ">
-                        รับสมัครสอบคัดเลือกข้าราชการองค์การบริหารส่วนจังหวัด
-                      </p>
-                      <p
-                        className="m-0 fw-bold"
-                        style={{ color: "#009e22", fontSize: "14px" }}
-                      >
-                        ตั้งแต่วันที่ 4 เม.ย. 2566 - 22 เม.ย. 2566
-                      </p>
-                      <p
-                        className="m-0 fw-bold"
-                        style={{ color: "red", fontSize: "14px" }}
-                      >
-                        อัพเดทวันที่ 4 เม.ย. 2566 (ประเภท ข้าราชการ)
-                      </p>
-                    </div>
-                    <div className="col-md-4 text-center my-auto">
-                      <p className="m-0">
-                        {moment().add(543, "year").format("LL")} ( 134 ผู้เข้าชม
-                        )
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </NavLink>
+              {GetJobAll.map((value, idx) => {
+                return (
+                  <NavLink
+                    to={`Position/${value.jc_id}`}
+                    className="text-decoration-none"
+                    key={idx}
+                  >
+                    <li className="list-group-item py-2">
+                      <div className="row m-0">
+                        <div className="col-md-1 text-center my-auto">
+                          <i
+                            className="bi bi-megaphone-fill"
+                            style={{ fontSize: "25px" }}
+                          ></i>
+                        </div>
+                        <div className="col-md-7 my-auto text-center text-md-start">
+                          <p className="m-0 ">ประเภท{value.position_name}</p>
+                          <p
+                            className="m-0 fw-bold"
+                            style={{ color: "#009e22", fontSize: "14px" }}
+                          >
+                            ตั้งแต่วันที่{" "}
+                            {moment(value.jc_start)
+                              .add(543, "year")
+                              .format("LL") +
+                              " - " +
+                              moment(value.jc_end)
+                                .add(543, "year")
+                                .format("LL")}
+                          </p>
+                        </div>
+                        <div className="col-md-4 text-center my-auto">
+                          <p className="m-0">
+                            {moment().add(543, "year").format("LL")} ( 134
+                            ผู้เข้าชม )
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </NavLink>
+                );
+              })}
+              {/* 
               <NavLink className="text-decoration-none" to={"DetailWork/2"}>
                 <li className="list-group-item py-2">
                   <div className="row m-0">
@@ -310,7 +331,7 @@ function EmptyWork() {
                     </div>
                   </div>
                 </li>
-              </NavLink>
+              </NavLink> */}
             </ul>
             <div className="row m-0">
               <div className="col-md-12">

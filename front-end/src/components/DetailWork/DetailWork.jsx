@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import IconPDF from "../../assets/img/iconPDF.png";
 import { useNavigate } from "react-router-dom";
@@ -7,13 +7,33 @@ import "moment/locale/th";
 moment.locale("th");
 import "./DetailWork.css";
 import { NavLink } from "react-router-dom";
+import {
+  GetFileposition_injob,
+  GetDetailposition_injob,
+} from "../../service/for_user";
+import { Link } from "react-router-dom";
+const token = localStorage.getItem("token");
 function DetailWork() {
   let { id } = useParams();
   let navigate = useNavigate();
+  const [DataAndFile, SetDataAndFile] = useState([]);
+  const [DataDetail, SetDataDetail] = useState([]);
+  const GetData = async () => {
+    const res = await GetFileposition_injob(id, token);
+    const resDetail = await GetDetailposition_injob(id, token);
+    console.log(resDetail);
+    SetDataDetail(resDetail);
+    SetDataAndFile(res);
+    console.log(res);
+  };
+
   const goBack = () => {
     console.log("test");
     navigate("/register");
   };
+  useEffect(() => {
+    GetData();
+  }, []);
   return (
     <>
       <div className="">
@@ -31,24 +51,29 @@ function DetailWork() {
               <h3 className="m-0 fw-bold text-center py-3">
                 รายละเอียดตำแหน่งงาน
               </h3>
-              <div className="">
-                <p className="m-0" style={{ fontSize: "20px" }}>
-                  รับสมัครสอบคัดเลือกข้าราชการองค์การบริหารส่วนจังหวัด
+              <div className="text-center py-2">
+                <p className="m-0" style={{ fontSize: "22px" }}>
+                  รับสมัครสอบคัดเลือก{DataDetail.name}
                 </p>
               </div>
               <div className="text-end d-flex justify-md-content-between justify-content-between flex-warp py-md-2 py-2 px-md-5">
                 <div className="my-auto">
                   <p className="m-0" style={{ fontSize: "20px" }}>
-                    1.ตำแหน่ง testing
+                    1.ตำแหน่ง {DataDetail.p_name}
                   </p>
                 </div>
                 <div className="d-flex">
-                  <button className="buttonDownloadPDF" type="button">
+                  <Link
+                    to={DataAndFile.job_file}
+                    target="_blank"
+                    className="buttonDownloadPDF text-decoration-none"
+                    download
+                  >
                     <span className="button__text">Download</span>
                     <span className="button__icon">
                       <i className="bi bi-download svg"></i>
                     </span>
-                  </button>
+                  </Link>
                   <div className="mt-auto">
                     <p
                       className="m-0 mt-auto mx-1"
@@ -64,7 +89,7 @@ function DetailWork() {
                   name="MyFrame"
                   width="100%"
                   height="600px"
-                  src="http://www.rpu.ac.th/Library_web/doc/RC_RR/2554_Market_Nachaphat.pdf"
+                  src={DataAndFile.job_file}
                 ></iframe>
               </div>
             </div>
@@ -83,7 +108,7 @@ function DetailWork() {
             </div>
             <div className="col-md-12">
               <div className="py-3 text-center">
-                <NavLink to="FormWork">
+                <NavLink to={"/register/DetailWork/FormWork/" + id}>
                   <button type="button" className="btn btn-secondary">
                     ลงทะเบียนสมัครงาน
                   </button>

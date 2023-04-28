@@ -4,7 +4,12 @@ import IconAdmin from "../../../src/assets/img/admin.png";
 import moment from "moment/moment";
 import Style from "./FormWork.module.css";
 import { useNavigate, NavLink, useParams } from "react-router-dom";
-import { GetpreName, GetTbl_religion, GetBloodType } from "../../service/api";
+import {
+  GetpreName,
+  GetTbl_religion,
+  GetBloodType,
+  GetStatus_relationship,
+} from "../../service/api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
@@ -14,21 +19,39 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-
+import { Vertify_token, Getpostion_injob } from "../../service/for_user";
 import "dayjs/locale/th";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
+import dayjs from "dayjs";
+var token = localStorage.getItem("token");
 function FormWork() {
-  let { id } = useParams();
+  var { id } = useParams();
   let navigate = useNavigate();
   const goBack = () => {
     navigate(`/register/DetailWork/${id}`);
   };
+  const [dataVertify, setDataVertify] = useState({});
+  const [position_injob, setPosition_injob] = useState([]);
+  const Verifytoken = async () => {
+    const token = localStorage.getItem("token");
+    const resVerify = await Vertify_token(token);
+    let data_Position_injob = await Getpostion_injob(id, token);
+    console.log(data_Position_injob);
+
+    setPosition_injob(data_Position_injob[0]);
+    if (resVerify.status) {
+      setDataVertify(resVerify.data);
+    } else {
+      navigate("/");
+    }
+  };
+
   const dateFormat = "DD/MM/YYYY";
   const [openModal_1, setOpenModal_1] = useState(false);
   const [openModal_2, setOpenModal_2] = useState(false);
   const [openModal_3, setOpenModal_3] = useState(false);
-
+  const [Datarelationship, setDatarelationship] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [calDate, setCalDate] = useState(null);
   const [endDate, setendDate] = useState(null);
@@ -78,7 +101,11 @@ function FormWork() {
     let datatitleName = await GetpreName();
     let data_religion = await GetTbl_religion();
     let data_Bloodtype = await GetBloodType();
-    console.log(data_Bloodtype);
+
+    // console.log(data_Position_injob);
+    let relationship = await GetStatus_relationship();
+
+    setDatarelationship(relationship);
     setbloodType(data_Bloodtype);
     setTitlename(datatitleName);
     setReligion(data_religion);
@@ -86,6 +113,7 @@ function FormWork() {
 
   useEffect(() => {
     fetData();
+    Verifytoken();
   }, []);
   return (
     <>
@@ -119,8 +147,16 @@ function FormWork() {
                         <select
                           className="form-select"
                           aria-label="Default select example"
+                          required
+                          value={dataVertify.m_prename}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_prename: e.target.value,
+                            });
+                          }}
                         >
-                          <option>เลือก</option>
+                          <option value="">เลือก</option>
                           {titlename.map((val, idx) => {
                             return (
                               <option key={idx} value={val.prename_id}>
@@ -136,25 +172,65 @@ function FormWork() {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="form-label">ชื่อ</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={dataVertify.m_firstname}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_firstname: e.target.value,
+                            });
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="form-label">นามสกุล</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={dataVertify.m_lastname}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_lastname: e.target.value,
+                            });
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="form-label">สัญชาติ</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={dataVertify.m_nation}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_nation: e.target.value,
+                            });
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="form-label">เชื้อชาติ</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={dataVertify.m_race}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_race: e.target.value,
+                            });
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -163,6 +239,13 @@ function FormWork() {
                         <select
                           className="form-select"
                           aria-label="Default select example"
+                          value={dataVertify.m_religion}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_religion: e.target.value,
+                            });
+                          }}
                         >
                           <option>เลือก</option>
                           {religion.map((val, idx) => {
@@ -181,8 +264,15 @@ function FormWork() {
                         <select
                           className="form-select"
                           aria-label="Default select example"
+                          value={dataVertify.m_blood}
+                          onChange={(e) => {
+                            setDataVertify({
+                              ...dataVertify,
+                              m_blood: e.target.value,
+                            });
+                          }}
                         >
-                          <option>เลือก</option>
+                          <option value="">เลือก</option>
                           {bloodType.map((val, idx) => {
                             return (
                               <option key={idx} value={val.blood_id}>
@@ -209,9 +299,15 @@ function FormWork() {
                             className="form-control"
                             label="วัน/เดือน/ปี"
                             inputFormat="dd-MM-yyyy"
-                            value={calDate}
+                            value={dayjs(dataVertify.m_birthday)}
                             onChange={(newValue) => {
-                              setCalDate(newValue);
+                              let newTime =
+                                moment(newValue).format("YYYY-MM-DD");
+                              // console.log(newValue);
+                              setDataVertify({
+                                ...dataVertify,
+                                m_birthday: newTime,
+                              });
                             }}
                             slotProps={{ textField: { size: "small" } }}
                           />
@@ -220,7 +316,12 @@ function FormWork() {
                     </div>
                     <div className="col-md-6 my-auto">
                       <div className="text-center ">
-                        <p className="m-0">อายุ 0 ปี 0 เดือน 0 วัน</p>
+                        <p className="m-0">
+                          {dataVertify.m_birthday}
+                          อายุ {moment().diff(dataVertify.m_birthday, "years")}
+                          ปี เดือน{" "}
+                          {moment().diff(dataVertify.m_birthday, "day")} วัน
+                        </p>
                       </div>
                     </div>
                     <div className="col-md-12 py-2 mb-3">
@@ -230,93 +331,50 @@ function FormWork() {
                         </div>
                         <div className="col-md-9">
                           <div className="row m-0">
-                            <div className="col-md-3">
-                              <div>
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault1"
-                                />
-                                <label
-                                  className="form-check-label mx-2"
-                                  htmlFor="flexRadioDefault1"
-                                >
-                                  โสด
-                                </label>
-                              </div>
-                            </div>
-                            <div className="col-md-3">
-                              <div>
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault1"
-                                />
-                                <label
-                                  className="form-check-label mx-2"
-                                  htmlFor="flexRadioDefault1"
-                                >
-                                  สมรส
-                                </label>
-                              </div>
-                            </div>
-                            <div className="col-md-3">
-                              <div>
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault1"
-                                />
-                                <label
-                                  className="form-check-label mx-2"
-                                  htmlFor="flexRadioDefault1"
-                                >
-                                  หย่า
-                                </label>
-                              </div>
-                            </div>
-                            <div className="col-md-3">
-                              <div>
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault1"
-                                />
-                                <label
-                                  className="form-check-label mx-2"
-                                  htmlFor="flexRadioDefault1"
-                                >
-                                  หม้าย
-                                </label>
-                              </div>
-                            </div>
+                            {Datarelationship.map((value, idx) => {
+                              // console.log(value);
+                              return (
+                                <div className="col-md-3" key={idx}>
+                                  <div>
+                                    <input
+                                      className="form-check-input"
+                                      type="radio"
+                                      name="flexRadioDefault"
+                                      id="flexRadioDefault1"
+                                      checked={
+                                        dataVertify.m_relationship ==
+                                        value.relationship_id
+                                      }
+                                      value={value.relationship_id}
+                                      onChange={(e) => {
+                                        // console.log(e.target.value);
+                                        setDataVertify({
+                                          ...dataVertify,
+                                          m_relationship: e.target.value,
+                                        });
+                                      }}
+                                    />
+                                    <label
+                                      className="form-check-label mx-2"
+                                      htmlFor="flexRadioDefault1"
+                                    >
+                                      {value.relationship_name}
+                                    </label>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="form-label">
-                          ชื่อคู่สมรส(กรณีสมรส)
-                        </label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
                         <label className="form-label">ตำแหน่งที่สมัคร</label>
-                        <select
-                          className="form-select"
-                          aria-label="Default select example"
-                        >
-                          <option>เลือก</option>
-                        </select>
+                        <span className="px-3">{position_injob.p_name}</span>
                       </div>
                     </div>
+                    <div className="col-md-6"></div>
                     <div className="col-md-4">
                       <div className="mb-3">
                         <label className="form-label">อาชีพปัจจุบัน</label>
@@ -589,7 +647,7 @@ function FormWork() {
                             <td className="text-center">4 พฤษภาคม 2563</td>
                             <td className="text-center">
                               <button type="button" className="btn btn-warning">
-                                <i class="bi bi-pencil-fill"></i>
+                                <i className="bi bi-pencil-fill"></i>
                               </button>
                             </td>
                           </tr>
@@ -977,7 +1035,7 @@ function FormWork() {
                             <td>5 พฤษภาคม 2561</td>
                             <td>4 พฤษภาคม 2563</td>
                             <td className="text-center">
-                              <button type="button" class="btn btn-warning">
+                              <button type="button" className="btn btn-warning">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
                             </td>

@@ -37,7 +37,7 @@ export const GetTbl_country = () => {
         });
 };
 
-export const GetTbl_district = () => {  
+export const GetTbl_district = () => {
     return axios
         .get(`${BaseUrl}/api/GetTbl_district`)
         .then((res) => {
@@ -74,7 +74,6 @@ export const CreateMember = (data) => {
         console.log(response);
     });
 }
-
 
 export const GetAllApply = async () => {
     return await axios.get(`${BaseUrl}/api/GetApplyAll`)
@@ -207,7 +206,11 @@ export function Delete_position(id) {
         console.log(err);
     })
 }
-
+export async function getPositionINtype(id) {
+    const res = await axios.get(`${BaseUrl}/api/GetpositionIntype/${id}`);
+    // console.log(res);
+    return res.data
+}
 // end position
 
 
@@ -273,6 +276,24 @@ export async function Get_memberby_id(id) {
     // console.log(id);
     let response = await axios.get(`${BaseUrl}/api/selectMember/${id}`);
     return response.data;
+}
+
+export async function InsertAndEditApply(data, C_apply) {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/UpdateApply_Insert`,
+        data: {
+            data,
+            C_apply
+        },
+        // headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response) {
+        console.log(response);
+        // return response.data;
+    }).catch(function (response) {
+        //handle error
+        console.log(response);
+    });
 }
 
 

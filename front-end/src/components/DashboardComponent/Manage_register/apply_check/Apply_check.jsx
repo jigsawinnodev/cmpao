@@ -68,7 +68,7 @@ function Apply_check() {
 
   const Get_Apply_Applycheck = async () => {
     const Data = await Apply_Applycheck(id);
-    // console.log(Data);
+    console.log(Data);
     setApply_Applycheck(Data[0]);
   };
 
@@ -290,14 +290,14 @@ function Apply_check() {
                     </div>
                   </div>
                   <div className="col-md-12 ">
-                    <DataTable
+                    {/* <DataTable
                       columns={columns}
                       data={handleSearch(C_Apply_Applycheck)}
                       pagination
                       responsive
                       progressPending={loadding}
                       progressComponent={<Loadding />}
-                    />
+                    /> */}
                   </div>
                   <div className="col-md-12">
                     <div className="float-end py-2">

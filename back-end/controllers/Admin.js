@@ -1,6 +1,7 @@
 const { mysqlConnection } = require('../Config/DB')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const moment = require('moment');
 var baseURL_IMG = 'http://localhost:9500/public/img/'
 var baseURL_PDF = 'http://localhost:9500/public/pdf/'
 
@@ -83,13 +84,13 @@ const GetAllPosition = (req, res) => {
         `SELECT POSITION.*, type_position.name, file_position.fp_name FROM POSITION JOIN type_position ON POSITION.p_type = type_position.id JOIN file_position ON file_position.p_id = POSITION.p_id WHERE POSITION.status = 1 ORDER BY POSITION.p_id ASC`
     mysqlConnection.query(sql, function (err, result) {
         if (!err) {
-            let data = [];
-            for (let index = 0; index < result.length; index++) {
-                result[index].p_file = `${baseURL_PDF}${result[index].fp_name}`
-                data.push(result[index]);
-            }
+            // let data = [];
+            // for (let index = 0; index < result.length; index++) {
+            //     result[index].p_file = `${baseURL_PDF}${result[index].fp_name}`
+            //     data.push(result[index]);
+            // }
             // console.log(data);
-            res.json(data)
+            res.json(result)
         };
         if (err) console.log(err);
     })
@@ -114,7 +115,16 @@ const manage_Position = (req, res, next) => {
                             if (err) console.log(err);
                         })
                         res.json("Inserted successfully and file")
-                    };
+                    } else {
+                        let sql_file = `INSERT INTO cmpao.file_position (fp_name, p_id) VALUES ('null', ${result.insertId})`;
+                        mysqlConnection.query(sql_file, function (err, result) {
+                            if (!err) {
+
+                            };
+                            if (err) console.log(err);
+                        })
+                        res.json("Inserted successfully and file")
+                    }
                 }
             }
             if (err) {
@@ -284,8 +294,70 @@ const Delete_Apply = (req, res) => {
     // let sql = ``
 }
 
+const GetPositon = (req, res) => {
+    const { id } = req.params
+    let sql = `SELECT * FROM type_position 
+    JOIN position ON position.p_type = type_position.id
+    WHERE position.status = 1 AND type_position.id = ${id}`;
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) res.json(result);
+        if (err) console.log(err);
+    })
+}
 
+const UpdateApplyAndInsert = (req, res) => {
 
+    res.json(req.body);
+    console.log(req);
+    // const { jc_type, jc_start, jc_end, update_at, create_at, jc_id } = req.body;
+    // // console.log(jc_type, jc_start, jc_end, update_at, create_at, jc_id);
+    // var lastJob_calendar = '';
+    // if (!jc_id) {
+    //     let sql = `INSERT INTO job_calendar(jc_start, jc_end, jc_type, create_at) VALUES ('${jc_start}','${jc_end}','${jc_type}','${moment().add(543, 'year').format()}')`;
+    //     mysqlConnection.query(sql, function (err, result) {
+    //         if (!err) {
+    //             lastJob_calendar = result.insertId;
+    //         };
+    //         if (err) {
+    //             res.json("Error")
+    //         };
+    //     })
+    // } else {
+    //     let sql = `UPDATE job_calendar SET jc_start='${jc_start}',jc_end='${jc_end}',jc_type='${jc_type}',update_at='${moment().add(543, 'year').format()}' WHERE ${jc_id}`;
+    //     mysqlConnection.query(sql, function (err, result) {
+    //         if (!err) {
+
+    //         };
+    //         if (err) {
+    //             res.json("Error")
+    //         };
+    //     })
+    // }
+
+    // const { job_position, job_amount, job_payment, job_no, job_file, job_id } = req.body;
+    // if (!job_id) {
+    //     let sqlJob = `INSERT INTO jobs(job_position, job_amount, job_payment, job_no, job_file, jc_id,create_at) VALUES ('${job_position}','${job_amount}','${job_payment}','${job_no}','${req.file.filename}','${lastJob_calendar}','${moment().add(543, 'year').format()}')`;
+    //     mysqlConnection.query(sqlJob, function (err, result) {
+    //         if (!err) {
+    //             res.json("Insert successful")
+    //         };
+    //         if (err) {
+    //             res.json("Error")
+    //         };
+    //     })
+    // } else {
+    //     let sqlJob = `UPDATE jobs SET job_position='${job_position}',job_amount='${job_amount}',job_payment='${job_payment}',job_no='${job_no}',job_file='${req.file.filename}',jc_id='${jc_id}',update_at ='${moment().add(543, 'year').format()}', WHERE ${jc_id}`;
+    //     mysqlConnection.query(sqlJob, function (err, result) {
+    //         if (!err) {
+    //             res.json("Update successful")
+    //         };
+    //         if (err) {
+    //             res.json("Error")
+    //         };
+    //     })
+    // }
+
+}
 
 module.exports = {
     GetMenuAdmin,
@@ -302,11 +374,13 @@ module.exports = {
     GetAllPosition,
     manage_Position,
     Delete_positions,
+    GetPositon,
     // InsertApply,
     PermissionsGetAll,
     GetCheckPermissionsAll,
     Insert_Apply,
     Delete_Apply,
+    UpdateApplyAndInsert
 
     // Permission
 }

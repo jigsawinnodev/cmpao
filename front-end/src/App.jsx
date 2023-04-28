@@ -33,8 +33,10 @@ import Edit_profile from "./components/Edit_profile";
 import moment from "moment";
 import "moment/locale/th";
 import Manage_apply_check from "./components/DashboardComponent/Manage_document/Manage_apply_check/Manage_apply_check";
-import Is_accept from "./view/is_accept";
+
 import NotFound from "./view/NotFound/NotFound";
+import Is_accept from "./view/Is_accept/Is_accept";
+import Detailposition from "./components/Detailposition/Detailposition";
 moment.locale("th");
 function App() {
   return (
@@ -44,10 +46,11 @@ function App() {
       <Route exact path="is_accept" element={<Is_accept />} />
       <Route path="Register" element={<Register />}>
         <Route index path="" element={<EmptyWork />} />
-        <Route path="Edit_profile" element={<Edit_profile />} />
+        <Route path="Position/:id" element={<Detailposition />} />
+        <Route path="Edit_profile/:id" element={<Edit_profile />} />
         <Route path="VerifyStatus" element={<VertyfyStatus />} />
         <Route path="DetailWork/:id" element={<DetailWork />} />
-        <Route path="DetailWork/:id/FormWork" element={<FormWork />} />
+        <Route path="DetailWork/FormWork/:id" element={<FormWork />} />
         {/* <Route path="DetailWork/:id/FormWork/:id_user" element={<FormWork />} /> */}
       </Route>
       <Route path="Dashboard" element={<Dashboard />}>

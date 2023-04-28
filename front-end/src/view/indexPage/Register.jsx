@@ -127,7 +127,10 @@ function Register() {
       <div>
         {/* {JSON.stringify(SubDistrict)} */}
         <img className="wave" src={Wave} />
-        <div className="container">
+        <div
+          className="container_idx"
+          style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
+        >
           <div className="img">
             <img src={Bg} />
           </div>

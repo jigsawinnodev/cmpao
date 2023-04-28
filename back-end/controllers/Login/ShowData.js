@@ -43,7 +43,7 @@ const Show_personNotPayment = (req, res) => {
 const authLogin = (req, res) => {
     // console.log(req.body);
     const { username, password } = req.body;
-    console.log(username, password);
+    // console.log(username, password);
     let sql = `SELECT * FROM member WHERE m_username = '${username}'`
     mysqlConnection.query(sql, async function (err, result) {
         if (!err) {
@@ -53,11 +53,11 @@ const authLogin = (req, res) => {
                 const checkPassword = await bcrypt.compare(password, result[0].m_password);
                 // console.log(checkPassword);
                 if (checkPassword) {
-                    console.log(moment().locale('th').add(543, 'year').format());
+                    // console.log(moment().locale('th').add(543, 'year').format());
                     let sql_UpdateTime = `UPDATE member SET login_time = '${moment().add(543, 'year').format()}' WHERE m_id = ${result[0].m_id}`;
                     mysqlConnection.query(sql_UpdateTime, function (err, result1) {
                         if (!err) {
-                            console.log(result1);
+                            // console.log(result1);
                         };
                         if (err) console.log(err);
                     })
@@ -91,6 +91,101 @@ const authLogin = (req, res) => {
 }
 
 
+const ShowDetailDataUser = (req, res) => {
+    let sqlGetMaxID = `SELECT
+                job_calendar.*
+                FROM job_calendar
+                WHERE job_calendar.jc_id = (select max(job_calendar.jc_id) from job_calendar)`;
+    mysqlConnection.query(sqlGetMaxID, function (err, result) {
+        if (!err) {
+            let sql = `SELECT
+                        job_calendar.*,
+                        type_position.name,
+                        (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id = ${result[0].jc_id}
+                    ) AS count_applicant_all,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status = 1 AND job_application.payment_status = 1
+                    ) AS count_person_pay,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status = 1 AND job_application.payment_status != 1
+                    ) AS count_person_pay_no,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status = 1
+                    ) AS count_success,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status = 0
+                    ) AS count_wait,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status = 2
+                    ) AS count_warm,
+                    (
+                        SELECT
+                            COUNT(*)
+                        FROM
+                            job_application
+                        WHERE
+                            job_application.jc_id =  ${result[0].jc_id} AND job_application.app_status IN(3, 99)
+                    ) AS count_cancel
+                    FROM
+                        job_calendar
+                    JOIN type_position ON type_position.id = job_calendar.jc_type
+                    WHERE
+                        jc_id = ${result[0].jc_id} AND job_calendar.status = 1`;
+            mysqlConnection.query(sql, function (err, result) {
+                if (!err) {
+                    res.json(result[0])
+                };
+                if (err) console.log(err);
+            })
+
+
+        };
+        if (err) console.log(err);
+    })
+}
+
+const ShowDetailPositions = (req, res) => {
+    let sql = `SELECT job_calendar.*, type_position.name as position_name, (select sum(job_amount) from jobs inner join position on jobs.job_position = position.p_id where jobs.jc_id = job_calendar.jc_id ) as count_position, (select count(*) from job_application join jobs on jobs.job_id = job_application.job_id where job_calendar.jc_id = jobs.jc_id) as count_apply FROM job_calendar JOIN type_position ON type_position.id = job_calendar.jc_type ORDER BY job_calendar.jc_id DESC`;
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) {
+            // log
+            res.json(result)
+        };
+        if (err) console.log(err);
+    })
+}
+
 
 
 
@@ -102,5 +197,7 @@ module.exports = {
     Show_personNotSuccess,
     Show_personAll,
     Show_personNotPayment,
-    authLogin
+    authLogin,
+    ShowDetailDataUser,
+    ShowDetailPositions
 }

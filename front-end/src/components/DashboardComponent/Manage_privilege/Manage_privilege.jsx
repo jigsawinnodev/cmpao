@@ -6,7 +6,7 @@ function Manage_privilege() {
   const [MenuAdmin, SetMenuAdmin] = useState([]);
   const [Allpermissions, SetAllpermissions] = useState([]);
   const [CheckAllPermissions, SetCheckAllPermissions] = useState([]);
-
+  const [data, setData] = useState([]);
   const GetCheckAllPermissions = () => {
     axios.get("http://localhost:9500/api/CheckAllPermissions").then((res) => {
       SetCheckAllPermissions(res.data);
@@ -15,16 +15,18 @@ function Manage_privilege() {
     });
   };
   const ref = useRef([]);
-  const checkHandler = () => {
-    console.log("qwe");
+  const checkHandler = (e) => {
+    setData([([e.target.name] = e.target.value)]);
+    // console.log(e.target.name + ": " + e.target.value);
   };
   const HandelSubmitForm = (e) => {
     e.preventDefault();
+    console.log(e);
     for (let index = 0; index < MenuAdmin.length; index++) {
       const menu = MenuAdmin[index];
       for (let index = 0; index < Allpermissions.length; index++) {
         const role = Allpermissions[index];
-        console.log(CheckAllPermissions[role.permiss_id][menu.adm_id]);
+        // console.log(CheckAllPermissions[role.permiss_id][menu.adm_id]);
       }
     }
   };
@@ -78,7 +80,7 @@ function Manage_privilege() {
                               // console.log(role);
                               //role
                               return (
-                                <th className="text-center">
+                                <th className="text-center" key={idx}>
                                   {role.permiss_name}
                                 </th>
                               );
@@ -112,14 +114,21 @@ function Manage_privilege() {
                                           <input
                                             name={`per_menu[${role.permiss_id}][${menu.adm_id}]`}
                                             value={menu.adm_id}
-                                            checked={
+                                            defaultChecked={
                                               CheckAllPermissions[
                                                 role.permiss_id
                                               ][menu.adm_id] === 1
                                                 ? true
-                                                : false
+                                                : ""
                                             }
-                                            onChange={checkHandler}
+                                            onChange={(e) => {
+                                              let data = e.target.checked;
+                                              console.log(
+                                                e.target.name +
+                                                  "=" +
+                                                  e.target.value
+                                              );
+                                            }}
                                             type="checkbox"
                                           />
                                           <svg viewBox="0 0 35.6 35.6">

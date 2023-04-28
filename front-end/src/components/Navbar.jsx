@@ -1,58 +1,58 @@
 import React, { useState } from "react";
 import ImgNav from "../assets/img/img_nav.png";
 import "../App.css";
+import {
+  Image,
+  NavDropdown,
+  Navbar,
+  Nav,
+  Container,
+  Button,
+} from "react-bootstrap";
 
-function Navbar() {
-  const [ShowNavbar, setShowNavbar] = useState(false);
-  const Show_Navbar = () => {
-    console.log(ShowNavbar);
-    setShowNavbar(!ShowNavbar);
-  };
+function NavbarPage() {
   return (
     <>
-      <nav
-        className="navbar navbar-expand-lg py-2 border-bottom  "
+      <Navbar
+        expand="lg"
+        className="border-bottom-2"
         style={{ backgroundColor: "#6832ae" }}
       >
-        <div className="container-fluid px-4 px-md-5">
-          <img src={ImgNav} alt="" className="img-fluid my-auto" />
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  <div className="" style={{ color: "White", fontSize: 22 }}>
-                    องค์การบริหารส่วนจังหวัดเชียงใหม่
-                  </div>
-                  <div style={{ fontSize: 16, color: "White" }}>
-                    Chiang Mai Provincial Administrative Organization
-                  </div>
-                </a>
-              </li>
-            </ul>
-            <div>
-              <h2
-                className="mt-5 mb-0 text-center text-md-start"
-                style={{ fontSize: 22, color: "White" }}
-              >
-                ระบบการรับสมัครบุคลากรออนไลน์
-              </h2>
-            </div>
-          </div>
-        </div>
-      </nav>
+        <Container fluid className="px-3 px-md-5">
+          <Image src={ImgNav} />
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: "150px" }}
+              navbarScroll
+            >
+              <div className="row px-md-3 px-0">
+                <Navbar.Text
+                  className="m-0 py-0"
+                  style={{ fontSize: "22px", color: "white" }}
+                >
+                  องค์การบริหารส่วนจังหวัดเชียงใหม่
+                </Navbar.Text>
+                <Navbar.Text
+                  className="py-0"
+                  style={{ fontSize: "16px", color: "white" }}
+                >
+                  Chiang Mai Provincial Administrative Organization
+                </Navbar.Text>
+              </div>
+            </Nav>
+            <Navbar.Text
+              className="m-0 py-0 mt-auto"
+              style={{ fontSize: "18px", color: "white" }}
+            >
+              ระบบการรับสมัครบุคลากรออนไลน์
+            </Navbar.Text>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </>
   );
 }
 
-export default Navbar;
+export default NavbarPage;

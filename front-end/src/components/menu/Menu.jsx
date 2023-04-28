@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Ball from "../../assets/img/ball.png";
 import Icon1 from "../../assets/img/icon_1.png";
 import Icon2 from "../../assets/img/icon_2.png";
@@ -17,29 +17,16 @@ import { useNavigate } from "react-router-dom";
 import { Vertify_token } from "../../service/for_user";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
+import { UserContext } from "../../view/Register/Register";
+
 moment.locale("th");
-
 function Menu() {
-  const [dataVertify, setDataVertify] = useState({});
-  const Verifytoken = async () => {
-    const token = localStorage.getItem("token");
-    const resVerify = await Vertify_token(token);
-    if (resVerify.status) {
-      setDataVertify(resVerify);
-    } else {
-      navigate("/");
-    }
-  };
-
   const navigate = useNavigate();
   const LogOut = () => {
-    // console.log("test");
     localStorage.removeItem("token");
     navigate("/");
   };
-  useEffect(() => {
-    Verifytoken();
-  }, []);
+  const DataContext = useContext(UserContext);
   return (
     <>
       <div className="container-fluid p-0 ">
@@ -322,20 +309,24 @@ function Menu() {
                   <div className="col-md-12">
                     <div className="">
                       <p className="m-0 text-md-start text-center py-2">
-                        ชื่อ :{" "}
-                        {dataVertify.m_firstname + " " + dataVertify.m_lastname}
+                        ชื่อ :
+                        {DataContext.m_firstname + " " + DataContext.m_lastname}
                       </p>
                       <p className="m-0 text-md-start text-center">
-                        ที่อยู่{" "}
-                        {dataVertify.m_house_no + "/" + dataVertify.m_moo} ตำบล
-                        ช้างเผือก อำเภอ เมือง จังหวัด เชียงใหม่
+                        {"ที่อยู่ " +
+                          DataContext.m_house_no +
+                          "/" +
+                          DataContext.m_moo}
+                        {" ตำบล" + " " + DataContext.subdistrict_th}
+                        {" อำเภอ" + " " + DataContext.district_th}
+                        {" จังหวัด" + " " + DataContext.province_th}
                       </p>
                     </div>
                   </div>
                   <div className="col-md-12">
                     <div className="py-4 text-center">
                       <div className="d-flex justify-content-center flex-column flex-md-column ">
-                        <NavLink to="Edit_profile">
+                        <NavLink to={"Edit_profile/" + DataContext.m_id}>
                           <button className={style.SettingProfile}>
                             เเก้ไขข้อมูล
                           </button>

@@ -47,6 +47,10 @@ router.get('/GetTbl_religion', Admin.GetTbl_religion);
 // router Apply
 router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 router.get('/GetApplyAll', Admin.GetApplyAll);
+router.get('/GetpositionIntype/:id', Admin.GetPositon);
+
+router.post('/UpdateApply_Insert', Admin.UpdateApplyAndInsert)
+
 // router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
 router.post('/insertApply', Admin.Insert_Apply);
 router.post('/deleteApply/:id', Admin.Delete_Apply);

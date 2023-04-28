@@ -3,7 +3,9 @@ require('dotenv').config();
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
+    // console.log(req.headers);
     const authHeader = req.headers['authorization'];
+    // console.log(authHeader);
     const token = authHeader.split(' ')[1]
 
     if (!token) {
@@ -14,7 +16,7 @@ const verifyToken = (req, res, next) => {
         // console.log(decoded);
         req.user = decoded
     } catch (error) {
-        return res.json({
+        return res.status(401).send({
             status: false
         });
     }

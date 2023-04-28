@@ -116,10 +116,10 @@ function Manage_ducument_add() {
             </button>
           </NavLink> */}
           <button type="button" className="btn btn-warning mx-1">
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
           <button type="button" className="btn btn-danger mx-1">
-            <i class="bi bi-trash"></i>
+            <i className="bi bi-trash"></i>
           </button>
         </div>
       ),
@@ -588,7 +588,7 @@ function Manage_ducument_add() {
                                   aria-labelledby="nav-tab2"
                                 >
                                   <div>
-                                    <CheckboxTree
+                                    {/* <CheckboxTree
                                       nodes={nodes}
                                       checked={checked}
                                       expanded={expanded}
@@ -610,7 +610,7 @@ function Manage_ducument_add() {
                                         parentClose: "",
                                         parentOpen: "",
                                       }}
-                                    />
+                                    /> */}
                                   </div>
                                 </div>
                               </div>

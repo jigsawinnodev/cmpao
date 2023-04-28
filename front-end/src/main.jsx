@@ -7,8 +7,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import "jquery/dist/jquery.min.js";
-import $ from "jquery";
+// import "jquery/dist/jquery.min.js";
+// import $ from "jquery";
 // import "datatables.net-dt/js/dataTables.dataTables";
 // import "datatables.net-dt/css/jquery.dataTables.min.css";
 
