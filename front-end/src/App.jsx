@@ -51,7 +51,6 @@ function App() {
         <Route path="VerifyStatus" element={<VertyfyStatus />} />
         <Route path="DetailWork/:id" element={<DetailWork />} />
         <Route path="DetailWork/FormWork/:id" element={<FormWork />} />
-        {/* <Route path="DetailWork/:id/FormWork/:id_user" element={<FormWork />} /> */}
       </Route>
       <Route path="Dashboard" element={<Dashboard />}>
         <Route index path="" element={<IndexPage />} />
@@ -86,7 +85,6 @@ function App() {
           path="Document/apply_check/:id"
           element={<Manage_apply_check />}
         />
-
         <Route path="Information" element={<Manage_search />} />
       </Route>
       <Route path="*" element={<NotFound />} />

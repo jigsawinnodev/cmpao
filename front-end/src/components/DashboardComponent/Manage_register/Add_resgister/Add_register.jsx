@@ -34,7 +34,6 @@ import Tabs from "react-bootstrap/Tabs";
 import dayjs from "dayjs";
 const bfsSearch = (graph, targetId) => {
   const queue = [...graph];
-
   while (queue.length > 0) {
     const currNode = queue.shift();
     if (currNode.id === targetId) {
@@ -329,7 +328,9 @@ function Add_register() {
     C_startDate: "",
     C_endDate: "",
   });
+
   const [detailPosition, SetdetailPosition] = useState(initalStatePosition);
+
   const [stateForDataTable, SetStateForDataTable] = useState([]);
   const [DataAll, setDataAll] = useState([]);
   const [DataAllTree, setDataAllTree] = useState([]);
@@ -347,47 +348,29 @@ function Add_register() {
     setGetAllApply(data);
   };
 
-  const HandleFromInsertOrEdit = async (e) => {
-    e.preventDefault();
-    setDataAll([
-      ...DataAll,
-      {
-        positionAllData: detailPosition,
-        select: selectCheck,
-        tree: selectedNodes,
-      },
-    ]);
-    setShow(false);
-    // Datafrom.append("file", C_insertApply.C_file);
-    // Datafrom.append("jc_id", C_insertApply.C_id);
-    // Datafrom.append("jc_start", C_insertApply.C_startDate);
-    // Datafrom.append("jc_end", C_insertApply.C_endDate);
-    // Datafrom.append("jc_type", C_insertApply.C_type);
-    // Datafrom.append("job_position", C_insertApply.C_position);
-    // Datafrom.append("job_amount", C_insertApply.C_countPositions);
-    // Datafrom.append("job_payment", C_insertApply.C_moneyRegister);
-    // Datafrom.append("job_no", C_insertApply.C_idPosition);
+  const [DataArrayAll, SetDataAllArray] = useState([]);
 
-    // Datafrom.append("C_detailsIMG", C_insertApply.C_detailsIMG);
-    // Datafrom.append(
-    //   "C_detailsHouseRegister",
-    //   C_insertApply.C_detailsHouseRegister
-    // );
-    // Datafrom.append("C_detailsIdCard", C_insertApply.C_detailsIdCard);
-    // Datafrom.append("C_detailDoctor", C_insertApply.C_detailDoctor);
-    // Datafrom.append("C_detailsSoldier", C_insertApply.C_detailsSoldier);
-    // Datafrom.append("C_detailCar", C_insertApply.C_detailCar);
-    // Datafrom.append("C_detailOther", C_insertApply.C_detailOther);
-    // Datafrom.append("C_detailEducation", C_insertApply.C_detailEducation);
-  };
+  const [stateData, SetStateData] = useState({
+    type: "",
+    date_start: "",
+    date_end: "",
+    positionType: "",
+    positionName: "",
+    amount: "",
+    price: "",
+    id_position: "",
+    file: [],
+    details_file: [],
+    tree: "",
+  });
 
   const HandelSubmitData = async (e) => {
     e.preventDefault();
     const DataForm = new FormData();
     DataForm.append("data", DataAll);
 
-    const res = await InsertAndEditApply(DataForm, C_insertApply);
-    console.log(res);
+    // const res = await InsertAndEditApply(DataForm, C_insertApply);
+    // console.log(res);
 
     SetdetailPosition(initalStatePosition);
     setSelectedNodes([]);
@@ -395,25 +378,22 @@ function Add_register() {
   };
 
   const [show, setShow] = useState(false);
-
+  // const [DataAll, SetDataAll] = useState([]);
   const handleClose = () => setShow(false);
-  const handleShow = () => {
-    if (
-      C_insertApply.C_type != "" &&
-      C_insertApply.C_startDate != "" &&
-      C_insertApply.C_endDate != ""
-    ) {
-      setShow(true);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "",
-        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
-      });
-      setShow(false);
-    }
+  const handleShow = (e) => {
+    e.preventDefault();
+    setShow(true);
   };
-
+  const HandleFromInsertOrEdit = async (e) => {
+    e.preventDefault();
+    SetDataAllArray([
+      ...stateData,
+      {
+        tree: selectedNodes,
+      },
+    ]);
+    setShow(false);
+  };
   const columns = [
     {
       name: "ลำดับ",
@@ -802,7 +782,7 @@ function Add_register() {
             data-bs-placement="bottom"
             title="ลบข้อมูล"
             onClick={() => {
-              DeleteDataApply();
+              DeleteDataApply(row);
             }}
           >
             <i className="bi bi-trash"></i>
@@ -815,7 +795,8 @@ function Add_register() {
     },
   ];
 
-  const DeleteDataApply = () => {
+  const DeleteDataApply = (row) => {
+    console.log(id);
     Swal.fire({
       title: "ยืนยันการลบข้อมูล?",
       text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
@@ -827,6 +808,10 @@ function Add_register() {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
+        setAllDataDetail((prevAllNotes) => {
+          console.log(prevAllNotes);
+          return prevAllNotes.filter((theNote) => theNote.id !== row.id);
+        });
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
@@ -835,9 +820,9 @@ function Add_register() {
   const HandelSelectType = async (e) => {
     const idTypePosition = e.target.value;
     console.log(idTypePosition);
-    SetC_insertApply({
-      ...C_insertApply,
-      C_type: idTypePosition,
+    SetStateData({
+      ...stateData,
+      type: idTypePosition,
     });
     const res = await getPositionINtype(idTypePosition);
     setposition(res);
@@ -882,9 +867,60 @@ function Add_register() {
     if (selectCheck.checkData.includes(event.target.id)) {
       newArray = newArray.filter((day) => day !== event.target.name);
     }
-    setSelectCheck({
+    SetStateData({
+      ...stateData,
       checkData: newArray,
     });
+  };
+  const [AllDataDetail, setAllDataDetail] = useState([]);
+
+  // const OnDetailValueChange = (e) => {
+  //   const { name, value } = e.target;
+  //   return setAllDataDetail({
+  //     ...AllDataDetail,
+  //     [name]: value,
+  //   });
+  // };
+  const HandleSubmitForm = (e) => {
+    e.preventDefault();
+    setAllDataDetail((prevData) => {
+      const newDetail = { ...detailPosition };
+      newDetail.id = Date.now().toString();
+      return [newDetail, ...prevData];
+    });
+    // testDataToApi(AllDataDetail);
+    // testDataToApi();
+    SetC_insertApply(initalStatePosition);
+    setShow(false);
+    setSelectedNodes([]);
+    // const DataForm = new FormData();
+    // console.log(C_insertApply);
+    // console.log(detailPosition);
+    // console.log(selectedNodes);
+  };
+
+  const testDataToApi = () => {
+    var DataForm = new FormData();
+    // console.log(AllDataDetail);
+    // DataForm.append("data", AllDataDetail[0].job_file);
+    // console.log([...DataForm]);
+    for (let index = 0; index < AllDataDetail.length; index++) {
+      DataForm.append("file", AllDataDetail[index].job_file);
+    }
+    console.log(...DataForm);
+    axios
+      .post(
+        "http://localhost:9500/api/testApi",
+        {
+          data: DataForm,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then(({ data }) => console.log(data));
   };
 
   useEffect(() => {
@@ -1056,9 +1092,9 @@ function Add_register() {
                                                 value={C_insertApply.C_position}
                                                 onChange={(e) => {
                                                   console.log(e);
-                                                  SetC_insertApply({
-                                                    ...C_insertApply,
-                                                    C_position: e.target.value,
+                                                  SetStateData({
+                                                    ...stateData,
+                                                    postion: e.target.value,
                                                   });
                                                 }}
                                               >
@@ -1390,86 +1426,135 @@ function Add_register() {
               </div>
             </nav>
 
-            <div className="row px-3">
-              <div className="col-md-4">
-                <div className="mb-3">
-                  <label className="form-label">ประเภท</label>
-                  <select
-                    className="form-select"
-                    value={C_insertApply.C_type}
-                    required
-                    onChange={HandelSelectType}
-                  >
-                    <option value="">เลือก</option>
-                    {positionType.map((val, idx) => {
-                      return (
-                        <option key={idx} value={val.id}>
-                          {val.name}
-                        </option>
-                      );
-                    })}
-                  </select>
+            <div className=" px-3">
+              <form className="row" onSubmit={handleShow}>
+                <div className="col-md-4">
+                  <div className="mb-3">
+                    <label className="form-label">ประเภท</label>
+                    <select
+                      className="form-select"
+                      value={stateData.type}
+                      required
+                      onChange={HandelSelectType}
+                    >
+                      <option value="">เลือก</option>
+                      {positionType.map((val, idx) => {
+                        return (
+                          <option key={idx} value={val.id}>
+                            {val.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">วันที่เริ่ม</label>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale="th"
-                >
-                  <DatePicker
-                    className="form-control"
-                    label="วัน/เดือน/ปี"
-                    inputFormat="dd-MM-yyyy"
-                    value={dayjs(C_insertApply.C_startDate)}
-                    required
-                    onChange={(newValue) => {
-                      let dataDate = moment(newValue)
-                        .add(543, "year")
-                        .format("YYYY/MM/DD");
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_startDate: dataDate,
-                      });
-                    }}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </LocalizationProvider>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">วันที่สิ้นสุด</label>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale="th"
-                >
-                  <DatePicker
-                    className="form-control"
-                    label="วัน/เดือน/ปี"
-                    inputFormat="dd-MM-yyyy"
-                    value={dayjs(C_insertApply.C_endDate)}
-                    required
-                    onChange={(newValue) => {
-                      let dataDate = moment(newValue)
-                        .add(543, "year")
-                        .format("YYYY/MM/DD");
-                      SetC_insertApply({
-                        ...C_insertApply,
-                        C_endDate: dataDate,
-                      });
-                    }}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </LocalizationProvider>
-              </div>
-              <div className="col-md-12 pb-4">
-                <div className="float-end pt-2">
-                  <button
-                    className="button_Add_Regiser mx-1"
-                    onClick={handleShow}
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">วันที่เริ่ม</label>
+
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
                   >
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      onChange={(newDate) => {
+                        const format2 = "yyyy-MM-DD";
+                        const formathDate = moment(newDate)
+                          .add("year", 543)
+                          .format(format2);
+                        SetStateData({
+                          ...stateData,
+                          date_start: formathDate,
+                        });
+                      }}
+                      slotProps={{
+                        textField: { size: "small", required: true },
+                      }}
+                    />
+                  </LocalizationProvider>
+                  {/* <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
+                  >
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      value={stateData.date_start}
+                      required
+                      onChange={(newValue) => {
+                        SetStateData({
+                          ...stateData,
+                          date_start: newValue,
+                        });
+                      }}
+                      slotProps={{
+                        textField: {
+                          required: true,
+                          size: "small",
+                        },
+                      }}
+                    />
+                  </LocalizationProvider> */}
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">วันที่สิ้นสุด</label>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
+                  >
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      onChange={(newDate) => {
+                        const format2 = "yyyy-MM-DD";
+                        const formathDate = moment(newDate)
+                          .add("year", 543)
+                          .format(format2);
+                        SetStateData({
+                          ...stateData,
+                          date_end: formathDate,
+                        });
+                      }}
+                      slotProps={{
+                        textField: { size: "small", required: true },
+                      }}
+                    />
+                  </LocalizationProvider>
+                  {/* <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="th"
+                  >
+                    <DatePicker
+                      className="form-control"
+                      label="วัน/เดือน/ปี"
+                      value={stateData.date_end}
+                      // readOnly="false"
+                      required
+                      inputFormat="dd-MM-yyyy"
+                      onChange={(newValue) => {
+                        SetStateData({
+                          ...stateData,
+                          date_end: newValue,
+                        });
+                      }}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                          required: true,
+                        },
+                      }}
+                    />
+                  </LocalizationProvider> */}
+                </div>
+                <div className="col-md-12 text-center text-md-end py-2 py-md-0">
+                  <button className="button_Add_Regiser mx-1" type="submit">
                     เพิ่มใบสมัคร
                   </button>
-
+                </div>
+              </form>
+              <div className="col-md-12 pb-4">
+                <div className="float-end pt-2">
                   <Modal show={show} onHide={handleClose} size="lg">
                     <form onSubmit={HandleFromInsertOrEdit}>
                       <Modal.Header closeButton>
@@ -1496,13 +1581,13 @@ function Add_register() {
                                       <select
                                         className="form-select"
                                         aria-label="Default select example"
-                                        value={C_insertApply.C_position}
+                                        value={stateData.C_position}
                                         required
                                         onChange={(e) => {
-                                          SetdetailPosition({
-                                            ...detailPosition,
-                                            job_position: e.target.value,
-                                            job_name:
+                                          SetStateData({
+                                            ...stateData,
+                                            positionType: e.target.value,
+                                            positionName:
                                               e.target.selectedOptions[0].text,
                                           });
                                         }}
@@ -1534,12 +1619,12 @@ function Add_register() {
                                       <input
                                         type="text"
                                         className="form-control"
-                                        value={C_insertApply.C_countPositions}
+                                        value={stateData.amount}
                                         required
                                         onChange={(e) => {
-                                          SetdetailPosition({
-                                            ...detailPosition,
-                                            job_amount: e.target.value,
+                                          SetStateData({
+                                            ...stateData,
+                                            amount: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1556,12 +1641,12 @@ function Add_register() {
                                       <input
                                         type="text"
                                         className="form-control"
-                                        value={C_insertApply.C_moneyRegister}
+                                        value={stateData.price}
                                         required
                                         onChange={(e) => {
-                                          SetdetailPosition({
-                                            ...detailPosition,
-                                            job_payment: e.target.value,
+                                          SetStateData({
+                                            ...stateData,
+                                            price: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1579,12 +1664,12 @@ function Add_register() {
                                         type="text"
                                         className="form-control"
                                         placeholder="รหัสประจำตำแหน่ง"
-                                        value={C_insertApply.C_idPosition}
+                                        value={stateData.id_position}
                                         required
                                         onChange={(e) => {
-                                          SetdetailPosition({
-                                            ...detailPosition,
-                                            job_no: e.target.value,
+                                          SetStateData({
+                                            ...stateData,
+                                            id_position: e.target.value,
                                           });
                                         }}
                                       ></input>
@@ -1603,9 +1688,9 @@ function Add_register() {
                                         type="file"
                                         id="formFile"
                                         onChange={(e) => {
-                                          SetdetailPosition({
-                                            ...detailPosition,
-                                            job_file: e.target.files[0],
+                                          SetStateData({
+                                            ...stateData,
+                                            file: e.target.files[0],
                                           });
                                         }}
                                       />
@@ -1813,7 +1898,7 @@ function Add_register() {
                               // variant="primary"
                               type="submit"
                               className="mx-1 button_Add_Regiser"
-                              // onClick={handleClose}
+                              onClick={HandleSubmitForm}
                             >
                               บันทึก
                             </Button>
@@ -1857,7 +1942,7 @@ function Add_register() {
               <div className="col-md-12">
                 <DataTable
                   columns={columns}
-                  data={DataAll.detailPosition}
+                  data={AllDataDetail}
                   pagination
                   responsive
                 />
@@ -1866,7 +1951,7 @@ function Add_register() {
                 <div className="float-end py-2">
                   <button
                     className="button_Regiser mx-1"
-                    onClick={HandelSubmitData}
+                    onClick={testDataToApi}
                   >
                     บันทึก
                   </button>

@@ -11,7 +11,7 @@ import {
   Add_edit_position,
   Delete_position,
 } from "../../../service/api";
-import { useDropzone } from "react-dropzone";
+import * as Dropzone from "dropzone";
 import { Tooltip } from "bootstrap";
 import FileUpload from "./InputFile/InputFile";
 import { object } from "prop-types";
@@ -31,26 +31,14 @@ function Manage_position() {
   const [images, setImages] = useState([]);
   const E_inputFile = useRef(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setE_FilePdf((prevState) => [
-      ...prevState,
-      ...acceptedFiles.map((file) =>
-        Object.assign(file, { preview: URL.createObjectURL(file) })
-      ),
-    ]);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
   const SetDataForEdit = (data) => {
     console.log(data);
     setE_id(data.p_id);
     setE_p_name(data.p_name);
     setE_type(data.p_type);
     setE_status(data.p_active);
-    // inputFile.current.files = data.p_file;
     setE_FilePdf(data.fp_name);
     setShow(true);
-    // console.log(data);
   };
 
   const columns = [
@@ -192,27 +180,7 @@ function Manage_position() {
                     <label htmlFor="exampleInputSelect" className="form-label ">
                       เเนบไฟล์
                     </label>
-                    <div className="">
-                      {/* <div {...getRootProps()} className="text-center">
-                        <input {...getInputProps()} />
-                        {isDragActive ? (
-                          <p>Drop the files here ...</p>
-                        ) : (
-                          <p>
-                            Drag 'n' drop some files here, or click to select
-                            files
-                          </p>
-                        )}
-                      </div> */}
-                      {/* {E_filePdf.map((value, index) => {
-                        let baseUrl = "http://localhost:9500/public/pdf/";
-                        return (
-                          <Link to={value.preview} target="_blank" key={index}>
-                            <p>{index + 1 + " " + value.name}</p>
-                          </Link>
-                        );
-                      })} */}
-                    </div>
+                    <div className=""></div>
                   </div>
                 </div>
               </Modal.Body>
@@ -506,131 +474,6 @@ function Manage_position() {
                     </Modal.Footer>
                   </form>
                 </Modal>
-                {/* <div
-                  className="modal fade"
-                  id="exampleModal"
-                  tabIndex={-1}
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <form onSubmit={handleSubmit}>
-                    <div className="modal-dialog modal-lg">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title" id="exampleModalLabel">
-                            เพิ่มตำแหน่ง
-                          </h5>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          />
-                        </div>
-                        <div className="modal-body">
-                          <div>
-                            <div className="py-2 text-start">
-                              <label
-                                htmlFor="exampleInputEmail1"
-                                className="form-label"
-                              >
-                                ชื่อตำแหน่ง
-                              </label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={namePosition}
-                                required
-                                placeholder="ชื่อตำแหน่ง"
-                                onChange={(e) => {
-                                  setNamePosition(e.target.value);
-                                }}
-                              />
-                            </div>
-                            <div className="text-start py-2">
-                              <label
-                                htmlFor="exampleInputSelect"
-                                className="form-label"
-                              >
-                                ประเภท
-                              </label>
-                              <select
-                                className="form-select"
-                                value={typePosition}
-                                required
-                                onChange={(e) => {
-                                  setTypePosition(e.target.value);
-                                }}
-                              >
-                                <option value={""}>เลือก</option>
-                                {positionType.map((val, idx) => (
-                                  <option key={idx} value={val.id}>
-                                    {val.name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                            <div className="text-start py-2">
-                              <label
-                                htmlFor="exampleInputSelect"
-                                className="form-label"
-                              >
-                                สถานะ
-                              </label>
-                              <select
-                                className="form-select"
-                                aria-label="Default select example"
-                                value={statusPosition}
-                                onChange={(e) => {
-                                  console.log(e.target.value);
-                                  setStatusPosition(e.target.value);
-                                }}
-                              >
-                                <option value={"1"}>ใช้งาน</option>
-                                <option value={"0"}>ไม่ใช้งาน</option>
-                              </select>
-                            </div>
-                            <div className="text-start py-2">
-                              <label
-                                htmlFor="exampleInputSelect"
-                                className="form-label"
-                              >
-                                เเนบไฟล์
-                              </label>
-                              <input
-                                className="form-control"
-                                type="file"
-                                accept="application/pdf"
-                                ref={ref}
-                                required
-                                onChange={(e) => {
-                                  setFilePdf(e.target.files[0]);
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="modal-footer">
-                          <div className="col-md-12 text-center">
-                            <button
-                              type="submit"
-                              className="button_Add_Regiser mx-1"
-                            >
-                              บันทึก
-                            </button>
-                            <button
-                              type="button"
-                              className="button_Back mx-1"
-                              data-bs-dismiss="modal"
-                            >
-                              ยกเลิก
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div> */}
               </div>
             </div>
           </nav>

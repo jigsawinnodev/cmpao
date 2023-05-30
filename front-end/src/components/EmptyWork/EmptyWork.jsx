@@ -7,14 +7,24 @@ import "moment/locale/th";
 moment.locale("th");
 import { Getjob_user } from "../../service/for_user";
 
-const token = localStorage.getItem("token");
+var token = localStorage.getItem("token");
 function EmptyWork() {
+  const [dataVertify, setDataVertify] = useState({});
+  const Verifytoken = async () => {
+    const token = localStorage.getItem("token");
+    const resVerify = await Vertify_token(token);
+    if (resVerify.status) {
+      setDataVertify(resVerify.data);
+    } else {
+      navigate("/");
+    }
+  };
   const [GetJobAll, setGetJobAll] = useState([]);
   const [litmit, setlimit] = useState(8);
   const FetData = async () => {
     const res = await Getjob_user(8, token);
+    // console.log(res);
     setGetJobAll(res);
-    console.log(res);
   };
   useEffect(() => {
     FetData();

@@ -13,7 +13,7 @@ function BarChart({ chartData }) {
             legend: {
               labels: {
                 generateLabels: (chart) => {
-                  console.log(chartData);
+                  // console.log(chartData);
                   return chartData.labels.map((val, index) => ({
                     text: val,
                     strokeStyle: chartData.datasets[0].borderColor[index],

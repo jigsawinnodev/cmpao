@@ -3,6 +3,7 @@ const { mysqlConnection } = require('../../Config/DB')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+moment.locale()
 // const moment = require('moment/min/moment-with-locale');
 // import moment from "moment/min/moment-with-locales";
 // const "moment/locale/th";
@@ -54,10 +55,12 @@ const authLogin = (req, res) => {
                 // console.log(checkPassword);
                 if (checkPassword) {
                     // console.log(moment().locale('th').add(543, 'year').format());
-                    let sql_UpdateTime = `UPDATE member SET login_time = '${moment().add(543, 'year').format()}' WHERE m_id = ${result[0].m_id}`;
+
+                    const time = moment().format('YYYY-MM-DD hh:mm:ss')
+                    let sql_UpdateTime = `UPDATE member SET login_time = '${time}' WHERE m_id = ${result[0].m_id}`;
                     mysqlConnection.query(sql_UpdateTime, function (err, result1) {
                         if (!err) {
-                            // console.log(result1);
+
                         };
                         if (err) console.log(err);
                     })

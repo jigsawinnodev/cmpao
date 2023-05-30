@@ -10,7 +10,6 @@ function Manage_privilege() {
   const GetCheckAllPermissions = () => {
     axios.get("http://localhost:9500/api/CheckAllPermissions").then((res) => {
       SetCheckAllPermissions(res.data);
-
       // console.log(res);
     });
   };
@@ -30,7 +29,6 @@ function Manage_privilege() {
       }
     }
   };
-
   const GetMenu = async () => {
     const res = await GetMenuAdmin();
     const resGetAllpermissions = await GetAllpermissions();

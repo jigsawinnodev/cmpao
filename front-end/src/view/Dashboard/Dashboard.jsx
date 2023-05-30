@@ -36,7 +36,6 @@ function Dashboard() {
                   key={value.adm_id}
                 >
                   {({ isActive, isPending }) => {
-                    // console.log(isActive);
                     if (isActive) {
                       return (
                         <li className="SetHover shadow rounded-2 mb-2">

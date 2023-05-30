@@ -75,15 +75,15 @@ export const CreateMember = (data) => {
     });
 }
 
-export const GetAllApply = async () => {
-    return await axios.get(`${BaseUrl}/api/GetApplyAll`)
-        .then((res) => {
-            // console.log(res);
-            return res.data;
-        }).catch((err) => {
-            console.log(err);
-        });
-}
+// export const GetAllApply = async () => {
+//     return await axios.get(`${BaseUrl}/api/GetApplyAll`)
+//         .then((res) => {
+//             // console.log(res);
+//             return res.data;
+//         }).catch((err) => {
+//             console.log(err);
+//         });
+// }
 export const GetMemberAll = async () => {
     return await axios
         .get("http://localhost:9500/api/selectMemberAll")
@@ -295,5 +295,13 @@ export async function InsertAndEditApply(data, C_apply) {
         console.log(response);
     });
 }
+export const GetdetailCard = async () => {
+    let res = await axios.get(`${BaseUrl}/api/CardDashboard`);
+    return res.data;
+}
 
+export const GetAllApply = async () => {
+    let res = await axios.get(`${BaseUrl}/api/GetApply`);
+    return res.data;
+}
 

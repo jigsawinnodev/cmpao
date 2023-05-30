@@ -132,9 +132,9 @@ function Manage_search() {
                         aria-label="Default select example"
                       >
                         <option>2566</option>
-                        <option value={1}>2565</option>
-                        <option value={2}>2564</option>
-                        <option value={3}>2563</option>
+                        {
+                          
+                        }
                       </select>
                     </div>
                   </div>

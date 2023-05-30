@@ -1,12 +1,22 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import BarChart from "../../Chart/BarChart";
 import { UserData } from "../../../Data";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
+import { GetdetailCard, GetAllApply } from "../../../service/api";
 function Index() {
+  const [dataCard, setStateDataCard] = useState([]);
+  const [DataAllApply, setStateDataApply] = useState([]);
+  const GetDataToCard = async () => {
+    const res = await GetdetailCard();
+    const resAllApply = await GetAllApply();
+    console.log(resAllApply);
+    setStateDataApply(resAllApply);
+    setStateDataCard(res);
+  };
   const data = {
     labels: [
       "พนักงานธุรการ",
@@ -37,6 +47,9 @@ function Index() {
       },
     ],
   };
+  useEffect(() => {
+    GetDataToCard();
+  }, []);
   return (
     <>
       <nav>
@@ -51,7 +64,7 @@ function Index() {
           <div className="box shadow">
             <div className="right-side">
               <div className="box-topic">จำนวนผู้สมัคร</div>
-              <h3 className="">1,075 คน</h3>
+              <h3 className="">{dataCard.count_applicant_all_dash} คน</h3>
               <div className="indicator">
                 <p className="m-0 text-start" style={{ fontSize: "14px" }}>
                   อัพเดทวันที่ {moment().add(543, "year").format("ll")}
@@ -62,11 +75,10 @@ function Index() {
               <i className="bi bi-person-fill-add cart my-auto text-center" />
             </div>
           </div>
-
           <div className="box shadow">
             <div className="right-side">
               <div className="box-topic">จำนวนผู้ที่ชำระเงินสำเร็จ</div>
-              <h3 className="">388,768 บาท</h3>
+              <h3 className="">{dataCard.count_person_pay} คน</h3>
               <div className="indicator">
                 <p className="m-0 text-start" style={{ fontSize: "14px" }}>
                   อัพเดทวันที่ {moment().add(543, "year").format("ll")}
@@ -80,7 +92,7 @@ function Index() {
           <div className="box shadow">
             <div className="right-side">
               <div className="box-topic">จำนวนผู้ที่เอกสารไม่สมบูรณ์</div>
-              <h3 className="">389 คน</h3>
+              <h3 className="">{dataCard.count_warm} คน</h3>
               <div className="indicator">
                 <p className="m-0 text-start" style={{ fontSize: "14px" }}>
                   อัพเดทวันที่ {moment().add(543, "year").format("ll")}
@@ -94,7 +106,7 @@ function Index() {
           <div className="box shadow">
             <div className="right-side">
               <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
-              <h3 className="">150 คน</h3>
+              <h3 className="">{dataCard.count_person_pay_no} คน</h3>
               <div className="indicator">
                 <p className="m-0 text-start" style={{ fontSize: "14px" }}>
                   อัพเดทวันที่ {moment().add(543, "year").format("ll")}
@@ -112,64 +124,22 @@ function Index() {
             </div>
           </div>
           <div className="top-sales box shadow">
-            <div className="title">ตำเเหน่งที่เปิดรับสมัคร</div>
+            <div className="title">ประเภทที่เปิดรับสมัคร</div>
             <ul className="top-sales-details p-0">
-              <li>
-                <div className="d-flex">
-                  {/* <p className="m-0 pe-3 fw-bold">1</p> */}
-                  <span className="product">พนักงานธุรการ</span>
-                </div>
-                <span className="price">5 ตำเเหน่ง</span>
-              </li>
-              <li>
-                <div className="d-flex">
-                  {/* <p className="m-0 pe-3 fw-bold">2</p> */}
-                  <span className="product">พนักงานการเกษตร</span>
-                </div>
-                <span className="price">7 ตำเเหน่ง</span>
-              </li>
-              <li>
-                <div className="d-flex">
-                  {/* <p className="m-0 pe-3 fw-bold">3</p> */}
-                  <span className="product">พนักงานดับเพลิง</span>
-                </div>
-                <span className="price">3 ตำเเหน่ง</span>
-              </li>
-              <li>
-                <div className="d-flex">
-                  {/* <p className="m-0 pe-3 fw-bold">4</p> */}
-                  <span className="product">เจ้าหน้าที่ประชาสัมพันธ์</span>
-                </div>
-                <span className="price">4 ตำเเหน่ง</span>
-              </li>
-              <li>
-                <div className="d-flex">
-                  {/* <p className="m-0 pe-3 fw-bold">4</p> */}
-                  <span className="product">พนักงานคอมพิวเตอร์</span>
-                </div>
-                <span className="price">2 ตำเเหน่ง</span>
-              </li>
-              {/* <li>
-                <a href="#">
-                  
-                  <span className="product">Gucci Womens's Bags</span>
-                </a>
-                <span className="price">$2345</span>
-              </li>
-              <li>
-                <a href="#">
-                  
-                  <span className="product">Addidas Running Shoe</span>
-                </a>
-                <span className="price">$2345</span>
-              </li>
-              <li>
-                <a href="#">
-                  
-                  <span className="product">Bilack Wear's Shirt</span>
-                </a>
-                <span className="price">$1245</span>
-              </li> */}
+              {DataAllApply.map((value, idx) => {
+                return (
+                  <li key={idx}>
+                    <div className="d-flex">
+                      {/* <p className="m-0 pe-3 fw-bold">1</p> */}
+                      <span className="product">{value.position_name}</span>
+                    </div>
+                    <span className="price">
+                      {value.count_position > 0 ? value.count_position : 0}{" "}
+                      ตำเเหน่ง
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

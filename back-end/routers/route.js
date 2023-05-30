@@ -6,8 +6,8 @@ const multer = require('multer');
 const TypePosition = require('.././controllers/TypePosition/TypePosition');
 const User = require("../controllers/User/User");
 const Member = require("../controllers/Member/Member");
-
-
+const Dashboard = require("../controllers/Dashboard/Dashboard");
+const Apply = require("../controllers/Apply/Apply");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -68,9 +68,12 @@ router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
 
 
 
+//test
+router.post('/testApi', Admin.testApi);
 
-
-
+router.post('/testApiFromData', (req, res, next) => {
+    console.log(req);
+})
 
 // เสร็จ
 // router User
@@ -92,5 +95,13 @@ router.post('/CreateMember', upload.single('img'), Member.CreateMember);
 router.get('/selectMember/:id', Member.selectMemberById);
 router.post('/DeleteMember/:id', Member.Delete_Member);
 
+
+//Dashboard
+router.get('/CardDashboard', Dashboard.GetMaxID);
+
+
+
+// Apply
+router.get('/GetApply', Apply.GetAll_Apply);
 
 module.exports = router;

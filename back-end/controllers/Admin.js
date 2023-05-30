@@ -308,7 +308,7 @@ const GetPositon = (req, res) => {
 const UpdateApplyAndInsert = (req, res) => {
 
     res.json(req.body);
-    console.log(req);
+    // console.log(req);
     // const { jc_type, jc_start, jc_end, update_at, create_at, jc_id } = req.body;
     // // console.log(jc_type, jc_start, jc_end, update_at, create_at, jc_id);
     // var lastJob_calendar = '';
@@ -359,6 +359,20 @@ const UpdateApplyAndInsert = (req, res) => {
 
 }
 
+const testApi = async (req, res) => {
+    console.log(req);
+    // console.log('qwe');
+    // console.log(req.body);
+    // let data = req.body.data;
+    // const test = JSON.parse(data);
+    // console.log(test[0]);
+    // let test = JSON.parse(data);
+    // console.log(test);
+    // console.log(JSON.parse(data[0]));
+    // res.json(await JSON.parse(req.body));
+    // console.log(res);
+}
+
 module.exports = {
     GetMenuAdmin,
     GetpreName,
@@ -380,7 +394,8 @@ module.exports = {
     GetCheckPermissionsAll,
     Insert_Apply,
     Delete_Apply,
-    UpdateApplyAndInsert
+    UpdateApplyAndInsert,
+    testApi
 
     // Permission
 }

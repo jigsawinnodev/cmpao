@@ -97,14 +97,11 @@ export const Getjob_user = async (limit, token) => {
         headers: {
             "authorization": `Bearer ${token}`
         },
-    })
-        .then(function (response) {
-            return response.data;
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response);
-        });
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (e) {
+        console.log(e);
+    });
 
 }
 
@@ -164,8 +161,8 @@ export const ShowDetailDataUser_Last = async () => {
     console.log(res);
     return res.data
 }
-
 export const Show_DetailPositions = async () => {
     let res = await axios.get(`${BaseUrl}/ShowDetailPositions`);
     return res.data;
 }
+
