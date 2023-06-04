@@ -368,10 +368,6 @@ function Add_register() {
     e.preventDefault();
     const DataForm = new FormData();
     DataForm.append("data", DataAll);
-
-    // const res = await InsertAndEditApply(DataForm, C_insertApply);
-    // console.log(res);
-
     SetdetailPosition(initalStatePosition);
     setSelectedNodes([]);
     setSelectCheck([]);
@@ -387,12 +383,23 @@ function Add_register() {
   const HandleFromInsertOrEdit = async (e) => {
     e.preventDefault();
     SetDataAllArray([
-      ...stateData,
+      ...DataArrayAll,
       {
         tree: selectedNodes,
+        Data: stateData,
       },
     ]);
     setShow(false);
+  };
+
+  const PostDataToAPI = () => {
+    axios
+      .post("http://localhost:9500/api/test", {
+        data: DataArrayAll,
+      })
+      .then((response) => {
+        console.log(response);
+      });
   };
   const columns = [
     {
@@ -1427,7 +1434,11 @@ function Add_register() {
             </nav>
 
             <div className=" px-3">
-              <form className="row" onSubmit={handleShow}>
+              <form
+                className="row"
+                onSubmit={handleShow}
+                encType="multipart/form"
+              >
                 <div className="col-md-4">
                   <div className="mb-3">
                     <label className="form-label">ประเภท</label>
@@ -1690,7 +1701,10 @@ function Add_register() {
                                         onChange={(e) => {
                                           SetStateData({
                                             ...stateData,
-                                            file: e.target.files[0],
+                                            file: [
+                                              ...stateData.file,
+                                              e.target.files[0],
+                                            ],
                                           });
                                         }}
                                       />
@@ -1898,7 +1912,7 @@ function Add_register() {
                               // variant="primary"
                               type="submit"
                               className="mx-1 button_Add_Regiser"
-                              onClick={HandleSubmitForm}
+                              // onClick={HandleSubmitForm}
                             >
                               บันทึก
                             </Button>
@@ -1951,7 +1965,7 @@ function Add_register() {
                 <div className="float-end py-2">
                   <button
                     className="button_Regiser mx-1"
-                    onClick={testDataToApi}
+                    onClick={PostDataToAPI}
                   >
                     บันทึก
                   </button>

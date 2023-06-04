@@ -190,6 +190,7 @@ export function Add_edit_position(file_Data) {
         headers: { "Content-Type": "multipart/form-data" },
     })
         .then(function (response) {
+            return response.data
             console.log(response);
         })
         .catch(function (response) {
@@ -304,4 +305,24 @@ export const GetAllApply = async () => {
     let res = await axios.get(`${BaseUrl}/api/GetApply`);
     return res.data;
 }
+export const GetCheckAllPermissions = async () => {
+    let res = await axios.get(`${BaseUrl}/api/CheckAllPermissions`);
+    return res.data;
+}
+
+export const EditCheckAllPermissions = async (data) => {
+    axios
+        .post(`${BaseUrl}/api/UpdatePermissions`, {
+            per_user: data[0],
+            per_menu: data[1],
+        })
+        .then((response) => {
+            console.log(response);
+        });
+}
+export const GetFilePositionsById = async (id) => {
+    let res = await axios.get(`${BaseUrl}/api/GetFilePositions/${id}`);
+    return res.data;
+}
+
 

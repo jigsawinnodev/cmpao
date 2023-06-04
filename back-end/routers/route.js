@@ -8,6 +8,9 @@ const User = require("../controllers/User/User");
 const Member = require("../controllers/Member/Member");
 const Dashboard = require("../controllers/Dashboard/Dashboard");
 const Apply = require("../controllers/Apply/Apply");
+const Permission = require("../controllers/Permission/Permission");
+const Organization = require("../controllers/Organization/Organization");
+const ManagePositions = require("../controllers/ManagePosition/ManagePosition");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -57,15 +60,16 @@ router.post('/deleteApply/:id', Admin.Delete_Apply);
 
 
 // router ManagePositions
-router.get('/GetAllPosition', Admin.GetAllPosition);
-router.post('/Edit_Add_Position', upload.single('file'), Admin.manage_Position);
-router.post('/Delete_position/:id', Admin.Delete_positions);
+router.get('/GetAllPosition', ManagePositions.GetAllPosition);
+router.get('/GetFilePositions/:id', ManagePositions.GetFilePositions);
+router.post('/Edit_Add_Position', upload.array('file', 10), ManagePositions.manage_Position);
+router.post('/Delete_position/:id', ManagePositions.Delete_positions);
 
 
 // router Permissions
 router.get('/permissionsAll', Admin.PermissionsGetAll);
 router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
-
+router.post('/UpdatePermissions', Permission.UpdatePermission);
 
 
 //test
@@ -99,9 +103,10 @@ router.post('/DeleteMember/:id', Member.Delete_Member);
 //Dashboard
 router.get('/CardDashboard', Dashboard.GetMaxID);
 
-
+//Organization
+router.get('/GetOrganization', Organization.GetAllOrganization);
 
 // Apply
 router.get('/GetApply', Apply.GetAll_Apply);
-
+router.post('/test', upload.any(), Admin.testApi)
 module.exports = router;

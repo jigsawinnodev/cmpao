@@ -10,18 +10,52 @@ import {
   GetAllPosition,
   Add_edit_position,
   Delete_position,
+  GetFilePositionsById,
 } from "../../../service/api";
-import * as Dropzone from "dropzone";
-import { Tooltip } from "bootstrap";
-import FileUpload from "./InputFile/InputFile";
-import { object } from "prop-types";
+import Dropzone from "react-dropzone";
+
 function Manage_position() {
   // modal
-  const [show, setShow] = useState(false);
-  const [showModalAdd, setShowModalAdd] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleCloseModalAdd = () => setShowModalAdd(false);
 
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+  }, []);
+
+  // const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  //   accept: "pdf",
+  //   multiple: false,
+  //   onDrop: (acceptedFiles) => {
+  //     console.log(acceptedFiles);
+  //   },
+  // });
+  const DeleteStateArrayFile = (e, id) => {
+    console.log(id);
+    e.preventDefault();
+    setE_FilePdf((preventState) => {
+      return preventState.filter((e) => e.id != id);
+    });
+  };
+  const DeleteStateArrayFileEdit = (e, id) => {
+    e.preventDefault();
+    setE_FilePdf((preventState) => {
+      return preventState.filter((e) => e.fp_id != id);
+    });
+  };
+
+  const [show, setShow] = useState(false);
+  const [ShowModalEdit, setShowModalEdit] = useState(false);
+  const [showModalAdd, setShowModalAdd] = useState(false);
+  const handleClose = () => {
+    setE_id("");
+    setE_p_name("");
+    setE_type("");
+    setE_status("");
+    setE_FilePdf([]);
+    ShowModalEdit(false);
+    setShow(false);
+  };
+  const handleCloseModalAdd = () => setShowModalAdd(false);
+  const handleCloseModalEdit = () => setShowModalEdit(false);
   // เเก้ไข
   const [E_p_name, setE_p_name] = useState(""); //ชื่อตำเเหน่ง
   const [E_id, setE_id] = useState(""); // id
@@ -31,14 +65,15 @@ function Manage_position() {
   const [images, setImages] = useState([]);
   const E_inputFile = useRef(null);
 
-  const SetDataForEdit = (data) => {
-    console.log(data);
+  const SetDataForEdit = async (data) => {
+    let res = await GetFilePositionsById(data.p_id);
+    console.log(res);
     setE_id(data.p_id);
     setE_p_name(data.p_name);
     setE_type(data.p_type);
     setE_status(data.p_active);
-    setE_FilePdf(data.fp_name);
-    setShow(true);
+    setE_FilePdf(res);
+    setShowModalEdit(true);
   };
 
   const columns = [
@@ -97,19 +132,13 @@ function Manage_position() {
           <button
             type="button"
             className="btn btn-warning mx-1"
-            // data-bs-toggle="modal"
             title="เเก้ไขข้อมูล"
-            // data-bs-placement="left"
-            // data-bs-target={"#exampleModal" + row.p_id}
-            // onClick={() => {
-            //   SetDataForEdit(row);
-            // }}
             onClick={() => SetDataForEdit(row)}
           >
             <i className="bi bi-pencil"></i>
           </button>
 
-          <Modal show={show} size="lg" onHide={handleClose}>
+          <Modal show={ShowModalEdit} size="lg" onHide={handleCloseModalEdit}>
             <form
               onSubmit={(e) => {
                 haddleEditSubmit(e);
@@ -180,7 +209,69 @@ function Manage_position() {
                     <label htmlFor="exampleInputSelect" className="form-label ">
                       เเนบไฟล์
                     </label>
-                    <div className=""></div>
+                    <Dropzone
+                      className=""
+                      onDrop={(acceptedFiles) => {
+                        setE_FilePdf([
+                          ...E_filePdf,
+                          {
+                            id: Date.now().toString(),
+                            file: acceptedFiles[0],
+                          },
+                        ]);
+                      }}
+                    >
+                      {({ getRootProps, getInputProps }) => (
+                        <section>
+                          <div {...getRootProps()} className="dropzone">
+                            <input {...getInputProps()} />
+                            <p>
+                              Drag 'n' drop some files here, or click to select
+                              files
+                            </p>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+
+                    <div>
+                      <label>ไฟล์</label>
+
+                      {E_filePdf.map((value, idx) => {
+                        console.log(value);
+                        let BaseUrl = "http://localhost:9500/public/pdf/";
+                        return (
+                          <div
+                            className="d-flex justify-content-between my-1 px-4"
+                            key={idx}
+                          >
+                            <a
+                              className="my-auto text-decoration-none text-dark"
+                              target="_blank"
+                              href={BaseUrl + value.fp_name}
+                            >
+                              <div className="d-flex">
+                                {idx + 1 + "."}
+                                {value.fp_name ? (
+                                  <div className="mx-2">{value.fp_name}</div>
+                                ) : (
+                                  <div className="mx-2">{value.file.name}</div>
+                                )}
+                              </div>
+                            </a>
+                            <button
+                              className="btn btn-danger"
+                              type="button"
+                              onClick={(e) => {
+                                DeleteStateArrayFileEdit(e, value.fp_id);
+                              }}
+                            >
+                              <i className="bi bi-trash"></i>
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </Modal.Body>
@@ -189,7 +280,10 @@ function Manage_position() {
                   <Button type="submit" className="button_Add_Regiser mx-1">
                     บันทึก
                   </Button>
-                  <Button className="button_Back mx-1" onClick={handleClose}>
+                  <Button
+                    className="button_Back mx-1"
+                    onClick={handleCloseModalEdit}
+                  >
                     ยกเลิก
                   </Button>
                 </div>
@@ -227,7 +321,7 @@ function Manage_position() {
   const [namePosition, setNamePosition] = useState("");
   const [typePosition, setTypePosition] = useState("");
   const [statusPosition, setStatusPosition] = useState("1");
-  const [filePdf, setFilePdf] = useState();
+  const [filePdf, setFilePdf] = useState([]);
   const ref = useRef();
 
   // modal dialog
@@ -235,15 +329,19 @@ function Manage_position() {
   const haddleEditSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    // console.log(E_namePosition);
-    // console.log(E_filePdf);
-    formData.append("file", E_filePdf);
+    for (let index = 0; index < E_filePdf.length; index++) {
+      if (E_filePdf[index].file) {
+        formData.append("file", E_filePdf[index].file);
+      } else {
+        formData.append("file", E_filePdf[index].fp_name);
+      }
+    }
     formData.append("p_name", E_p_name);
     formData.append("p_id", E_id);
     formData.append("p_type", E_type);
     formData.append("p_active", E_status);
-    Add_edit_position(formData);
-    setShow(false);
+    let res = Add_edit_position(formData);
+    setShowModalEdit(false);
     Swal.fire({
       icon: "success",
       title: "เเก้ไขข้อมูลสำเร็จ",
@@ -253,17 +351,18 @@ function Manage_position() {
       setE_id("");
       setE_type("");
       setE_status("");
-      setE_FilePdf();
+      setE_FilePdf([]);
       getDataPosition();
     });
   };
 
-  const handleSubmit = (event, id = "") => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("file", filePdf);
+    for (let index = 0; index < filePdf.length; index++) {
+      formData.append("file", filePdf[index].file);
+    }
     formData.append("p_name", namePosition);
-    formData.append("p_id", id);
     formData.append("p_type", typePosition);
     formData.append("p_active", statusPosition);
     Add_edit_position(formData);
@@ -275,8 +374,7 @@ function Manage_position() {
       setNamePosition("");
       setTypePosition("");
       setStatusPosition("1");
-      setFilePdf("");
-      // ref.current.value = "";
+      setFilePdf([]);
       getDataPosition();
     });
   };
@@ -443,16 +541,66 @@ function Manage_position() {
                           >
                             เเนบไฟล์
                           </label>
-                          <input
-                            className="form-control"
-                            type="file"
-                            // required
-                            value={filePdf}
-                            accept="application/pdf"
-                            onChange={(e) => {
-                              setFilePdf(e.target.files[0]);
+
+                          <Dropzone
+                            onDrop={(acceptedFiles) => {
+                              // console.log(acceptedFiles);
+                              setFilePdf([
+                                ...filePdf,
+                                {
+                                  id: Date.now().toString(),
+                                  file: acceptedFiles[0],
+                                },
+                              ]);
                             }}
-                          />
+                          >
+                            {({ getRootProps, getInputProps }) => (
+                              <section>
+                                <div {...getRootProps()}>
+                                  <input {...getInputProps()} />
+                                  <p>
+                                    Drag 'n' drop some files here, or click to
+                                    select files
+                                  </p>
+                                </div>
+                              </section>
+                            )}
+                          </Dropzone>
+                          <aside>
+                            <h4>ไฟล์</h4>
+                            <ul>
+                              {filePdf.map((value, idx) => {
+                                console.log(value);
+                                return (
+                                  <div
+                                    className="d-flex justify-content-between my-1 px-4"
+                                    key={idx}
+                                  >
+                                    <a
+                                      className="my-auto text-decoration-none text-dark"
+                                      target="_blank"
+                                      // href={value.file[0].name}
+                                    >
+                                      <div className="d-flex">
+                                        {idx + 1 + "."}
+                                        <div className="mx-2">
+                                          {value.file.name}
+                                        </div>
+                                      </div>
+                                    </a>
+                                    <button
+                                      className="btn btn-danger"
+                                      onClick={(e) => {
+                                        DeleteStateArrayFile(e, value.id);
+                                      }}
+                                    >
+                                      <i className="bi bi-trash"></i>
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                            </ul>
+                          </aside>
                         </div>
                       </div>
                     </Modal.Body>

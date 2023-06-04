@@ -164,7 +164,7 @@ function Manage_register() {
     // Array.from(
     //   document.querySelectorAll('button[data-bs-toggle="tooltip"]')
     // ).forEach((tooltipNode) => new Tooltip(tooltipNode));
-  }, [apply]);
+  }, []);
   return (
     <>
       {/* {JSON.stringify(apply)} */}

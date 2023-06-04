@@ -62,7 +62,7 @@ function Rootpage() {
     const p_NoPayment = await Get_person_NoPayment();
     const detailUser = await ShowDetailDataUser_Last();
     const detailPosition = await Show_DetailPositions();
-    // console.log(detailUser);
+    console.log(detailUser);
     SetPerson(detailUser);
     setPosition(detailPosition);
   };
@@ -77,7 +77,7 @@ function Rootpage() {
         <div className="container">
           {/* <div className="img"> */}
           <div className="row pt-1 my-auto  h-100">
-            <div className="col-md-6 my-auto px-3 order-2 order-md-1 pb-3 pt-3">
+            <div className="col-md-6 col-sm-6 col-12 my-auto px-3 order-2 order-md-1 pb-3 pt-3">
               <div className="row gy-3">
                 <div className="col-md-6 ">
                   <div
@@ -109,14 +109,19 @@ function Rootpage() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 col-sm-6 col-12">
                   <div
-                    className="box shadow-lg d-flex justify-content-between h-100 rounded py-3"
+                    className="box shadow-lg d-flex justify-content-between h-100 rounded py-3 flex-wrap"
                     style={{ backgroundColor: "white" }}
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้สมัครทั้งหมด</div>
-                      <h3 className="">{person.count_applicant_all} คน</h3>
+                      <h3 className="">
+                        {person.count_applicant_all > 0
+                          ? person.count_applicant_all
+                          : 0}{" "}
+                        คน
+                      </h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -127,7 +132,7 @@ function Rootpage() {
                       </div>
                     </div>
                     <div
-                      className="px-2 my-auto rounded mx-4"
+                      className="px-2 my-auto rounded mx-md-4 mx-auto"
                       style={{ backgroundColor: "#c0f2d8" }}
                     >
                       <i
@@ -146,7 +151,9 @@ function Rootpage() {
                       <div className="box-topic" style={{ fontSize: "15px" }}>
                         จำนวนผู้ที่เอกสารไม่สมบูรณ์
                       </div>
-                      <h3 className="">{person.count_warm} คน</h3>
+                      <h3 className="">
+                        {person.count_warm > 0 ? person.count_warm : 0} คน
+                      </h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -174,7 +181,12 @@ function Rootpage() {
                   >
                     <div className="right-side my-auto px-4">
                       <div className="box-topic">จำนวนผู้ที่ค้างชำระเงิน</div>
-                      <h3 className="">{person.count_person_pay_no} คน</h3>
+                      <h3 className="">
+                        {person.count_person_pay_no > 0
+                          ? person.count_person_pay_no
+                          : 0}{" "}
+                        คน
+                      </h3>
                       <div className="indicator">
                         <p
                           className="m-0 text-start"
@@ -249,9 +261,9 @@ function Rootpage() {
                           </tbody>
                         </Table>
                       </div>
-                      <div className="py-2">
+                      {/* <div className="py-2">
                         <CountdownTimer targetDate={dateTimeAfterThreeDays} />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

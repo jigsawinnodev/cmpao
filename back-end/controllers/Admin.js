@@ -74,105 +74,9 @@ const DeleteManagePosition = (req, res) => {
 
 
 // GetAll position
-const GetAllPosition = (req, res) => {
-    // let sql = `
-    // SELECT position.*, type_position.name
-    // FROM position
-    // JOIN type_position ON position.p_type = type_position.id
-    // ORDER BY position.p_id ASC`;
-    let sql =
-        `SELECT POSITION.*, type_position.name, file_position.fp_name FROM POSITION JOIN type_position ON POSITION.p_type = type_position.id JOIN file_position ON file_position.p_id = POSITION.p_id WHERE POSITION.status = 1 ORDER BY POSITION.p_id ASC`
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) {
-            // let data = [];
-            // for (let index = 0; index < result.length; index++) {
-            //     result[index].p_file = `${baseURL_PDF}${result[index].fp_name}`
-            //     data.push(result[index]);
-            // }
-            // console.log(data);
-            res.json(result)
-        };
-        if (err) console.log(err);
-    })
-}
-const manage_Position = (req, res, next) => {
 
-    const { p_name, p_id, p_type, p_active } = req.body;
-    // console.log(req.files);
-    if (p_id === "") {
-        let sql = `INSERT INTO cmpao.position (p_name, p_type, p_active) VALUES ('${p_name}', ${p_type}, ${p_active})`;
-        mysqlConnection.query(sql, function (err, result) {
-            if (!err) {
-                // console.log(req.file);
-                if (!req.fileValidationError) {
-                    if (req.file) {
-                        // console.log("req.file");
-                        let sql_file = `INSERT INTO cmpao.file_position (fp_name, p_id) VALUES ('${req.file.filename}', ${result.insertId})`;
-                        mysqlConnection.query(sql_file, function (err, result) {
-                            if (!err) {
 
-                            };
-                            if (err) console.log(err);
-                        })
-                        res.json("Inserted successfully and file")
-                    } else {
-                        let sql_file = `INSERT INTO cmpao.file_position (fp_name, p_id) VALUES ('null', ${result.insertId})`;
-                        mysqlConnection.query(sql_file, function (err, result) {
-                            if (!err) {
 
-                            };
-                            if (err) console.log(err);
-                        })
-                        res.json("Inserted successfully and file")
-                    }
-                }
-            }
-            if (err) {
-                res.status(404).json();
-            };
-        })
-    } else {
-        let sql = `UPDATE cmpao.position SET p_name = '${p_name}', p_type = ${p_type}, p_active = ${p_active} WHERE p_id = ${p_id}`;
-        mysqlConnection.query(sql, function (err, result) {
-            if (!err) {
-                if (!req.fileValidationError) {
-                    if (!req.file) {
-                        let sql = `UPDATE cmpao.file_position SET fp_name = null WHERE p_id = ${p_id}`
-                        mysqlConnection.query(sql, function (err, result) {
-                            if (!err) {
-                                res.json("Update successful no file")
-                            };
-                            if (err) console.log(err);
-                        })
-
-                    } else {
-                        let sql = `UPDATE cmpao.file_position SET fp_name = '${req.file.filename}' WHERE p_id = ${p_id}`
-                        mysqlConnection.query(sql, function (err, result) {
-                            if (!err) {
-                                // console.log(rows);
-                                res.json("Update successful file")
-                            };
-                            if (err) console.log(err);
-                        })
-                    }
-                    // res.json("Update successful file")
-                }
-            }
-            if (err) console.log(err);
-        })
-    }
-}
-const Delete_positions = (req, res) => {
-    const { id } = req.params
-    console.log(id);
-    let sql = `UPDATE cmpao.position SET status = 0 WHERE p_id = ${id}`
-    mysqlConnection.query(sql, function (err, result) {
-        if (!err) {
-            // console.log(result);
-        };
-        if (err) console.log(err);
-    })
-}
 
 // end_positions
 
@@ -231,12 +135,11 @@ const PermissionsGetAll = (req, res) => {
     })
 }
 const GetCheckPermissionsAll = (req, res) => {
-    let sql = "SELECT * FROM permission ORDER BY per_id ASC";
+    let sql = "SELECT * FROM permission WHERE is_active = 1  ORDER BY per_id ASC";
     mysqlConnection.query(sql, function (err, result) {
         if (!err) {
             const data = [];
-
-            result.forEach((value) => {
+            result.forEach((value, i) => {
                 if (!data[value.per_user]) {
                     data[value.per_user] = [];
                 }
@@ -360,7 +263,9 @@ const UpdateApplyAndInsert = (req, res) => {
 }
 
 const testApi = async (req, res) => {
-    console.log(req);
+    // console.log(req);
+    res.json(req.body.data[0]);
+    console.log(req.body.data[0].Data.file);
     // console.log('qwe');
     // console.log(req.body);
     // let data = req.body.data;
@@ -385,9 +290,6 @@ module.exports = {
     DeleteManagePosition,
     GetApplyAll,
     Apply_Applycheck,
-    GetAllPosition,
-    manage_Position,
-    Delete_positions,
     GetPositon,
     // InsertApply,
     PermissionsGetAll,

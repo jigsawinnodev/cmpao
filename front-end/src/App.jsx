@@ -37,6 +37,7 @@ import Manage_apply_check from "./components/DashboardComponent/Manage_document/
 import NotFound from "./view/NotFound/NotFound";
 import Is_accept from "./view/Is_accept/Is_accept";
 import Detailposition from "./components/Detailposition/Detailposition";
+import LoginAdmin from "./view/LoginAdmin/LoginAdmin";
 moment.locale("th");
 function App() {
   return (
@@ -52,6 +53,9 @@ function App() {
         <Route path="DetailWork/:id" element={<DetailWork />} />
         <Route path="DetailWork/FormWork/:id" element={<FormWork />} />
       </Route>
+
+      <Route path="LoginInfo" element={<LoginAdmin />} />
+
       <Route path="Dashboard" element={<Dashboard />}>
         <Route index path="" element={<IndexPage />} />
         <Route path="Dashboard" element={<IndexPage />} />
