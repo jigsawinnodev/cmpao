@@ -84,6 +84,26 @@ const Insert_Edit_User = (req, res) => {
                         status: "username_is_ready"
                     })
                 } else {
+                    // console.log(result);
+                    const match = await bcrypt.compare(result[0].user_password, user_password);
+                    if (match) {
+                        let sql = `UPDATE user SET user_password = '${user_password}' WHERE user_id = '${user_id}'`;
+                        mysqlConnection.query(sql, function (err, result) {
+                            if (!err) {
+                                // res.json({ status: 'success' });
+                            };
+                            if (err) console.log(err);
+                        })
+                    } else {
+                        const HashPassword = await bcrypt.hash(user_password, 10);
+                        let sql = `UPDATE user SET user_password = '${HashPassword}' WHERE user_id = '${user_id}'`;
+                        mysqlConnection.query(sql, function (err, result) {
+                            if (!err) {
+                                // res.json({ status: 'success' });
+                            };
+                            if (err) console.log(err);
+                        })
+                    }
                     if (!req.fileValidationError) {
                         // console.log(req.file);
                         if (!req.file) {
@@ -141,7 +161,6 @@ const FindUserByID = (req, res) => {
     } else {
         res.json("Error")
     }
-
 };
 const Delete_User = (req, res) => {
     const { id } = req.params

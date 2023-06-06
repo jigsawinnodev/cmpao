@@ -27,6 +27,7 @@ import {
   GetTbl_religion,
   Get_memberby_id,
 } from "../../../../service/api";
+var token = localStorage.getItem("token");
 function UserRegister_Add() {
   let { id } = useParams();
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ function UserRegister_Add() {
         formData.append("m_username", S_nameUser); //username
         formData.append("m_password", newPassword); //password
         formData.append("m_active", S_activeUser); //m_active
-        const res = await CreateMember(formData);
+        const res = await CreateMember(formData, token);
         console.log(res.status);
         if (res.status == "success") {
           Swal.fire("บันทึกข้อมูลสำเร็จ", "", "success").then(() => {
@@ -187,7 +188,7 @@ function UserRegister_Add() {
       formData.append("m_username", S_nameUser); //username
       formData.append("m_password", S_passwordUser); //password
       formData.append("m_active", S_activeUser); //m_active
-      const res = await CreateMember(formData);
+      const res = await CreateMember(formData, token);
       console.log(res.status);
       if (res.status == "success") {
         Swal.fire("บันทึกข้อมูลสำเร็จ", "", "success").then(() => {
@@ -228,7 +229,7 @@ function UserRegister_Add() {
   };
 
   const GetDataID = async (id) => {
-    const res = await Get_memberby_id(id);
+    const res = await Get_memberby_id(id,token);
     const district = await GetTbl_district();
     const subDistrict = await GetTbl_subdistrict();
     // setDistrict(district); // อำเภอ
@@ -282,13 +283,13 @@ function UserRegister_Add() {
     console.log(res);
   };
   const GetDataFromApi = async () => {
-    const preName = await GetpreName();
-    const BloodType = await GetBloodType();
-    const relationship = await GetStatus_relationship();
-    const country = await GetTbl_country();
-    const district = await GetTbl_district();
-    const subDistrict = await GetTbl_subdistrict();
-    const religion = await GetTbl_religion();
+    const preName = await GetpreName(token);
+    const BloodType = await GetBloodType(token);
+    const relationship = await GetStatus_relationship(token);
+    const country = await GetTbl_country(token);
+    const district = await GetTbl_district(token);
+    const subDistrict = await GetTbl_subdistrict(token);
+    const religion = await GetTbl_religion(token);
 
     SetpreName(preName); // คำนำหน้า
     setBloodtype(BloodType); //เลือด

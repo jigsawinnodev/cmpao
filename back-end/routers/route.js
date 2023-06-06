@@ -11,6 +11,9 @@ const Apply = require("../controllers/Apply/Apply");
 const Permission = require("../controllers/Permission/Permission");
 const Organization = require("../controllers/Organization/Organization");
 const ManagePositions = require("../controllers/ManagePosition/ManagePosition");
+const AuthAdmin = require('../controllers/LoginAdmin/LoginAdmin');
+const verify = require('../middelware/authJwt');
+const Payment = require('../controllers/payment/Payment');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -59,54 +62,62 @@ router.post('/insertApply', Admin.Insert_Apply);
 router.post('/deleteApply/:id', Admin.Delete_Apply);
 
 
-// router ManagePositions
-router.get('/GetAllPosition', ManagePositions.GetAllPosition);
-router.get('/GetFilePositions/:id', ManagePositions.GetFilePositions);
-router.post('/Edit_Add_Position', upload.array('file', 10), ManagePositions.manage_Position);
-router.post('/Delete_position/:id', ManagePositions.Delete_positions);
-
-
-// router Permissions
-router.get('/permissionsAll', Admin.PermissionsGetAll);
-router.get('/CheckAllPermissions', Admin.GetCheckPermissionsAll)
-router.post('/UpdatePermissions', Permission.UpdatePermission);
 
 
 //test
 router.post('/testApi', Admin.testApi);
 
-router.post('/testApiFromData', (req, res, next) => {
-    console.log(req);
-})
+
 
 // เสร็จ
 // router User
-router.get('/GetUser', User.user_all);
-router.get('/GetUser_permission', User.GetUser_permission);
-router.post('/Insert_Edit_User', upload.single('img'), User.Insert_Edit_User);
-router.get('/FindUserByID/:id', User.FindUserByID);
-router.post('/Delete_user/:id', User.Delete_User);
-
+router.get('/GetUser', verify, User.user_all);
+router.get('/GetUser_permission', verify, User.GetUser_permission);
+router.post('/Insert_Edit_User', verify, upload.single('img'), User.Insert_Edit_User);
+router.get('/FindUserByID/:id', verify, User.FindUserByID);
+router.post('/Delete_user/:id', verify, User.Delete_User);
 // router TypePosition
-router.get('/GetType_position', TypePosition.GetType_position);
-router.post('/Edit_type_position', TypePosition.Edit_position);
-router.post('/Delete_type_position/:id', TypePosition.DeleteType_position);
-
-
+router.get('/GetType_position', verify, TypePosition.GetType_position);
+router.post('/Edit_type_position', verify, TypePosition.Edit_position);
+router.post('/Delete_type_position/:id', verify, TypePosition.DeleteType_position);
 // router Member
-router.get('/selectMemberAll', Member.selectMemberAll);
-router.post('/CreateMember', upload.single('img'), Member.CreateMember);
-router.get('/selectMember/:id', Member.selectMemberById);
-router.post('/DeleteMember/:id', Member.Delete_Member);
-
+router.get('/selectMemberAll', verify, Member.selectMemberAll);
+router.post('/CreateMember', verify, upload.single('img'), Member.CreateMember);
+router.get('/selectMember/:id', verify, Member.selectMemberById);
+router.post('/DeleteMember/:id', verify, Member.Delete_Member);
+// router Permissions
+router.get('/permissionsAll', verify, Admin.PermissionsGetAll);
+router.get('/CheckAllPermissions', verify, Admin.GetCheckPermissionsAll)
+router.post('/UpdatePermissions', verify, Permission.UpdatePermission);
+// router ManagePositions
+router.get('/GetAllPosition', verify, ManagePositions.GetAllPosition);
+router.get('/GetFilePositions/:id', verify, ManagePositions.GetFilePositions);
+router.post('/Edit_Add_Position', verify, upload.array('file', 10), ManagePositions.manage_Position);
+router.post('/Delete_position/:id', verify, ManagePositions.Delete_positions);
 
 //Dashboard
-router.get('/CardDashboard', Dashboard.GetMaxID);
+router.get('/CardDashboard', verify, Dashboard.GetMaxID);
+
+
+//payment
+router.get('/GetAllPayment', verify, Payment.GetAllPayment)
+router.get('/GetAllPaymentBy/:id', verify, Payment.GetPayMentCheckByid)
+router.get('/GetPositionToexport/:id', verify, Payment.GetPositionToexport);
+
+
+
 
 //Organization
 router.get('/GetOrganization', Organization.GetAllOrganization);
-
 // Apply
 router.get('/GetApply', Apply.GetAll_Apply);
 router.post('/test', upload.any(), Admin.testApi)
+
+
+
+
+
+//CallAdmin
+router.post('/LoginAdmin', AuthAdmin.AdminLogin);
+router.get('/getMeAdmin', verify, AuthAdmin.VertifyTokenAdmin);
 module.exports = router;

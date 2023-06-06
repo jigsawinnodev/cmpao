@@ -6,6 +6,7 @@ import {
   GetCheckAllPermissions,
   EditCheckAllPermissions,
 } from "../../../service/api";
+var token = localStorage.getItem("token");
 import axios from "axios";
 function Manage_privilege() {
   const [MenuAdmin, SetMenuAdmin] = useState([]);
@@ -15,20 +16,20 @@ function Manage_privilege() {
   const [CheckArray, SetCheckArray] = useState([]);
   const [data, setData] = useState([]);
   const GetPermissions = async () => {
-    let res = await GetCheckAllPermissions();
+    let res = await GetCheckAllPermissions(token);
     SetCheckAllPermissions(res);
   };
 
   const handleOnChangeCheck = (e) => {
     let data = e.target.name;
     const splitdata = data.split("_");
-    EditCheckAllPermissions(splitdata);
+    EditCheckAllPermissions(splitdata, token);
     GetPermissions();
   };
 
   const GetMenu = async () => {
-    const res = await GetMenuAdmin();
-    const resGetAllpermissions = await GetAllpermissions();
+    const res = await GetMenuAdmin(token);
+    const resGetAllpermissions = await GetAllpermissions(token);
     SetAllpermissions(resGetAllpermissions);
     SetMenuAdmin(res);
   };

@@ -7,6 +7,8 @@ export const Get_person_NoSuccess = async () => {
     return response.data;
 }
 
+
+
 export const Get_person_All = async () => {
     let response = await axios.get(`${BaseUrl}/person_all`);
     return response.data;

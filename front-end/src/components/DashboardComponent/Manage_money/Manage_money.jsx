@@ -3,7 +3,17 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { GetPayment } from "../../../service/api";
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
+var token = localStorage.getItem("token");
 function Manage_money() {
+  const GetDataPayment = async () => {
+    let res = await GetPayment(token);
+    console.log(res);
+    setData(res);
+  };
   const mockData = [
     {
       id: 1,
@@ -73,48 +83,48 @@ function Manage_money() {
   const columns = [
     {
       name: "ลำดับ",
-      selector: (row) => row.id,
+      selector: (row, index) => index + 1,
       width: "10%",
-      cell: (row) => row.id,
-      sortable: true,
+      cell: (row, index) => index + 1,
+      // sortable: true,
       center: true,
     },
     {
       name: "ประเภท",
-      selector: (row) => row.type,
+      selector: (row) => row.position_name,
       width: "15%",
-      cell: (row) => row.type,
+      cell: (row) => row.position_name,
       sortable: true,
       // center: true,
     },
     {
       name: "วันที่เริ่มต้น",
-      selector: (row) => row.dateStart,
+      selector: (row) => moment(row.jc_start).add(543, "year").format("ll"),
       width: "15%",
-      cell: (row) => row.dateStart,
+      cell: (row) => moment(row.jc_start).add(543, "year").format("ll"),
       sortable: true,
       // center: true,
     },
     {
       name: "วันที่สิ้นสุด",
-      selector: (row) => row.dateEnd,
-      cell: (row) => row.dateEnd,
+      selector: (row) => moment(row.jc_end).add(543, "year").format("ll"),
+      cell: (row) => moment(row.jc_end).add(543, "year").format("ll"),
       width: "15%",
       sortable: true,
       // center: true,
     },
     {
       name: "จำนวนตำเเหน่ง",
-      selector: (row) => row.countPosition,
-      cell: (row) => row.countPosition,
+      selector: (row) => (row.count_position ? row.count_position : 0),
+      cell: (row) => (row.count_position ? row.count_position : 0),
       width: "15%",
       sortable: true,
       center: true,
     },
     {
       name: "จำนวนที่ชำระเงิน",
-      selector: (row) => row.countCancelMoney,
-      cell: (row) => row.countCancelMoney,
+      selector: (row) => row.count_apply,
+      cell: (row) => row.count_apply,
       width: "15%",
       sortable: true,
       center: true,
@@ -124,7 +134,7 @@ function Manage_money() {
       selector: (row) => row.discountPercentage,
       sortable: true,
       cell: (row) => (
-        <Link to="payment_check">
+        <Link to={"payment_check/" + row.jc_id}>
           <button type="button" className="btn btn-info">
             <i className="bi bi-gear" style={{ color: "black" }}></i>
           </button>
@@ -136,18 +146,7 @@ function Manage_money() {
   ];
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   const handleSearch = (rows) => {
     return rows.filter((row) => {
       // if (!search) return true;
@@ -164,7 +163,7 @@ function Manage_money() {
     });
   };
   useEffect(() => {
-    GetData();
+    GetDataPayment();
   }, []);
   return (
     <>
@@ -186,7 +185,7 @@ function Manage_money() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="input-wrapper px-3 py-1 w-100 float-end">
+                    <div className="input-wrapper  py-1 w-100 float-end">
                       <button className="icon">
                         <i
                           className="bi bi-search"
@@ -205,7 +204,7 @@ function Manage_money() {
                     <DataTable
                       columns={columns}
                       // data={handleSearch(data)}
-                      data={mockData}
+                      data={data}
                       pagination
                       responsive
                     />

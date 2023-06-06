@@ -14,7 +14,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const NameContext = createContext();
-
+var token = localStorage.getItem("token");
 function Manage_typeUserRegister() {
   const [DataTypePosition, setDataTypePosition] = useState([]);
   const [Edit_name, setEdit_name] = useState("");
@@ -28,10 +28,13 @@ function Manage_typeUserRegister() {
 
   const handleFormEdit = (e) => {
     e.preventDefault();
-    Insert_position({
-      name: DataForm.name,
-      id: DataForm.id,
-    });
+    Insert_position(
+      {
+        name: DataForm.name,
+        id: DataForm.id,
+      },
+      token
+    );
     setShow(false);
     setShowInsert(false);
     setDataForm({
@@ -143,7 +146,7 @@ function Manage_typeUserRegister() {
   ];
 
   const GetData = async () => {
-    let response = await GetType_position();
+    let response = await GetType_position(token);
     setDataTypePosition(response);
   };
   const [showInsert, setShowInsert] = useState(false);
@@ -164,7 +167,7 @@ function Manage_typeUserRegister() {
       cancelButtonColor: "#d33",
     }).then((result) => {
       if (result.isConfirmed) {
-        Delete_type_position(id);
+        Delete_type_position(id, token);
         GetData();
       }
     });

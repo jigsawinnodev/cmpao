@@ -9,6 +9,7 @@ import { Tooltip } from "bootstrap";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
+var token = localStorage.getItem("token");
 function Manage_userRegister() {
   const columns = [
     {
@@ -98,7 +99,7 @@ function Manage_userRegister() {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("ลบข้อมูลสำเร็จ", "", "success").then(() => {
-          DeleteMember(id);
+          DeleteMember(id, token);
           Get_tbl_Member();
         });
       }
@@ -128,7 +129,7 @@ function Manage_userRegister() {
     });
   };
   const Get_tbl_Member = async () => {
-    const GetMember = await GetMemberAll();
+    const GetMember = await GetMemberAll(token);
     setMember(GetMember);
   };
   useEffect(() => {

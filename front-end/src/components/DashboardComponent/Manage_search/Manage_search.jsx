@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import DataTable from "react-data-table-component";
 import "dayjs/locale/th";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
+import moment from "moment/min/moment-with-locales";
+import "moment/locale/th";
+moment.locale("th");
 function Manage_search() {
+  const [year, setYear] = useState([]);
+  const loopYear = () => {
+    let year = [];
+    for (let index = 0; index < 5; index++) {
+      year.push(
+        moment()
+          .add(543 - index, "year")
+          .format("Y")
+      );
+    }
+    setYear(year);
+  };
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const columns = [
@@ -104,6 +119,9 @@ function Manage_search() {
       center: true,
     },
   ];
+  useEffect(() => {
+    loopYear();
+  }, []);
   return (
     <>
       <div className="px-3 py-4">
@@ -131,10 +149,10 @@ function Manage_search() {
                         className="form-select"
                         aria-label="Default select example"
                       >
-                        <option>2566</option>
-                        {
-                          
-                        }
+                        {year.map((value, idx) => {
+                          return <option value="">{value}</option>;
+                        })}
+                        {/* {loopYear()} */}
                       </select>
                     </div>
                   </div>

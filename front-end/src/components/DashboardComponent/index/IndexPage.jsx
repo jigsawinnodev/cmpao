@@ -2,18 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import BarChart from "../../Chart/BarChart";
-import { UserData } from "../../../Data";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
 import { GetdetailCard, GetAllApply } from "../../../service/api";
+var token = localStorage.getItem("token");
 function Index() {
   const [dataCard, setStateDataCard] = useState([]);
   const [DataAllApply, setStateDataApply] = useState([]);
   const GetDataToCard = async () => {
-    const res = await GetdetailCard();
-    const resAllApply = await GetAllApply();
-    console.log(resAllApply);
+    const res = await GetdetailCard(token);
+    const resAllApply = await GetAllApply(token);
+    // console.log(resAllApply);
     setStateDataApply(resAllApply);
     setStateDataCard(res);
   };

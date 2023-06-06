@@ -50,19 +50,13 @@ function Rootpage() {
   };
 
   const THREE_DAYS_IN_MS = 10 * 1000;
-  // const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
   const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
-  // const dateTimeAfterSevenDays = NOW_IN_MS + SEVEN_DAYS_IN_MS;
 
   const GetData = async () => {
-    const res = await Get_person_NoSuccess();
-    const p_all = await Get_person_All();
-    const p_NoPayment = await Get_person_NoPayment();
     const detailUser = await ShowDetailDataUser_Last();
     const detailPosition = await Show_DetailPositions();
-    console.log(detailUser);
     SetPerson(detailUser);
     setPosition(detailPosition);
   };

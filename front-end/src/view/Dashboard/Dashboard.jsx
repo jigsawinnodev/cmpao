@@ -9,25 +9,44 @@ import { Link, Routes, Route, Outlet, NavLink } from "react-router-dom";
 import Index from "../../components/DashboardComponent/index/IndexPage";
 import "./Dashboard.css";
 import axios from "axios";
+import img_nav from "../../assets/img/img_nav.png";
+import { GetVertifyAdmin, GetMenuAdmin } from "../../service/api";
+import { useNavigate } from "react-router-dom";
 function Dashboard() {
   const [menu, SetMenu] = useState([]);
-  const GetMenu = () => {
-    axios.get("http://localhost:9500/api/GetMenu").then((res) => {
-      SetMenu(res.data);
-    });
+  let navigate = useNavigate();
+  const GetMenu = async () => {
+    let token = localStorage.getItem("token");
+    let res = await GetMenuAdmin(token);
+    SetMenu(res);
   };
+  const Vertify = async () => {
+    let token = localStorage.getItem("token");
+    let res = await GetVertifyAdmin(token);
+    console.log(res);
+    if (res.status == false) {
+      console.log("error");
+      navigate("/LoginInfo");
+    }
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+  };
+
   useEffect(() => {
+    Vertify();
     GetMenu();
   }, []);
   return (
     <>
       <div>
-        <div className="sidebar">
-          <div className="logo-details">
-            <i className="bx bxl-c-plus-plus" />
-            <span className="logo_name">CodingLab</span>
+        <div className="sidebar pt-3">
+          <div className="logo-details justify-content-center py-2 px-2">
+            {/* <i className="bx bxl-c-plus-plus" /> */}
+            <img src={img_nav} alt="" className="img-fluid logo_name" />
+            {/* <span className="logo_name"></span> */}
           </div>
-          <ul className="nav-links">
+          <ul className="nav-links pt-3 ">
             {menu.map((value, idx) => {
               return (
                 <NavLink
@@ -94,7 +113,7 @@ function Dashboard() {
                 </NavLink>
               );
             })}
-            <NavLink to="/" className="LinkItem">
+            <NavLink to="/LoginInfo" className="LinkItem" onClick={logout}>
               {({ isActive, isPending }) => {
                 // console.log(isActive);
                 if (isActive) {

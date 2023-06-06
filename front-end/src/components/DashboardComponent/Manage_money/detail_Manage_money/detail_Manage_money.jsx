@@ -2,36 +2,31 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import { GetAllPaymentByID, GetPositionPayment } from "../../../../service/api";
+import { useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Pdf from "../../../pdf/Pdf";
+
+var token = localStorage.getItem("token");
 function Detail_Manage_money() {
-  const mockData = [
-    {
-      id: 1,
-      idcard: "3-7503-09374-82-6",
-      numberOrder: 1,
-      nameAndLastname: "นายสมใจ นันตา",
-      type: "ข้าราชการ",
-      position: "พนักงานทั่วไป",
-      status: "ชำระเงินสำเร็จ",
-    },
-    {
-      id: 2,
-      idcard: "3-7503-09374-82-6",
-      numberOrder: 2,
-      nameAndLastname: "นางเเก้วใจ สวยงาม",
-      type: "ข้าราชการ",
-      position: "พนักงานทั่วไป",
-      status: "ชำระเงินสำเร็จ",
-    },
-    {
-      id: 3,
-      idcard: "3-7503-09374-82-6",
-      numberOrder: 3,
-      nameAndLastname: "นายกัมปนาท ดอนตอง",
-      type: "ข้าราชการ",
-      position: "พนักงานทั่วไป",
-      status: "ชำระเงินสำเร็จ",
-    },
-  ];
+  const { id } = useParams();
+  const [show, setShow] = useState(false);
+  const [position, setPosition] = useState([]);
+
+  const handleClose = () => setShow(false);
+  const handleShow = async () => {
+    let res = await GetPositionPayment(data[0].jc_id, token);
+    setPosition(res);
+    setShow(true);
+  };
+  const GetDataByID = async () => {
+    let res = await GetAllPaymentByID(id, token);
+    setData(res);
+  };
+
   const columns = [
     {
       name: "ลำดับ",
@@ -88,37 +83,26 @@ function Detail_Manage_money() {
       width: "15%",
     },
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [search, setSearch] = useState("");
-  const GetData = async () => {
-    await axios
-      .get("https://dummyjson.com/products")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data.products);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   const handleSearch = (rows) => {
     return rows.filter((row) => {
       // if (!search) return true;
-      if (
-        row.id.toString().toLowerCase().indexOf(search) > -1 ||
-        row.category.toLowerCase().indexOf(search) > -1 ||
-        row.brand.toLowerCase().indexOf(search) > -1 ||
-        row.description.toLowerCase().indexOf(search) > -1 ||
-        row.discountPercentage.toString().toLowerCase().indexOf(search) > -1 ||
-        row.price.toString().toLowerCase().indexOf(search) > -1
-      ) {
-        return true;
-      }
+      // if (
+      //   row.id.toString().toLowerCase().indexOf(search) > -1 ||
+      //   row.category.toLowerCase().indexOf(search) > -1 ||
+      //   row.brand.toLowerCase().indexOf(search) > -1 ||
+      //   row.description.toLowerCase().indexOf(search) > -1 ||
+      //   row.discountPercentage.toString().toLowerCase().indexOf(search) > -1 ||
+      //   row.price.toString().toLowerCase().indexOf(search) > -1
+      // ) {
+      return true;
+      // }
     });
   };
   useEffect(() => {
-    GetData();
+    GetDataByID();
   }, []);
   return (
     <>
@@ -141,12 +125,17 @@ function Detail_Manage_money() {
                 className="form-select"
                 aria-label="Default select example"
               >
-                <option>จำนวนผู้ที่เอกสารครบแล้ว จำนวน 0 คน</option>
+                <option>
+                  จำนวนผู้ที่เอกสารครบแล้ว จำนวน {data[0]?.count_applicant_all}{" "}
+                  คน
+                </option>
                 <option value={1}>
-                  จำนวนผู้สมัครที่ชำระเงินและออกใบเสร็จแล้ว จำนวน 0 คน
+                  จำนวนผู้สมัครที่ชำระเงินและออกใบเสร็จแล้ว จำนวน{" "}
+                  {data[0]?.count_person_pay} คน
                 </option>
                 <option value={2}>
-                  จำนวนผู้สมัครที่ยังคงค้างการชำระเงินและออกใบเสร็จ จำนวน 0 คน
+                  จำนวนผู้สมัครที่ยังคงค้างการชำระเงินและออกใบเสร็จ จำนวน{" "}
+                  {data[0]?.count_person_pay_no} คน
                 </option>
               </select>
             </div>
@@ -155,20 +144,55 @@ function Detail_Manage_money() {
                 {/* <button type="button" className="btn btn-outline-success">
                   รายงานราชกาล
                 </button> */}
-                <button className="Btn_Add_user">รายงานราชกาล</button>
+                <button className="Btn_Add_user" onClick={handleShow}>
+                  รายงานราชกาล
+                </button>
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>รายงานราชการ</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="form-group">
+                      <label htmlFor="" className="mb-2">
+                        เลือกตำแหน่ง
+                      </label>
+                      <select
+                        className="form-select"
+                        aria-label="Default select example"
+                      >
+                        <option value={""}>เลือกตำเเหน่ง</option>
+                        {position.map((value, idx) => {
+                          return <option value="1">One</option>;
+                        })}
+                      </select>
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      PDF
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                      EXCEL
+                    </Button>
+                    <PDFDownloadLink
+                      document={<Pdf DataDate={data} />}
+                      fileName="FROM"
+                    >
+                      PDF
+                    </PDFDownloadLink>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </div>
             <div className="col-md-12">
-              <DataTable
+              {/* <DataTable
                 columns={columns}
-                data={mockData}
+                data={handleSearch(data)}
                 pagination
                 responsive
-              />
+              /> */}
             </div>
-            <div className="col-md-12">
-              
-            </div>
+            <div className="col-md-12"></div>
           </div>
         </div>
       </div>

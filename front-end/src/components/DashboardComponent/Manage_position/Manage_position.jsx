@@ -11,9 +11,10 @@ import {
   Add_edit_position,
   Delete_position,
   GetFilePositionsById,
+  GetType_position,
 } from "../../../service/api";
 import Dropzone from "react-dropzone";
-
+var token = localStorage.getItem("token");
 function Manage_position() {
   // modal
 
@@ -29,7 +30,6 @@ function Manage_position() {
   //   },
   // });
   const DeleteStateArrayFile = (e, id) => {
-    console.log(id);
     e.preventDefault();
     setE_FilePdf((preventState) => {
       return preventState.filter((e) => e.id != id);
@@ -66,8 +66,7 @@ function Manage_position() {
   const E_inputFile = useRef(null);
 
   const SetDataForEdit = async (data) => {
-    let res = await GetFilePositionsById(data.p_id);
-    console.log(res);
+    let res = await GetFilePositionsById(data.p_id, token);
     setE_id(data.p_id);
     setE_p_name(data.p_name);
     setE_type(data.p_type);
@@ -309,8 +308,7 @@ function Manage_position() {
   ];
 
   const getDataPosition = async () => {
-    const data = await GetAllPosition();
-    // console.log(data);
+    const data = await GetAllPosition(token);
     setPositionData(data.data);
   };
 
@@ -323,7 +321,6 @@ function Manage_position() {
   const [statusPosition, setStatusPosition] = useState("1");
   const [filePdf, setFilePdf] = useState([]);
   const ref = useRef();
-
   // modal dialog
 
   const haddleEditSubmit = (event) => {
@@ -340,7 +337,7 @@ function Manage_position() {
     formData.append("p_id", E_id);
     formData.append("p_type", E_type);
     formData.append("p_active", E_status);
-    let res = Add_edit_position(formData);
+    let res = Add_edit_position(formData, token);
     setShowModalEdit(false);
     Swal.fire({
       icon: "success",
@@ -365,7 +362,7 @@ function Manage_position() {
     formData.append("p_name", namePosition);
     formData.append("p_type", typePosition);
     formData.append("p_active", statusPosition);
-    Add_edit_position(formData);
+    Add_edit_position(formData, token);
     setShowModalAdd(false);
     Swal.fire({
       icon: "success",
@@ -390,7 +387,7 @@ function Manage_position() {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
-        Delete_position(id);
+        Delete_position(id, token);
         Swal.fire({
           icon: "success",
           title: "ลบข้อมูลเรียบร้อย!",
@@ -400,16 +397,9 @@ function Manage_position() {
     });
   };
 
-  const GetType_Position = () => {
-    axios
-      .get("http://localhost:9500/api/GetType_position")
-      .then((res) => {
-        SetpositionType(res.data);
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+  const GetType_Position = async () => {
+    let resData = await GetType_position(token);
+    SetpositionType(resData);
   };
   const handleSearch = (rows) => {
     // console.log(rows);

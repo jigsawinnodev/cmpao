@@ -1,24 +1,39 @@
 import axios from "axios";
 var BaseUrl = 'http://localhost:9500';
 
-
-export const GetMenuAdmin = async () => {
-    let response = await axios.get(`${BaseUrl}/api/GetMenu`);
+export const GetMenuAdmin = async (token) => {
+    let response = await axios.get(`${BaseUrl}/api/GetMenu`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 }
 
-export const GetpreName = async () => {
-    let response = await axios.get(`${BaseUrl}/api/GetpreName`);
+export const GetpreName = async (token) => {
+    let response = await axios.get(`${BaseUrl}/api/GetpreName`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data
 };
 export const GetBloodType = async () => {
-    let response = await axios.get(`${BaseUrl}/api/GetBloodType`);
+    let response = await axios.get(`${BaseUrl}/api/GetBloodType`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 
 };
-export const GetStatus_relationship = () => {
+export const GetStatus_relationship = (token) => {
     return axios
-        .get(`${BaseUrl}/api/GetStatus_relationship`)
+        .get(`${BaseUrl}/api/GetStatus_relationship`, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
+        })
         .then((res) => {
             return res.data;
         })
@@ -26,9 +41,13 @@ export const GetStatus_relationship = () => {
             console.log(err);
         });
 };
-export const GetTbl_country = () => {
+export const GetTbl_country = (token) => {
     return axios
-        .get(`${BaseUrl}/api/GetTbl_country`)
+        .get(`${BaseUrl}/api/GetTbl_country`, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
+        })
         .then((res) => {
             return res.data
         })
@@ -37,9 +56,13 @@ export const GetTbl_country = () => {
         });
 };
 
-export const GetTbl_district = () => {
+export const GetTbl_district = (token) => {
     return axios
-        .get(`${BaseUrl}/api/GetTbl_district`)
+        .get(`${BaseUrl}/api/GetTbl_district`, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
+        })
         .then((res) => {
             return res.data
         })
@@ -48,45 +71,50 @@ export const GetTbl_district = () => {
         });
 };
 
-export const GetTbl_subdistrict = () => {
-    return axios.get(`${BaseUrl}/api/GetTbl_subdistrict`)
+export const GetTbl_subdistrict = (token) => {
+    return axios.get(`${BaseUrl}/api/GetTbl_subdistrict`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
         .then((res) => {
             return res.data
         }).catch((err) => {
             console.log(err);
         });
 }
-export const GetTbl_religion = async () => {
-    let response = await axios.get(`${BaseUrl}/api/GetTbl_religion`);
+export const GetTbl_religion = async (token) => {
+    let response = await axios.get(`${BaseUrl}/api/GetTbl_religion`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     // console.log(response);
     return response.data;
 }
-export const CreateMember = (data) => {
+export const CreateMember = (data, token) => {
     return axios({
         method: "post",
         url: `${BaseUrl}/api/CreateMember`,
         data: data,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
     }).then(function (response) {
         return response.data;
     }).catch(function (response) {
-        //handle error
         console.log(response);
     });
 }
 
-// export const GetAllApply = async () => {
-//     return await axios.get(`${BaseUrl}/api/GetApplyAll`)
-//         .then((res) => {
-//             // console.log(res);
-//             return res.data;
-//         }).catch((err) => {
-//             console.log(err);
-//         });
-// }
-export const GetMemberAll = async () => {
+export const GetMemberAll = async (token) => {
     return await axios
-        .get("http://localhost:9500/api/selectMemberAll")
+        .get("http://localhost:9500/api/selectMemberAll", {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
+        })
         .then((res) => {
             return res.data
         })
@@ -94,14 +122,18 @@ export const GetMemberAll = async () => {
             console.log(err);
         });
 }
-export const DeleteMember = async (id) => {
+export const DeleteMember = async (id, token) => {
     return axios.post(`${BaseUrl}/api/DeleteMember/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
     }).then((res) => {
         return res.data
     }).catch((err) => {
         console.log(err);
     });
 }
+
 export const Apply_Applycheck = (id) => {
     return axios.post(`${BaseUrl}/api/Apply_Applycheck`, {
         id: id,
@@ -176,18 +208,27 @@ export const ConvertDatetimeToDate = (date) => {
 
 
 // Position
-export function GetAllPosition() {
-    let response = axios.get(`${BaseUrl}/api/GetAllPosition`);
+export function GetAllPosition(token) {
+    let response = axios.get(`${BaseUrl}/api/GetAllPosition`,
+        {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
+        }
+    );
     // console.log(response);
     return response;
 }
-export function Add_edit_position(file_Data) {
+export function Add_edit_position(file_Data, token) {
     // console.log(file_Data);
     axios({
         method: "post",
         url: `${BaseUrl}/api/Edit_Add_Position`,
         data: file_Data,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
     })
         .then(function (response) {
             return response.data
@@ -198,9 +239,13 @@ export function Add_edit_position(file_Data) {
             console.log(response);
         });
 }
-export function Delete_position(id) {
+export function Delete_position(id, token) {
     axios.post(`${BaseUrl}/api/Delete_position/${id}`, {
         id: id
+    }, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
     }).then((res) => {
         console.log(res);
     }).catch((err) => {
@@ -216,22 +261,33 @@ export async function getPositionINtype(id) {
 
 
 // user
-export function GetAll_user() {
-    let response = axios.get(`${BaseUrl}/api/GetUser`);
+export function GetAll_user(token) {
+    let response = axios.get(`${BaseUrl}/api/GetUser`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response;
 }
-export function Get_permission() {
-    let response = axios.get(`${BaseUrl}/api/GetUser_permission`);
+export function Get_permission(token) {
+    let response = axios.get(`${BaseUrl}/api/GetUser_permission`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response;
 }
 
-export function Insert_Edit_User_Add(formData) {
+export function Insert_Edit_User_Add(formData, token) {
 
     return axios({
         method: "post",
         url: `${BaseUrl}/api/Insert_Edit_User`,
         data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
     }).then(function (response) {
         return response.data;
     }).catch(function (response) {
@@ -240,42 +296,70 @@ export function Insert_Edit_User_Add(formData) {
     });
     // return response;
 }
-export async function FindByIdUser(id = '') {
+export async function FindByIdUser(id = '', token) {
     console.log(id);
-    let response = await axios.get(`${BaseUrl}/api/FindUserByID/${id}`);
+    let response = await axios.get(`${BaseUrl}/api/FindUserByID/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     // console.log(response);
     return response.data;
 }
 
-export async function GetType_position(id = "") {
-    let response = await axios.get(`${BaseUrl}/api/GetType_position`);
-    return response.data;
-}
-export async function Insert_position(data) {
-    // console.log(data);
-    let response = await axios.post(`${BaseUrl}/api/Edit_type_position`, {
-        data: data
+export async function GetType_position(token) {
+    let response = await axios.get(`${BaseUrl}/api/GetType_position`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
     });
     return response.data;
 }
-export async function Delete_type_position(id) {
-    let response = await axios.post(`${BaseUrl}/api/Delete_type_position/${id}`);
+export async function Insert_position(data, token) {
+    // console.log(data);
+    let response = await axios.post(`${BaseUrl}/api/Edit_type_position`, {
+        data: data
+    }, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return response.data;
+}
+export async function Delete_type_position(id, token) {
+    let response = await axios.post(`${BaseUrl}/api/Delete_type_position/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 }
 
-export async function GetAllpermissions() {
-    let response = await axios.get(`${BaseUrl}/api/permissionsAll`);
+export async function GetAllpermissions(token) {
+    let response = await axios.get(`${BaseUrl}/api/permissionsAll`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 }
 
-export async function Delete_user(id) {
-    let response = await axios.post(`${BaseUrl}/api/Delete_user/${id}`);
+export async function Delete_user(id, token) {
+    let response = await axios.post(`${BaseUrl}/api/Delete_user/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 }
 
 export async function Get_memberby_id(id) {
     // console.log(id);
-    let response = await axios.get(`${BaseUrl}/api/selectMember/${id}`);
+    let response = await axios.get(`${BaseUrl}/api/selectMember/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return response.data;
 }
 
@@ -296,32 +380,113 @@ export async function InsertAndEditApply(data, C_apply) {
         console.log(response);
     });
 }
-export const GetdetailCard = async () => {
-    let res = await axios.get(`${BaseUrl}/api/CardDashboard`);
+
+export const GetdetailCard = async (token) => {
+    let res = await axios.get(`${BaseUrl}/api/CardDashboard`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return res.data;
 }
 
-export const GetAllApply = async () => {
-    let res = await axios.get(`${BaseUrl}/api/GetApply`);
+export const GetAllApply = async (token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetApply`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return res.data;
 }
-export const GetCheckAllPermissions = async () => {
-    let res = await axios.get(`${BaseUrl}/api/CheckAllPermissions`);
+export const GetCheckAllPermissions = async (token) => {
+    let res = await axios.get(`${BaseUrl}/api/CheckAllPermissions`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return res.data;
 }
 
-export const EditCheckAllPermissions = async (data) => {
+export const EditCheckAllPermissions = async (data, token) => {
     axios
         .post(`${BaseUrl}/api/UpdatePermissions`, {
             per_user: data[0],
             per_menu: data[1],
+        }, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            },
         })
         .then((response) => {
             console.log(response);
         });
 }
-export const GetFilePositionsById = async (id) => {
-    let res = await axios.get(`${BaseUrl}/api/GetFilePositions/${id}`);
+export const GetFilePositionsById = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetFilePositions/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
+
+export const GetOrganizationAll = async () => {
+    let res = await axios.get(`${BaseUrl}/api/GetOrganization`);
+    return res.data;
+}
+
+export const AuthLoginAdmin = async (data) => {
+    return await axios
+        .post(`${BaseUrl}/api/LoginAdmin`, {
+            user_username: data.user_username,
+            user_password: data.user_password,
+        })
+        .then((response) => {
+            return response.data;
+        });
+}
+export const GetVertifyAdmin = async (token) => {
+    return axios({
+        method: "get",
+        url: `${BaseUrl}/api/getMeAdmin`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            console.log(response);
+            return response.data;
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+}
+
+export const GetPayment = async (token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetAllPayment`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+    return res.data;
+}
+
+
+
+export const GetAllPaymentByID = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetAllPaymentBy/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
+export const GetPositionPayment = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetPositionToexport/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return res.data;
 }
 

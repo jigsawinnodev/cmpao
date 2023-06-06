@@ -10,7 +10,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DayjsUtils from "@date-io/dayjs";
 import { th } from "date-fns/locale";
 import dayjs from "dayjs";
-
 import {
   GetpreName,
   Get_permission,
@@ -20,7 +19,7 @@ import {
 import moment from "moment";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
-
+var token = localStorage.getItem("token");
 function Manage_users_add() {
   var { id } = useParams();
   const navigate = useNavigate();
@@ -112,7 +111,7 @@ function Manage_users_add() {
     formData.append("user_phone", DataByID.user_phone);
     formData.append("user_active", DataByID.user_active);
     // console.log(DataByID);
-    const res = await Insert_Edit_User_Add(formData);
+    const res = await Insert_Edit_User_Add(formData, token);
     console.log(res);
     if (res.status == "success") {
       Swal.fire({
@@ -130,8 +129,8 @@ function Manage_users_add() {
   //   event.preventDefault();
   // };
   const DataPreName = async () => {
-    let data = await GetpreName();
-    let permition = await Get_permission();
+    let data = await GetpreName(token);
+    let permition = await Get_permission(token);
     setpreName(data);
     Getpermission(permition.data);
   };
@@ -141,7 +140,7 @@ function Manage_users_add() {
 
   const FindDataById = async () => {
     if (id) {
-      let data = await FindByIdUser(id);
+      let data = await FindByIdUser(id, token);
       console.log(data);
       setDataByID(data[0]);
     }

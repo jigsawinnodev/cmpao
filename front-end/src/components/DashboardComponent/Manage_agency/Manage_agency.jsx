@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TreeView from "@mui/lab/TreeView";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
-
+import { GetOrganizationAll } from "../../../service/api";
+import { left } from "@popperjs/core";
 //tree
 // import { CompactTable } from "@table-library/react-table-library/compact";
 
 // import { DocumentationSee } from "../documentation";
 function Manage_agency() {
+  const [Organization, setOrganization] = useState([]);
+  const GetOrgani = async () => {
+    let res = await GetOrganizationAll();
+    console.log(res);
+    setOrganization(res);
+  };
   // const renderTree = (nodes) => (
   //   <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} className="">
   //     {Array.isArray(nodes.children)
@@ -242,8 +249,31 @@ function Manage_agency() {
   //     },
   //   ],
   // };
+  const CreateTreeComponent = () => {
+    for (let index = 0; index < Organization.length; index++) {
+      Organization.map((value, idx) => {
+        if (Organization[index].org_id == value.org_parent) {
+          return (
+            <tr>
+              <td style={{ paddingLeft: "20px" }}>{value.org_name}</td>
+            </tr>
+          );
+        } else {
+          return (
+            <tr>
+              <td style={{ paddingLeft: "20px" }}>{value.org_name}</td>
+            </tr>
+          );
+        }
+      });
+    }
+  };
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
+
+  useEffect(() => {
+    GetOrgani();
+  }, []);
   return (
     <>
       <div className="px-3 py-4">
@@ -274,7 +304,18 @@ function Manage_agency() {
             <div className="px-3 py-2">
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
-                  <div className="col-md-12 "></div>
+                  <div className="col-md-12 ">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>ชื่อหน่วยงาน</td>
+                          <td>สถานนะ</td>
+                          <td>เครื่องมือ</td>
+                        </tr>
+                      </thead>
+                      <tbody>{CreateTreeComponent()}</tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

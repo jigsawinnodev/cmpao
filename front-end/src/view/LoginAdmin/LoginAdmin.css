@@ -36,15 +36,7 @@
 
 
 
-#form_right {
-    display: flex;
-    flex-direction: column;
-    /* single column layout */
-    grid-template-columns: 1fr;
-    /* have some gap in between elements*/
-    grid-gap: 20px;
-    padding: 10% 5%;
-}
+
 
 .input_container {
     background-color: var(--input_bg);

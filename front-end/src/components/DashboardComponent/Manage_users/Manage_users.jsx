@@ -10,14 +10,8 @@ import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
 import { Delete_user } from "../../../service/api";
+var token = localStorage.getItem("token");
 function Manage_users() {
-  // var tooltipTriggerList = [].slice.call(
-  //   document.querySelectorAll("[data-bs-toggle=tooltip]")
-  // );
-
-  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  //   return new Tooltip(tooltipTriggerEl);
-  // });
   const columns = [
     {
       name: "ลำดับ",
@@ -140,7 +134,7 @@ function Manage_users() {
       cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        let res = await Delete_user(id);
+        let res = await Delete_user(id, token);
         // console.log(res);
         if (res.status == "success") {
           Swal.fire("ลบข้อมูลเรียบร้อย!", "", "success");
@@ -149,7 +143,7 @@ function Manage_users() {
     });
   };
   const GetData = async () => {
-    let data = await GetAll_user();
+    let data = await GetAll_user(token);
     setUser(data.data);
   };
 

@@ -80,7 +80,10 @@ function App() {
         <Route path="TypePosition" element={<Manage_typeUserRegister />} />
 
         <Route path="Payment" element={<Manage_money />} />
-        <Route path="Payment/payment_check" element={<Detail_Manage_money />} />
+        <Route
+          path="Payment/payment_check/:id"
+          element={<Detail_Manage_money />}
+        />
 
         <Route path="Document" element={<Manage_document />} />
         <Route path="Document/add" element={<Manage_ducument_add />} />
