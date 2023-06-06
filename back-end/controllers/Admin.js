@@ -169,7 +169,7 @@ const Insert_Apply = (req, res) => {
                             if (err) console.log(err);
                         })
                     } else {
-                        let sql = `INSERT INTO jobs (job_position, job_amount, job_payment, job_no, job_file, jc_id) 
+                        let sql = `INSERT INTO jobs (job_position, job_amount, job_payment, job_no, job_file, jc_id)
                         VALUES ('${job_position}', '${job_amount}', '${job_payment}', '${job_no}, '${req.file.filename}', '${result.insertId}')`;
                         mysqlConnection.query(sql, function (err, result) {
                             if (!err) res.json("Inserted successfully file");
@@ -199,7 +199,7 @@ const Delete_Apply = (req, res) => {
 
 const GetPositon = (req, res) => {
     const { id } = req.params
-    let sql = `SELECT * FROM type_position 
+    let sql = `SELECT * FROM type_position
     JOIN position ON position.p_type = type_position.id
     WHERE position.status = 1 AND type_position.id = ${id}`;
     mysqlConnection.query(sql, function (err, result) {
@@ -263,21 +263,30 @@ const UpdateApplyAndInsert = (req, res) => {
 }
 
 const testApi = async (req, res) => {
-    // console.log(req);
-    res.json(req.body.data[0]);
-    console.log(req.body.data[0].Data.file);
-    // console.log('qwe');
-    // console.log(req.body);
-    // let data = req.body.data;
-    // const test = JSON.parse(data);
-    // console.log(test[0]);
-    // let test = JSON.parse(data);
-    // console.log(test);
-    // console.log(JSON.parse(data[0]));
-    // res.json(await JSON.parse(req.body));
-    // console.log(res);
-}
+    }
 
+const Tree = async (req, res)=> {
+    let sql = "SELECT org_id,org_name,org_active,org_parent FROM organization ORDER BY org_id ASC";
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) {
+            let makeTree = (org, org_parent) => {
+                let node = {};
+                org
+                  .filter(n => n.org_parent === org_parent)
+                  .forEach(n => node[n.org_id] = {
+                    data: n,
+                    children: makeTree(org, n.org_id)
+                  });
+                return node;
+              }
+              let data = makeTree(result, null);
+            //   console.log(JSON.stringify(data, null, 2));
+            res.json(data)
+        }else{
+            console.log(err);
+        }
+    })
+}
 module.exports = {
     GetMenuAdmin,
     GetpreName,
@@ -297,7 +306,8 @@ module.exports = {
     Insert_Apply,
     Delete_Apply,
     UpdateApplyAndInsert,
-    testApi
+    testApi,
+    Tree
 
     // Permission
 }

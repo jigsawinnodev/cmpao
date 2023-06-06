@@ -65,7 +65,9 @@ router.post('/deleteApply/:id', Admin.Delete_Apply);
 
 
 //test
-router.post('/testApi', Admin.testApi);
+router.get('/testApi', Admin.testApi);
+
+router.get('/tree', Admin.Tree);
 
 
 
