@@ -3,13 +3,18 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "./Manage_register.css";
 import { Link } from "react-router-dom";
-import { GetAllApply, ConvertTypeDate } from "../../../service/api";
+import {
+  GetAllApply,
+  ConvertTypeDate,
+  Delete_ApplyData,
+} from "../../../service/api";
 import { Tooltip } from "bootstrap";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
+import Swal from "sweetalert2";
 // import DataTable from "../../tbl/DataTable";
-
+var token = localStorage.getItem("token");
 function Manage_register() {
   // var tooltipTriggerList = [].slice.call(
   //   document.querySelectorAll("[data-bs-toggle=tooltip]")
@@ -36,16 +41,16 @@ function Manage_register() {
     },
     {
       name: "วันที่เริ่มต้น",
-      selector: (row) => moment(row.jc_start).add(543, "year").format("ll"),
+      selector: (row) => moment(row.jc_start).format("ll"),
       width: "15%",
-      cell: (row) => moment(row.jc_start).add(543, "year").format("ll"),
+      cell: (row) => moment(row.jc_start).format("ll"),
       sortable: true,
       center: true,
     },
     {
       name: "วันที่สิ้นสุด",
-      selector: (row) => moment(row.jc_end).add(543, "year").format("ll"),
-      cell: (row) => moment(row.jc_end).add(543, "year").format("ll"),
+      selector: (row) => moment(row.jc_end).format("ll"),
+      cell: (row) => moment(row.jc_end).format("ll"),
       width: "15%",
       sortable: true,
       center: true,
@@ -104,6 +109,9 @@ function Manage_register() {
             // data-bs-toggle="tooltip"
             // data-bs-placement="bottom"
             // title="ลบข้อมูล"
+            onClick={() => {
+              DeleteApply(row.jc_id);
+            }}
           >
             <i className="bi bi-trash"></i>
           </button>
@@ -120,12 +128,34 @@ function Manage_register() {
   // const HiddenToltip = () => {
   //   Tooltip.querySelectorAll("[data-bs-toggle=tooltip]").HiddenToltip;
   // };
-  const DeleteApply = () => {};
+  const DeleteApply = async (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "ยืนยันการลบข้อมููล?",
+      text: "คุณต้องการลบข้อมูลนี้หรือไม่!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let res = await Delete_ApplyData(id, token);
+        console.log(res);
+        if (res == "success") {
+          Swal.fire("", "ลบข้อมูลสำเร็จ", "success");
+          GetData();
+        }
+      }
+    });
+  };
   const GetData = async () => {
-    const data = await GetAllApply();
+    const data = await GetAllApply(token);
     setGetAllApply(data);
   };
   const handleSearch = (rows) => {
+    console.log(rows);
     return rows.filter((row) => {
       if (
         row.position_name.toString().indexOf(search) > -1 ||

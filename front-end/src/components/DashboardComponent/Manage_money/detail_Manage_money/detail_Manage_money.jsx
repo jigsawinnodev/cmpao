@@ -8,8 +8,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Pdf from "../../../pdf/Pdf";
-
+import Pdf from "../../../report/pdf/Pdf";
+import { ExportToExcel } from "../../../report/xlsx/Xlsx";
 var token = localStorage.getItem("token");
 function Detail_Manage_money() {
   const { id } = useParams();
@@ -101,8 +101,23 @@ function Detail_Manage_money() {
       // }
     });
   };
+
+  const [testExport, settextExport] = useState([]);
+  const fetchData = () => {
+    axios.get("https://jsonplaceholder.typicode.com/posts").then((postData) => {
+      // reshaping the array
+      const customHeadings = postData.data.map((item) => ({
+        "Article Id": item.id,
+        "Article Title": item.title,
+      }));
+      console.log(customHeadings);
+      settextExport(customHeadings);
+    });
+  };
+
   useEffect(() => {
     GetDataByID();
+    fetchData();
   }, []);
   return (
     <>
@@ -167,19 +182,18 @@ function Detail_Manage_money() {
                       </select>
                     </div>
                   </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      PDF
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                      EXCEL
-                    </Button>
+                  <Modal.Footer className="justify-content-center">
                     <PDFDownloadLink
+                      className="btn btn-primary"
                       document={<Pdf DataDate={data} />}
                       fileName="FROM"
                     >
                       PDF
                     </PDFDownloadLink>
+                    <ExportToExcel
+                      apiData={testExport}
+                      fileName={"exportXls"}
+                    />
                   </Modal.Footer>
                 </Modal>
               </div>

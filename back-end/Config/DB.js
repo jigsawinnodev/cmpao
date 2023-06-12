@@ -4,9 +4,8 @@ var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'react_cmpao_db',
+    database: 'cmpao',
     port: "8889",
-    socketPath:'/Applications/MAMP/tmp/mysql/mysql.sock'
 });
 
 mysqlConnection.connect((err) => {

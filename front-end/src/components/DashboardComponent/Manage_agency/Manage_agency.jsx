@@ -6,267 +6,266 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
 import { GetOrganizationAll } from "../../../service/api";
 import { left } from "@popperjs/core";
-//tree
-// import { CompactTable } from "@table-library/react-table-library/compact";
-
-// import { DocumentationSee } from "../documentation";
+import { green } from "@mui/material/colors";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { InsertAndEditTree, Delete_TreeOrg } from "../../../service/api";
+import Swal from "sweetalert2";
+var token = localStorage.getItem("token");
 function Manage_agency() {
-  const [Organization, setOrganization] = useState([]);
-  const GetOrgani = async () => {
-    let res = await GetOrganizationAll();
-    console.log(res);
-    setOrganization(res);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = (data) => {
+    console.log(data);
+    SetDataForm({
+      ...DataForm,
+      org_parent: data.org_id,
+      org_NameFather: data.org_name,
+    });
+    setShow(true);
   };
-  // const renderTree = (nodes) => (
-  //   <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} className="">
-  //     {Array.isArray(nodes.children)
-  //       ? nodes.children.map((node) => {
-  //           return <>{renderTree(node)}
-  //             <div className="col-md-6"></div>
-  //           </>;
-  //         })
-  //       : null}
-  //   </TreeItem>
-  // );
-  // const nodes = [
-  //   {
-  //     value: "อบจ. เชียงใหม่",
-  //     label: "อบจ. เชียงใหม่",
-  //     children: [
-  //       {
-  //         value: "สำนักการศึกษา ศาสนา และวัฒนธรรม",
-  //         label: "สำนักการศึกษา ศาสนา และวัฒนธรรม",
-  //         children: [
-  //           {
-  //             value: "ส่วนบริหารการศึกษา",
-  //             label: "ส่วนบริหารการศึกษา",
-  //             children: [
-  //               { value: "ฝ่ายบริหารการศึกษา", label: "ฝ่ายบริหารการศึกษา" },
-  //               {
-  //                 value: "ฝ่ายส่งเสริมคุณภาพการศึกษา",
-  //                 label: "ฝ่ายส่งเสริมคุณภาพการศึกษา",
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         value: "ฝ่ายบริหารงานทั่วไป",
-  //         label: "ฝ่ายบริหารงานทั่วไป",
-  //       },
-  //       {
-  //         value: "ส่วนส่งเสริมการศึกษา ศาสนา และวัฒนธรรม",
-  //         label: "ส่วนส่งเสริมการศึกษา ศาสนา และวัฒนธรรม",
-  //         children: [
-  //           {
-  //             value: "ฝ่ายการศึกษานอกระบบและตามอัธยาศัย",
-  //             label: "ฝ่ายการศึกษานอกระบบและตามอัธยาศัย",
-  //           },
-  //           {
-  //             value: "ฝ่ายส่งเสริมศาสนา ศิลปะและวัฒนธรรม",
-  //             label: "ฝ่ายส่งเสริมศาสนา ศิลปะและวัฒนธรรม",
-  //           },
-  //           {
-  //             value: "ฝ่ายส่งเสริมกีฬา และนันทนาการ",
-  //             label: "ฝ่ายส่งเสริมกีฬา และนันทนาการ",
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     value: "test",
-  //     label: "test",
-  //     children: [
-  //       { value: "qqqq", label: "Phobosbb" },
-  //       {
-  //         value: "ggqq",
-  //         label: "oopp",
-  //         children: [{ value: "xx", label: "yy" }],
-  //       },
-  //     ],
-  //   },
-  // ];
-  // const data = {
-  //   id: "root",
-  //   name: "อบจ. เชียงใหม่",
-  //   children: [
-  //     {
-  //       id: "1",
-  //       name: "สำนักการศึกษา ศาสนา และวัฒนธรรม",
-  //       children: [
-  //         {
-  //           id: "3",
-  //           name: "ส่วนบริหารการศึกษา",
-  //           children: [
-  //             {
-  //               id: "4",
-  //               name: "ฝ่ายบริหารการศึกษา",
-  //             },
-  //             {
-  //               id: "5",
-  //               name: "ฝ่ายส่งเสริมคุณภาพการศึกษา",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "6",
-  //       name: "ฝ่ายบริหารงานทั่วไป",
-  //     },
-  //     {
-  //       id: "7",
-  //       name: "ส่วนส่งเสริมการศึกษา ศาสนา และวัฒนธรรม",
-  //       children: [
-  //         {
-  //           id: "8",
-  //           name: "ฝ่ายการศึกษานอกระบบและตามอัธยาศัย",
-  //         },
-  //         {
-  //           id: "9",
-  //           name: "ฝ่ายส่งเสริมศาสนา ศิลปะและวัฒนธรรม",
-  //         },
-  //         {
-  //           id: "10",
-  //           name: "ฝ่ายส่งเสริมกีฬา และนันทนาการ",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "11",
-  //       name: "สำนักงานเลขานุการองค์การบริหารส่วนจังหวัด",
-  //       children: [
-  //         {
-  //           id: "12",
-  //           name: "ฝ่ายกิจการคณะผู้บริหาร",
-  //         },
-  //         {
-  //           id: "13",
-  //           name: "ฝ่ายการประชุม",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "14",
-  //       name: "สำนักช่าง",
-  //       children: [
-  //         {
-  //           id: "15",
-  //           name: "ฝ่ายบริหารงานทั่วไป",
-  //         },
-  //         {
-  //           id: "16",
-  //           name: "ฝ่ายก่อสร้างและซ่อมบำรุง",
-  //         },
-  //         {
-  //           id: "17",
-  //           name: "ฝ่ายช่างสุขาภิบาล",
-  //         },
-  //         {
-  //           id: "18",
-  //           name: "ฝ่ายผังเมือง",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "19",
-  //       name: "กองการเจ้าหน้าที่",
-  //       children: [
-  //         {
-  //           id: "20",
-  //           name: "ฝ่ายส่งเสริมและพัฒนาบุคคลากร",
-  //         },
-  //         {
-  //           id: "21",
-  //           name: "ฝ่ายสรรหาและบรรจุแต่งตั้ง",
-  //         },
-  //         {
-  //           id: "22",
-  //           name: "ฝ่ายวินัยและส่งเสริมคุณธรรม",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "23",
-  //       name: "กองสาธารณสุข",
-  //       children: [
-  //         {
-  //           id: "24",
-  //           name: "ฝ่ายบริหารงานสาธารณสุข",
-  //         },
-  //         {
-  //           id: "25",
-  //           name: "ฝ่ายบริการสาธารณสุข",
-  //           children: [
-  //             {
-  //               id: "26",
-  //               name: "รพ.สต.",
-  //             },
-  //           ],
-  //         },
-  //         {
-  //           id: "27",
-  //           name: "ฝ่ายบริหารงานทั่วไป",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "28",
-  //       name: "กองป้องกันและบรรเทาสาธารณภัย",
-  //       children: [
-  //         {
-  //           id: "29",
-  //           name: "ฝ่ายบริหารงานทั่วไป",
-  //         },
-  //         {
-  //           id: "30",
-  //           name: "ฝ่ายป้องกันและบรรเทาสาธารณภัย",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: "31",
-  //       name: "หน่วยตรวจสอบภายใน",
-  //     },
-  //     {
-  //       id: "32",
-  //       name: "กองคลัง",
-  //       children: [
-  //         {
-  //           id: "33",
-  //           name: "ฝ่ายการเงินและบัญชี",
-  //         },
-  //         {
-  //           id: "34",
-  //           name: "ฝ่ายเร่งรัดและจัดเก็บรายได้",
-  //         },
-  //         {
-  //           id: "35",
-  //           name: "ฝ่ายบริหารการคลัง",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // };
-  const CreateTreeComponent = () => {
-    for (let index = 0; index < Organization.length; index++) {
-      Organization.map((value, idx) => {
-        if (Organization[index].org_id == value.org_parent) {
-          return (
-            <tr>
-              <td style={{ paddingLeft: "20px" }}>{value.org_name}</td>
-            </tr>
-          );
-        } else {
-          return (
-            <tr>
-              <td style={{ paddingLeft: "20px" }}>{value.org_name}</td>
-            </tr>
-          );
-        }
+  const [orgData, setOrgData] = useState({});
+  const GetOrgani = async () => {
+    let res = await GetOrganizationAll(token);
+    setOrgData(res);
+  };
+  function renderChildren(children) {
+    return Object.keys(children).map((childId, idx1) => {
+      // let CheckChild = Object.keys(children[childId].children).length;
+      return (
+        <>
+          <tr key={idx1}>
+            <td style={{ paddingLeft: "20px" }}>
+              {children[childId].data.org_name}
+            </td>
+            <td>
+              {children[childId].data.org_active == 1 ? (
+                <p className="m-0" style={{ color: "#54B435" }}>
+                  ใช้งาน
+                </p>
+              ) : (
+                <p className="m-0" style={{ color: "#D21312" }}>
+                  ไม่ใช่งาน
+                </p>
+              )}
+            </td>
+            <td>
+              <Button
+                variant="success"
+                className=""
+                onClick={() => {
+                  handleShow(children[childId].data);
+                }}
+              >
+                <i className="bi bi-person-plus-fill"></i>
+              </Button>
+              <button
+                className="btn btn-danger mx-1 "
+                onClick={() => {
+                  DeleteTreeOne(children[childId].data.org_id);
+                }}
+              >
+                <i className="bi bi-person-fill-x"></i>
+              </button>
+              <button
+                className="btn btn-warning "
+                onClick={() => {
+                  EditTree(children[childId].data);
+                }}
+              >
+                <i className="bi bi-person-fill-gear"></i>
+              </button>
+            </td>
+          </tr>
+          {renderChildre2(children[childId].children)}
+        </>
+      );
+    });
+  }
+  function renderChildre2(children) {
+    return Object.keys(children).map((childId, idx1) => {
+      return (
+        <>
+          <tr key={idx1}>
+            <td style={{ paddingLeft: "40px" }}>
+              {children[childId].data.org_name}
+            </td>
+            <td>
+              {children[childId].data.org_active == 1 ? (
+                <p className="m-0" style={{ color: "#54B435" }}>
+                  ใช้งาน
+                </p>
+              ) : (
+                <p className="m-0" style={{ color: "#D21312" }}>
+                  ไม่ใช่งาน
+                </p>
+              )}
+            </td>
+            <td>
+              <Button
+                variant="success"
+                onClick={() => {
+                  handleShow(children[childId].data);
+                }}
+              >
+                <i className="bi bi-person-plus-fill"></i>
+              </Button>{" "}
+              <button
+                className="btn btn-danger "
+                onClick={() => {
+                  DeleteTreeOne(children[childId].data.org_id);
+                }}
+              >
+                <i className="bi bi-person-fill-x"></i>
+              </button>
+              <button
+                className="btn btn-warning mx-1"
+                onClick={() => {
+                  EditTree(children[childId].data);
+                }}
+              >
+                <i class="bi bi-person-fill-gear"></i>
+              </button>
+            </td>
+          </tr>
+          {renderChildre3(children[childId].children)}
+        </>
+      );
+    });
+  }
+  function renderChildre3(children) {
+    return Object.keys(children).map((childId, idx1) => {
+      return (
+        <>
+          <tr key={idx1}>
+            <td style={{ paddingLeft: "65px" }}>
+              {children[childId].data.org_name}
+            </td>
+            <td>
+              {children[childId].data.org_active == 1 ? (
+                <p className="m-0" style={{ color: "#54B435" }}>
+                  ใช้งาน
+                </p>
+              ) : (
+                <p className="m-0" style={{ color: "#D21312" }}>
+                  ไม่ใช่งาน
+                </p>
+              )}
+            </td>
+            <td>
+              <Button
+                variant="success"
+                onClick={() => {
+                  handleShow(children[childId].data);
+                }}
+              >
+                <i className="bi bi-person-plus-fill"></i>
+              </Button>
+              <button
+                className="btn btn-danger mx-1"
+                onClick={() => {
+                  DeleteTreeOne(children[childId].data.org_id);
+                }}
+              >
+                <i className="bi bi-person-fill-x"></i>
+              </button>
+              <button
+                className="btn btn-warning "
+                onClick={() => {
+                  EditTree(children[childId].data);
+                }}
+              >
+                <i class="bi bi-person-fill-gear"></i>
+              </button>
+            </td>
+          </tr>
+          {renderChildren(children[childId].children)}
+        </>
+      );
+    });
+  }
+  const InsertOrg = async (e) => {
+    e.preventDefault();
+    let res = await InsertAndEditTree(DataForm, token);
+    if (res == "success") {
+      setShow(false);
+      SetDataForm({
+        org_id: "",
+        org_name: "",
+        org_active: 1,
+        org_parent: "",
+        org_NameFather: "",
+      });
+      Swal.fire({
+        icon: "success",
+        title: "เพิ่มหน่วยงานสำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        GetOrgani(token);
+      });
+    } else {
+      setShow(false);
+      SetDataForm({
+        org_id: "",
+        org_name: "",
+        org_active: 1,
+        org_parent: "",
+        org_NameFather: "",
+      });
+      Swal.fire({
+        icon: "success",
+        title: "เเก้ไขหน่วยงานสำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        GetOrgani(token);
       });
     }
+  };
+  const DeleteTreeOne = async (id) => {
+    Swal.fire({
+      title: "ยืนยันที่จะลบข้อมูล",
+      // text: "ถ้าหากกดยืนยันจะไม่สามารถกู้คืนได้",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let res = await Delete_TreeOrg(id, token);
+        if (res == "success") {
+          Swal.fire({
+            icon: "success",
+            title: "ลบข้อมูลสำเร็จ",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            GetOrgani(token);
+          });
+        }
+      }
+    });
+  };
+  const [DataForm, SetDataForm] = useState({
+    org_id: "",
+    org_name: "",
+    org_active: 1,
+    org_parent: "",
+    org_NameFather: "",
+  });
+  const EditTree = (data) => {
+    // console.log(data);
+    SetDataForm({
+      org_id: data.org_id,
+      org_name: data.org_name,
+      org_active: data.org_active,
+      org_parent: data.org_parent,
+    });
+    setShow(true);
   };
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
@@ -278,17 +277,6 @@ function Manage_agency() {
     <>
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
-          {/* <nav>
-            <div className="row w-100 my-auto py-3">
-              <div className="col-md-12">
-                <div className="text-center">
-                  <h2 className="dashboard m-0" style={{ color: "#655DBB" }}>
-                    จัดการข้อมูลหน่วยงาน
-                  </h2>
-                </div>
-              </div>
-             
-          <nav> */}
           <nav>
             <div className="row w-100  pt-3 pb-4 m-0">
               <div className="col-md-12 my-auto">
@@ -305,15 +293,136 @@ function Manage_agency() {
               <div className=" rounded-2 " style={{ backgroundColor: "white" }}>
                 <div className="row">
                   <div className="col-md-12 ">
-                    <table>
+                    <table className="table " style={{ width: "100%" }}>
                       <thead>
                         <tr>
-                          <td>ชื่อหน่วยงาน</td>
-                          <td>สถานนะ</td>
-                          <td>เครื่องมือ</td>
+                          <td>
+                            <b>ชื่อหน่วยงาน</b>
+                          </td>
+                          <td>
+                            <b>สถานนะ</b>
+                          </td>
+                          <td>
+                            <b>เครื่องมือ</b>
+                          </td>
                         </tr>
                       </thead>
-                      <tbody>{CreateTreeComponent()}</tbody>
+                      <tbody>
+                        {Object.keys(orgData).map((orgId, index) => {
+                          const org = orgData[orgId];
+                          const { data, children } = org;
+                          return (
+                            <>
+                              <tr key={index}>
+                                <td>{data.org_name}</td>
+                                <td>
+                                  {data.org_active == 1 ? (
+                                    <p
+                                      className="m-0"
+                                      style={{ color: "#54B435" }}
+                                    >
+                                      ใช้งาน
+                                    </p>
+                                  ) : (
+                                    <p
+                                      className="m-0"
+                                      style={{ color: "#D21312" }}
+                                    >
+                                      ไม่ใช่งาน
+                                    </p>
+                                  )}
+                                </td>
+                                <td>
+                                  <Button
+                                    variant="success"
+                                    onClick={() => {
+                                      handleShow(data);
+                                    }}
+                                    className=""
+                                  >
+                                    <i className="bi bi-person-plus-fill"></i>
+                                  </Button>
+                                  <button
+                                    className="btn btn-warning mx-1"
+                                    onClick={() => {
+                                      EditTree(data);
+                                    }}
+                                  >
+                                    <i class="bi bi-person-fill-gear"></i>
+                                  </button>
+
+                                  <Modal
+                                    show={show}
+                                    onHide={handleClose}
+                                    backdrop="static"
+                                    keyboard={false}
+                                  >
+                                    <Modal.Header closeButton>
+                                      <Modal.Title>เพิ่มหน่วยงาน</Modal.Title>
+                                    </Modal.Header>
+                                    <form onSubmit={InsertOrg}>
+                                      <Modal.Body>
+                                        <div>
+                                          <h5>{DataForm.org_NameFather}</h5>
+                                        </div>
+                                        <div className="form-group mb-2">
+                                          <label htmlFor="exampleInputEmail1 mb-2">
+                                            ชื่อหน่วยงาน
+                                          </label>
+                                          <input
+                                            type="text"
+                                            className="form-control"
+                                            aria-describedby="emailHelp"
+                                            required
+                                            value={DataForm.org_name}
+                                            onChange={(e) =>
+                                              SetDataForm({
+                                                ...DataForm,
+                                                org_name: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+                                        <div className="form-group mb-2">
+                                          <label htmlFor="" className="mb-2">
+                                            สถานะ
+                                          </label>
+                                          <select
+                                            className="form-select"
+                                            aria-label="Default select example"
+                                            value={DataForm.org_active}
+                                            onChange={(e) => {
+                                              SetDataForm({
+                                                ...DataForm,
+                                                org_active: e.target.value,
+                                              });
+                                            }}
+                                          >
+                                            <option value={1}>ใช้งาน</option>
+                                            <option value={0}>ไม่ใช่งาน</option>
+                                          </select>
+                                        </div>
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                        <Button variant="primary" type="submit">
+                                          บันทึก
+                                        </Button>
+                                        <Button
+                                          variant="secondary"
+                                          onClick={handleClose}
+                                        >
+                                          Close
+                                        </Button>
+                                      </Modal.Footer>
+                                    </form>
+                                  </Modal>
+                                </td>
+                              </tr>
+                              {renderChildren(children)}
+                            </>
+                          );
+                        })}
+                      </tbody>
                     </table>
                   </div>
                 </div>

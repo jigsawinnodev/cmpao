@@ -252,8 +252,12 @@ export function Delete_position(id, token) {
         console.log(err);
     })
 }
-export async function getPositionINtype(id) {
-    const res = await axios.get(`${BaseUrl}/api/GetpositionIntype/${id}`);
+export async function getPositionINtype(id, token) {
+    const res = await axios.get(`${BaseUrl}/api/GetpositionIntype/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     // console.log(res);
     return res.data
 }
@@ -430,8 +434,12 @@ export const GetFilePositionsById = async (id, token) => {
     return res.data;
 }
 
-export const GetOrganizationAll = async () => {
-    let res = await axios.get(`${BaseUrl}/api/GetOrganization`);
+export const GetOrganizationAll = async (token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetOrganization`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
     return res.data;
 }
 
@@ -454,7 +462,7 @@ export const GetVertifyAdmin = async (token) => {
         },
     })
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
             return response.data;
         })
         .catch(function (response) {
@@ -489,5 +497,84 @@ export const GetPositionPayment = async (id, token) => {
     });
     return res.data;
 }
+export const InsertAndEditTree = async (DataTree, token) => {
+    // console.log(DataTree);
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/InsertEditTree`,
+        data: {
+            org_id: DataTree.org_id,
+            org_name: DataTree.org_name,
+            org_parent: DataTree.org_parent,
+            org_active: DataTree.org_active
+        },
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        console.log(response);
+    });
+
+}
+export const Delete_TreeOrg = async (id, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/DeleteTree/${id}`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        console.log(response);
+    });
+}
+
+export const InsertAndEditApplyData = async (data, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/ManageInsertAndEdit`,
+        data: data,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+
+}
+export const Delete_ApplyData = async (id, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/DeleteApply/${id}`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
+export const GetApply_ByID = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetApply/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data[0];
+}
+
 
 

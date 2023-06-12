@@ -55,11 +55,12 @@ router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 router.get('/GetApplyAll', Admin.GetApplyAll);
 router.get('/GetpositionIntype/:id', Admin.GetPositon);
 
+
 router.post('/UpdateApply_Insert', Admin.UpdateApplyAndInsert)
 
 // router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
 router.post('/insertApply', Admin.Insert_Apply);
-router.post('/deleteApply/:id', Admin.Delete_Apply);
+// router.post('/deleteApply/:id', Admin.Delete_Apply);
 
 
 
@@ -110,11 +111,15 @@ router.get('/GetPositionToexport/:id', verify, Payment.GetPositionToexport);
 
 
 //Organization
-router.get('/GetOrganization', Organization.GetAllOrganization);
-// Apply
-router.get('/GetApply', Apply.GetAll_Apply);
-router.post('/test', upload.any(), Admin.testApi)
+router.get('/GetOrganization', verify, Organization.GetAllOrganization);
+router.post('/InsertEditTree', verify, Organization.InsertTreeOrUpdate);
+router.post('/DeleteTree/:id', verify, Organization.DeleteTree)
 
+// Apply
+router.get('/GetApply', verify, Apply.GetAll_Apply);
+router.post('/ManageInsertAndEdit', verify, upload.single('file'), Apply.ManageInsertAndEdit)
+router.post('/DeleteApply/:id', verify, Apply.Delete_Apply);
+router.get('/GetApply/:id', verify, Apply.Get_ApplyByID);
 
 
 

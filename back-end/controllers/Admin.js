@@ -263,26 +263,25 @@ const UpdateApplyAndInsert = (req, res) => {
 }
 
 const testApi = async (req, res) => {
-    }
+}
 
-const Tree = async (req, res)=> {
+const Tree = async (req, res) => {
     let sql = "SELECT org_id,org_name,org_active,org_parent FROM organization ORDER BY org_id ASC";
     mysqlConnection.query(sql, function (err, result) {
         if (!err) {
             let makeTree = (org, org_parent) => {
                 let node = {};
                 org
-                  .filter(n => n.org_parent === org_parent)
-                  .forEach(n => node[n.org_id] = {
-                    data: n,
-                    children: makeTree(org, n.org_id)
-                  });
+                    .filter(n => n.org_parent === org_parent)
+                    .forEach(n => node[n.org_id] = {
+                        data: n,
+                        children: makeTree(org, n.org_id)
+                    });
                 return node;
-              }
-              let data = makeTree(result, null);
-            //   console.log(JSON.stringify(data, null, 2));
+            }
+            let data = makeTree(result, null);
             res.json(data)
-        }else{
+        } else {
             console.log(err);
         }
     })

@@ -18,17 +18,8 @@ var token = localStorage.getItem("token");
 function Manage_position() {
   // modal
 
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-  }, []);
+  const onDrop = useCallback((acceptedFiles) => {}, []);
 
-  // const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-  //   accept: "pdf",
-  //   multiple: false,
-  //   onDrop: (acceptedFiles) => {
-  //     console.log(acceptedFiles);
-  //   },
-  // });
   const DeleteStateArrayFile = (e, id) => {
     e.preventDefault();
     setE_FilePdf((preventState) => {
@@ -421,7 +412,6 @@ function Manage_position() {
   }, []);
   return (
     <>
-      {/* {JSON.stringify(E_filePdf)} */}
       <div className="px-3 py-4">
         <div className="shadow-lg h-50 rounded-3">
           <nav>

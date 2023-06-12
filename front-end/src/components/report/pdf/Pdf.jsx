@@ -7,26 +7,21 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import FontSarabunRegular from "../../font/Sarabun/Sarabun-Regular.ttf";
-import FontSarabunItalic from "../../font/Sarabun/Sarabun-Italic.ttf";
-import FontSarabunMedium from "../../font/Sarabun/Sarabun-Medium.ttf";
+import FontSarabun from "../../../font/Sarabun/THSarabunNew.ttf";
+import FontSarabunBold from "../../../font/Sarabun/Sarabun-Bold.ttf";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 moment.locale("th");
-import TablePDF from "./TablePDF";
+import TablePDF from "../../pdf/TablePDF";
 // Font.register({ family: "Kanit", src: source });
 Font.register({
-  family: "Sarabun",
+  family: "THSarabunNew",
   fonts: [
     {
-      src: FontSarabunRegular,
+      src: FontSarabun,
     },
     {
-      src: FontSarabunItalic,
-    },
-    {
-      src: FontSarabunMedium,
-      fontWeight: "normal",
+      src: FontSarabunBold,
     },
   ],
 });
@@ -34,19 +29,23 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "white",
-    fontFamily: "Sarabun",
+    fontFamily: "THSarabunNew",
   },
   section: {
-    margin: 10,
-    padding: 10,
+    // margin: 10,
+    marginTop: 15,
+    // padding: 10,
   },
   textHeadder: {
+    fontSize: 14,
     textAlign: "center",
+    fontWeight: "bold",
   },
   textDateHeader: {
-    fontSize: "12px",
+    fontSize: 12,
     textAlign: "center",
     paddingTop: "12px",
+    fontWeight: "bold",
   },
   table: {
     display: "table",
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
-    marginTop: 12,
+    // marginTop: 12,
   },
   tableRow: {
     margin: "auto",
@@ -70,13 +69,14 @@ const styles = StyleSheet.create({
   },
   tableCell: {
     margin: "auto",
-    //   marginTop: 5,
-    //   width: 100,
-    fontSize: 12,
+    fontSize: 14,
+    margin: "auto",
+  },
+  container: {
+    padding: 10,
   },
 });
 function Pdf({ DataDate }) {
-  console.log(DataDate);
   return (
     <>
       <Document>
@@ -88,23 +88,25 @@ function Pdf({ DataDate }) {
             <Text style={styles.textDateHeader}>
               วันที่เริ่มต้น - วันที่สิ้นสุด{" "}
               {moment(DataDate[0].jc_start).add(543, "year").format("ll") +
-                " " +
+                " - " +
                 moment(DataDate[0].jc_end).add(543, "year").format("ll")}
             </Text>
           </View>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>ลำดับ</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>เลขประจำตัวผู้สอบ</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>ชื่อ - นามสกุล</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>ตำเเหน่ง</Text>
+          <View style={styles.container}>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>ลำดับ</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>เลขประจำตัวผู้สอบ</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>ชื่อ - นามสกุล</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>ตำเเหน่ง</Text>
+                </View>
               </View>
             </View>
           </View>
