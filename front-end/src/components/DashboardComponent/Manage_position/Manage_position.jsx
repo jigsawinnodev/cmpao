@@ -57,6 +57,7 @@ function Manage_position() {
   const E_inputFile = useRef(null);
 
   const SetDataForEdit = async (data) => {
+    console.log(data);
     let res = await GetFilePositionsById(data.p_id, token);
     setE_id(data.p_id);
     setE_p_name(data.p_name);
@@ -170,7 +171,6 @@ function Manage_position() {
                     >
                       <option>เลือก</option>
                       {positionType.map((val, idx) => {
-                        // console.log(val);
                         return (
                           <option key={idx} value={val.id}>
                             {val.name}

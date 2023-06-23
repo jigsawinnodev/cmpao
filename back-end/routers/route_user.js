@@ -55,4 +55,16 @@ router.get('/getDetailJob/:id', verify, work.GetdetailJob);
 router.get('/ShowDetailDataUserLast', login.ShowDetailDataUser);
 router.get('/ShowDetailPositions', login.ShowDetailPositions);
 
+router.get('/GetJobDetailByID/:id', verify, work.GetWorkposotionByid);
+router.post('/UpdateNumberDownload/:id', verify, meDetail.UpdateNumberDownload)
+
+router.post('/registerJob', verify, upload.single('file'), meDetail.registerJob);
+router.get('/GetJobByID/:id', verify, meDetail.GetJobByID);
+
+router.post('/CheckUserRegisterInJob', verify, meDetail.CheckUserRegisterJob);
+router.post('/GetListJobRegister', verify, meDetail.ListUserRegisterJob);
+
+
+router.get('/GetAllEducation', verify, meDetail.GetEducation);
+// router.post('/registerJob', verify, meDetail.RegisterJob)
 module.exports = router;

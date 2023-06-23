@@ -90,7 +90,7 @@ const GetApplyAll = (req, res) => {
 }
 
 const Apply_Applycheck = (req, res) => {
-    var id = req.params.id;
+    var { id } = req.body;
     let sql = `
     SELECT job_calendar.*, type_position.name,
                     (SELECT COUNT(*)

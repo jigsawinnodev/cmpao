@@ -38,7 +38,14 @@ function Rootpage() {
       if (res.is_accept == null) {
         navigate("is_accept");
       } else {
-        navigate("register");
+        Swal.fire({
+          icon: "success",
+          title: "เข้าสู่ระบบสำเร็จ",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate("register");
+        });
       }
     } else {
       Swal.fire({

@@ -84,7 +84,7 @@ function Manage_register() {
               data-bs-placement="left"
               title="จัดการข้อมูลผู้สมัคร"
               onClick={() => {
-                HiddenToltip();
+                // HiddenToltip();
               }}
             >
               <i className="bi bi-gear" style={{ color: "black" }}></i>

@@ -51,7 +51,7 @@ const AdminLogin = (req, res) => {
 
 const VertifyTokenAdmin = (req, res) => {
     const { id } = req.user;
-    console.log(req.user);
+    console.log(id);
     let sql = `SELECT user_id, user_idcard, user_prename, user_firstname, user_lastname, user_username, user_email, user_phone, user_img, user_active, user_position, user_birthday, user_permission, login_time, user_status FROM user WHERE user_id = ${id}`;
     mysqlConnection.query(sql, function (err, result) {
         if (!err) {

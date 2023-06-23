@@ -18,7 +18,7 @@ export const GetpreName = async (token) => {
     });
     return response.data
 };
-export const GetBloodType = async () => {
+export const GetBloodType = async (token) => {
     let response = await axios.get(`${BaseUrl}/api/GetBloodType`, {
         headers: {
             "authorization": `Bearer ${token}`
@@ -134,9 +134,13 @@ export const DeleteMember = async (id, token) => {
     });
 }
 
-export const Apply_Applycheck = (id) => {
+export const Apply_Applycheck = (id, token) => {
     return axios.post(`${BaseUrl}/api/Apply_Applycheck`, {
         id: id,
+    }, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
     }).then((res) => {
         return res.data;
     }).catch((err) => {
@@ -575,6 +579,91 @@ export const GetApply_ByID = async (id, token) => {
     });
     return res.data[0];
 }
+export const GetApply_ToTable = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetApplyForEdit/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
 
+export const DeletePositionApply_ByID = async (id, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/DeletePositionApply/${id}`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
+export const GetDetailPositionByID = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetDetailPositionByID/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data[0];
+}
+
+export const GetFilePositionByID = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetFilePositionByID/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
+export const GetGetOrganizationByIDApply = async (id, token) => {
+    let res = await axios.get(`${BaseUrl}/api/GetOrganization/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
+export const UpdateDataApply = async (formdata, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/EditApplyDataInsertJob`,
+        data: formdata,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
+export const UpdateDataApplyJob = async (formdata, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/api/EditApplyDataUpdateJob`,
+        data: formdata,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
 
 

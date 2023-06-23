@@ -11,7 +11,7 @@ function Register() {
   const Verifytoken = async () => {
     const token = localStorage.getItem("token");
     const resVerify = await Vertify_token(token);
-    console.log(resVerify);
+    // console.log(resVerify);
     if (resVerify.status) {
       setDataVertify(resVerify.data);
     } else {

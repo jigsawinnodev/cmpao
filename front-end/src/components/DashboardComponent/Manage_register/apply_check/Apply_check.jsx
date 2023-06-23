@@ -8,6 +8,12 @@ import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 import { NavLink } from "react-router-dom";
 moment.locale("th");
+var token = localStorage.getItem("token");
+import { GetType_position } from "../../../../service/api";
+
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Report from "../report/Report";
+import { ExportToExcel } from "../../../report/xlsx/Xlsx";
 function Apply_check() {
   let { id } = useParams();
 
@@ -67,24 +73,16 @@ function Apply_check() {
   ];
 
   const Get_Apply_Applycheck = async () => {
-    const Data = await Apply_Applycheck(id);
+    console.log(id);
+    const Data = await Apply_Applycheck(id, token);
     console.log(Data);
     setApply_Applycheck(Data[0]);
   };
 
   const GetData = async () => {
     Setloadding(true);
-    await axios
-      .get("http://localhost:9500/api/GetType_position")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-        Setloadding(false);
-        // $("#example").DataTable();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let res = await GetType_position(token);
+    setData(res);
   };
 
   const handleSearch = (rows) => {
@@ -121,9 +119,23 @@ function Apply_check() {
     count_warm: "",
     count_cancel: "",
   });
+
+  const [testExport, settextExport] = useState([]);
+  const fetchData = () => {
+    axios.get("https://jsonplaceholder.typicode.com/posts").then((postData) => {
+      // reshaping the array
+      const customHeadings = postData.data.map((item) => ({
+        "Article Id": item.id,
+        "Article Title": item.title,
+      }));
+      console.log(customHeadings);
+      settextExport(customHeadings);
+    });
+  };
   useEffect(() => {
     Get_Apply_Applycheck();
     GetData();
+    fetchData();
   }, []);
   return (
     <>
@@ -138,35 +150,31 @@ function Apply_check() {
           </nav>
           <div className="px-3">
             <div className="row">
-              <div className="col-md-2">
+              <div className="col-md-2 col-12">
                 <div>
                   <p className="fw-bold">ประเภท</p>
                   <p className="">{C_Apply_Applycheck.name}</p>
                 </div>
               </div>
-              <div className="col-md-10 py-2">
+              <div className="col-md-10 py-2 col-12">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">วันที่เริ่มต้น</p>
                       <p className="">
-                        {moment(C_Apply_Applycheck.jc_start)
-                          .add(543, "year")
-                          .format("ll")}
+                        {moment(C_Apply_Applycheck.jc_start).format("ll")}
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">วันที่สิ้นสุด</p>
                       <p className="">
-                        {moment(C_Apply_Applycheck.jc_end)
-                          .add(543, "year")
-                          .format("ll")}
+                        {moment(C_Apply_Applycheck.jc_end).format("ll")}
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">จำนวนทั้งหมด</p>
                       <p className="">
@@ -174,7 +182,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">ชำระเงินแล้ว</p>
                       <p className="">
@@ -182,7 +190,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">รอชำระเงิน</p>
                       <p className="">
@@ -190,7 +198,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">เอกสารสมบูรณ์</p>
                       <p className="">
@@ -198,7 +206,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">รออนุมัติ</p>
                       <p className="">
@@ -206,7 +214,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">แจ้งให้แก้ไข</p>
                       <p className="">
@@ -214,7 +222,7 @@ function Apply_check() {
                       </p>
                     </div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-6">
                     <div>
                       <p className="fw-bold">ยกเลิกการสมัคร</p>
                       <p className="">
@@ -224,13 +232,13 @@ function Apply_check() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-8">
+              <div className="col-md-8 col-12 text-center text-md-start">
                 <div className="py-2">
                   <h5>รายการผู้สมัครงาน</h5>
                 </div>
               </div>
-              <div className="col-md-4">
-                <div className="float-end d-flex">
+              <div className="col-md-4 col-12">
+                <div className="d-flex justify-content-center justify-content-md-end">
                   <div className="dropdown">
                     <button
                       className="btn btn-secondary dropdown-toggle"
@@ -246,19 +254,24 @@ function Apply_check() {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <PDFDownloadLink
+                          className="dropdown-item"
+                          document={<Report DataDate={C_Apply_Applycheck} />}
+                          fileName="FROM"
+                        >
                           PDF
-                        </a>
+                        </PDFDownloadLink>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
-                          EXCEL
-                        </a>
+                        <ExportToExcel
+                          apiData={testExport}
+                          fileName={"exportXls"}
+                        />
                       </li>
                     </ul>
                   </div>
 
-                  <NavLink to="/Dashboard/Apply/edit">
+                  <NavLink to={"/Dashboard/Apply/apply_check/Add_user/" + id}>
                     <button
                       type="button"
                       className="btn btn-outline-primary mx-1"

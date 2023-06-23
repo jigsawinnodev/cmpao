@@ -1,10 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment/min/moment-with-locales";
 import "moment/locale/th";
 import Style from "./VertyfyStatus.module.css";
 moment.locale("th");
-
+import { Vertify_token, ListRegister } from "../../service/for_user";
+// ListRegister
+import { useNavigate } from "react-router-dom";
+var token = localStorage.getItem("token");
 function VertyfyStatus() {
+  var navigate = useNavigate();
+  const [dataVertify, setDataVertify] = useState({});
+  const [listJobRegister, setListJobRegister] = useState([]);
+  const Verifytoken = async () => {
+    let resVerify = await Vertify_token(token);
+    if (resVerify.status == true) {
+      setDataVertify(resVerify.data);
+      FetData(resVerify.data);
+    } else {
+      navigate("/");
+    }
+  };
+  const FetData = async (data) => {
+    let res = await ListRegister(token, data.m_id);
+    // console.log(res);
+    setListJobRegister(res);
+  };
+
+  const CheckStatusInTable = (data) => {
+    if (data.app_status == 99) {
+      return (
+        <p className="m-0 " style={{ color: "#ED5652" }}>
+          ยกเลิกการสมัคร
+        </p>
+      );
+    } else if (data.app_status == 0) {
+      return (
+        <p className="m-0 " style={{ color: "#FF8A00" }}>
+          ระหว่างดำเนินการพิจารณา
+        </p>
+      );
+    } else if (data.app_status == 1) {
+      return (
+        <p className="m-0 " style={{ color: "#32BC42" }}>
+          เอกสารครบถ้วน
+        </p>
+      );
+    } else if (data.app_status == 2) {
+      return (
+        <p className="m-0 " style={{ color: "#FF8A00" }}>
+          แจ้งให้แก้ไข
+        </p>
+      );
+    } else if (data.app_status == 3) {
+      return (
+        <p className="m-0 " style={{ color: "#ED5652" }}>
+          ไม่อนุมัติ
+        </p>
+      );
+    } else {
+      return <p style={{ color: "#FF8A00" }}>รออนุมัติ</p>;
+    }
+  };
+  useEffect(() => {
+    Verifytoken();
+  }, []);
   return (
     <>
       <div className="">
@@ -22,125 +81,58 @@ function VertyfyStatus() {
           </div>
           <div>
             <h3 className="m-0 px-3 py-md-3 fw-bold text-center my-auto">
-              รายละเอียดงานสถานนะการสมัคร
+              รายละเอียดงานสถานนะการสมัคร{" "}
+              {JSON.stringify(listJobRegister.length)}
             </h3>
           </div>
-          {/* <div
-            className="text-center mx-auto py-2"
-            style={{ backgroundColor: "#BFBFBF" }}
-          >
-            <h5 className="m-0 py-4">รายละเอียดงานสถานนะการสมัคร</h5>
-          </div> */}
-          <div className="px-3">
-            <table className="table table-bordered border-gray">
-              <thead>
-                <tr className="text-center">
-                  <th scope="col">วันที่สมัคร</th>
-                  <th scope="col">ตำเเหน่งงานที่สมัคร</th>
-                  <th scope="col">ประเภทพนักงาน</th>
-                  <th scope="col">สถานะ</th>
-                  <th scope="col">เลขประจำตัวสอบ</th>
-                  <th scope="col">เครื่องมือ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className={Style.tr}>
-                  <td className="text-center my-auto">
-                    {moment().add(543, "year").format("LL")}
-                  </td>
-                  <td>พนักงานธุรการ</td>
-                  <td className="text-center">พนักงานจ้างทั่วไป</td>
-                  <td
-                    style={{ color: "green" }}
-                    className="fw-bold text-center"
-                  >
-                    ชำระเงินสำเร็จ
-                  </td>
-                  <td className="text-center">77301</td>
-                  <td className="text-center">
-                    <button type="button" className="btn btn-warning">
-                      <i className="bi bi-pencil-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-center">
-                    {moment().add(543, "year").format("LL")}
-                  </td>
-                  <td>พนักงานการเกษตร</td>
-                  <td className="text-center">พนักงานราชการ</td>
-                  <td style={{ color: "red" }} className="fw-bold text-center">
-                    ยังไม่ได้ชำระเงิน
-                  </td>
-                  <td className="text-center">441280</td>
-                  <td className="text-center">
-                    <button type="button" className="btn btn-warning">
-                      <i className="bi bi-pencil-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-center">
-                    {moment().add(543, "year").format("LL")}
-                  </td>
-                  <td>พนักงานดับเพลิง</td>
-                  <td className="text-center">พนักงานราชการ</td>
-                  <td
-                    style={{ color: "green" }}
-                    className="fw-bold text-center"
-                  >
-                    ชำระเงินสำเร็จ
-                  </td>
-                  <td className="text-center">92730</td>
-                  <td className="text-center">
-                    <button type="button" className="btn btn-warning">
-                      <i className="bi bi-pencil-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-center">
-                    {moment().add(543, "year").format("LL")}
-                  </td>
-                  <td>เจ้าหน้าที่ประชาสัมพันธ์</td>
-                  <td className="text-center">พนักงานจ้างทั่วไป</td>
-                  <td
-                    style={{ color: "green" }}
-                    className="fw-bold text-center"
-                  >
-                    ชำระเงินสำเร็จ
-                  </td>
-                  <td className="text-center">65807</td>
-                  <td className="text-center">
-                    <button type="button" className="btn btn-warning">
-                      <i className="bi bi-pencil-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-center">
-                    {moment().add(543, "year").format("LL")}
-                  </td>
-                  <td>พนักงานคอมพิวเตอร์</td>
-                  <td className="text-center">พนักงานจ้างทั่วไป</td>
-                  <td style={{ color: "red" }} className="fw-bold text-center">
-                    ยังไม่ได้ชำระเงิน
-                  </td>
-                  <td className="text-center">23114</td>
-                  <td className="text-center">
-                    <button type="button" className="btn btn-warning">
-                      <i className="bi bi-pencil-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div className="px-3 pb-2">
-              <p style={{ color: "red" }}>
-                หมายเหตุ เมื่อชำระเงินแล้ว จะไม่มีการคืนเงินค่าสมัครในทุกกรณี
-              </p>
+          {listJobRegister.length > 0 ? (
+            <div className="px-3">
+              <table className="table table-bordered border-gray">
+                <thead>
+                  <tr className="text-center">
+                    <th scope="col">วันที่สมัคร</th>
+                    <th scope="col">ตำเเหน่งงานที่สมัคร</th>
+                    <th scope="col">ประเภทพนักงาน</th>
+                    <th scope="col">สถานะ</th>
+                    <th scope="col">เลขประจำตัวสอบ</th>
+                    <th scope="col">เครื่องมือ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listJobRegister.map((value, idx) => {
+                    console.log(value);
+                    return (
+                      <tr className={Style.tr} key={idx}>
+                        <td className="text-center my-auto">
+                          {moment(value.created_date).format("LL")}
+                        </td>
+                        <td>{value.p_name}</td>
+                        <td className="text-center">{value.NAME}</td>
+                        <td className="fw-bold text-center">
+                          {CheckStatusInTable(value)}
+                        </td>
+                        <td className="text-center">77301</td>
+                        <td className="text-center">
+                          <button type="button" className="btn btn-warning">
+                            <i className="bi bi-pencil-fill"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div className="px-3 pb-2">
+                <p style={{ color: "red" }}>
+                  หมายเหตุ เมื่อชำระเงินแล้ว จะไม่มีการคืนเงินค่าสมัครในทุกกรณี
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center">
+              <h4 className="py-3">ยังไม่มีรายการ</h4>
+            </div>
+          )}
         </div>
       </div>
     </>

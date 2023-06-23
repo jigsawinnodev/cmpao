@@ -11,9 +11,8 @@ function Index() {
   const [dataCard, setStateDataCard] = useState([]);
   const [DataAllApply, setStateDataApply] = useState([]);
   const GetDataToCard = async () => {
-    const res = await GetdetailCard(token);
     const resAllApply = await GetAllApply(token);
-    // console.log(resAllApply);
+    const res = await GetdetailCard(token);
     setStateDataApply(resAllApply);
     setStateDataCard(res);
   };
@@ -126,20 +125,22 @@ function Index() {
           <div className="top-sales box shadow">
             <div className="title">ประเภทที่เปิดรับสมัคร</div>
             <ul className="top-sales-details p-0">
-              {DataAllApply.map((value, idx) => {
-                return (
-                  <li key={idx}>
-                    <div className="d-flex">
-                      {/* <p className="m-0 pe-3 fw-bold">1</p> */}
-                      <span className="product">{value.position_name}</span>
-                    </div>
-                    <span className="price">
-                      {value.count_position > 0 ? value.count_position : 0}{" "}
-                      ตำเเหน่ง
-                    </span>
-                  </li>
-                );
-              })}
+              {DataAllApply
+                ? DataAllApply.map((value, idx) => {
+                    return (
+                      <li key={idx}>
+                        <div className="d-flex">
+                          {/* <p className="m-0 pe-3 fw-bold">1</p> */}
+                          <span className="product">{value.position_name}</span>
+                        </div>
+                        <span className="price">
+                          {value.count_position > 0 ? value.count_position : 0}{" "}
+                          ตำเเหน่ง
+                        </span>
+                      </li>
+                    );
+                  })
+                : "loading"}
             </ul>
           </div>
         </div>

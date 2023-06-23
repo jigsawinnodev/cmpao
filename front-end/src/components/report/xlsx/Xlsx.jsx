@@ -2,7 +2,7 @@ import React from "react";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 
-export const ExportToExcel = ({ apiData, fileName }) => {
+export const ExportToExcel = ({ apiData = "", fileName }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
@@ -16,11 +16,11 @@ export const ExportToExcel = ({ apiData, fileName }) => {
   };
 
   return (
-    <button
-      className="btn btn-secondary"
+    <div
+      className="dropdown-item"
       onClick={(e) => exportToCSV(apiData, fileName)}
     >
       Export
-    </button>
+    </div>
   );
 };

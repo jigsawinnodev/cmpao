@@ -55,7 +55,7 @@ function Detailposition() {
                     <tr key={idx}>
                       <td>
                         <NavLink
-                          to={`/register/DetailWork/${id}`}
+                          to={`/register/DetailWork/${value.job_id}`}
                           className="text-decoration-none"
                           // key={idx}
                         >

@@ -111,12 +111,39 @@ const GetdetailJob = (req, res) => {
         };
     })
 }
+const GetWorkposotionByid = (req, res) => {
+    const { id } = req.params;
+    let sql = `SELECT
+                    job_id,
+                    job_position,
+                    job_amount,
+                    job_file,
+                    p_name,
+                    is_download
+                FROM
+                    jobs
+                JOIN POSITION ON POSITION.p_id = jobs.job_position
+                WHERE
+                    job_id = ${id}`;
+    mysqlConnection.query(sql, function (err, result) {
+        if (!err) {
+            // console.log(result);
+            res.json(result);
+        };
+        if (err) {
+            res.json({
+                status: 'no_success'
+            })
+        };
+    })
+}
 
 module.exports = {
     GetjobForUserRegister,
     GetpositionInJob,
     GetJobFile,
-    GetdetailJob
+    GetdetailJob,
+    GetWorkposotionByid
 }
 
 

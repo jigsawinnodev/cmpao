@@ -8,12 +8,14 @@ const User = require("../controllers/User/User");
 const Member = require("../controllers/Member/Member");
 const Dashboard = require("../controllers/Dashboard/Dashboard");
 const Apply = require("../controllers/Apply/Apply");
+const ApplyEdit = require("../controllers/Apply/ApplyEdit");
 const Permission = require("../controllers/Permission/Permission");
 const Organization = require("../controllers/Organization/Organization");
 const ManagePositions = require("../controllers/ManagePosition/ManagePosition");
 const AuthAdmin = require('../controllers/LoginAdmin/LoginAdmin');
 const verify = require('../middelware/authJwt');
 const Payment = require('../controllers/payment/Payment');
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
@@ -51,12 +53,12 @@ router.get('/GetTbl_religion', Admin.GetTbl_religion);
 
 
 // router Apply
-router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
+
 router.get('/GetApplyAll', Admin.GetApplyAll);
 router.get('/GetpositionIntype/:id', Admin.GetPositon);
 
 
-router.post('/UpdateApply_Insert', Admin.UpdateApplyAndInsert)
+// router.post('/UpdateApply_Insert', Admin.UpdateApplyAndInsert)
 
 // router.post('/InsertApply', upload.single('file'), Admin.InsertApply);
 router.post('/insertApply', Admin.Insert_Apply);
@@ -117,14 +119,21 @@ router.post('/DeleteTree/:id', verify, Organization.DeleteTree)
 
 // Apply
 router.get('/GetApply', verify, Apply.GetAll_Apply);
-router.post('/ManageInsertAndEdit', verify, upload.single('file'), Apply.ManageInsertAndEdit)
+router.post('/ManageInsertAndEdit', verify, upload.single('file'), Apply.ManageInsertAndEdit);
 router.post('/DeleteApply/:id', verify, Apply.Delete_Apply);
 router.get('/GetApply/:id', verify, Apply.Get_ApplyByID);
-
-
-
-
+router.get('/GetApplyForEdit/:id', verify, Apply.Get_ApplyByIDtoTable);
+router.post('/DeletePositionApply/:id', verify, Apply.Delete_positionApply);
+router.get('/GetDetailPositionByID/:id', verify, Apply.GetDetailPositionById);
+router.get('/GetFilePositionByID/:id', verify, Apply.GetDetailFilePositionByID)
+router.get('/GetOrganization/:id', verify, Apply.GetOrganizationByID);
+router.post('/EditApplyDataInsertJob', verify, upload.single('file'), ApplyEdit.UpdateApply_InsertJob);
+router.post('/EditApplyDataUpdateJob', verify, upload.single('file'), ApplyEdit.UpdateApply_UpdateJob);
+router.post('/Apply_Applycheck', Admin.Apply_Applycheck);
 //CallAdmin
 router.post('/LoginAdmin', AuthAdmin.AdminLogin);
 router.get('/getMeAdmin', verify, AuthAdmin.VertifyTokenAdmin);
+
+// router.get('')
+
 module.exports = router;

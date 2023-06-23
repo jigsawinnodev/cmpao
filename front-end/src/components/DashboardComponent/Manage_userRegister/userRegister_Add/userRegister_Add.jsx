@@ -229,9 +229,9 @@ function UserRegister_Add() {
   };
 
   const GetDataID = async (id) => {
-    const res = await Get_memberby_id(id,token);
-    const district = await GetTbl_district();
-    const subDistrict = await GetTbl_subdistrict();
+    const res = await Get_memberby_id(id, token);
+    const district = await GetTbl_district(token);
+    const subDistrict = await GetTbl_subdistrict(token);
     // setDistrict(district); // อำเภอ
     // setSubDistrict(subDistrict); // ตำบล
 

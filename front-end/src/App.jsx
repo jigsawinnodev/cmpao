@@ -38,6 +38,8 @@ import NotFound from "./view/NotFound/NotFound";
 import Is_accept from "./view/Is_accept/Is_accept";
 import Detailposition from "./components/Detailposition/Detailposition";
 import LoginAdmin from "./view/LoginAdmin/LoginAdmin";
+import Edit_register from "./components/DashboardComponent/Manage_register/Edit_register/Edit_register";
+import Add_user from "./components/DashboardComponent/Manage_register/Add_User/Add_user";
 moment.locale("th");
 function App() {
   return (
@@ -61,8 +63,9 @@ function App() {
         <Route path="Dashboard" element={<IndexPage />} />
         <Route path="Apply" element={<Manage_register />} />
         <Route path="Apply/edit" element={<Add_register />} />
-        <Route path="Apply/edit/:id" element={<Add_register />} />
+        <Route path="Apply/edit/:id" element={<Edit_register />} />
         <Route path="Apply/apply_check/:id" element={<Apply_check />} />
+        <Route path="Apply/apply_check/Add_user/:id" element={<Add_user />} />
 
         <Route path="ManagePosition" element={<Manage_position />} />
         <Route path="Organization" element={<Manage_agency />} />

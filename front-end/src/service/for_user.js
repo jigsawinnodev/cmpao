@@ -117,7 +117,7 @@ export const Getpostion_injob = async (id, token) => {
         },
     })
         .then(function (response) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         })
         .catch(function (response) {
@@ -166,5 +166,117 @@ export const ShowDetailDataUser_Last = async () => {
 export const Show_DetailPositions = async () => {
     let res = await axios.get(`${BaseUrl}/ShowDetailPositions`);
     return res.data;
+}
+
+export const Get_JobByID = async (id, token) => {
+    // console.log(id);
+    let res = await axios.get(`${BaseUrl}/GetJobDetailByID/${id}`, {
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    });
+    return res.data;
+}
+export const UpdateNumberDownload = async (id, token) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/UpdateNumberDownload/${id}`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
+export const CheckRegisterInJob = async (token, jc_id, app_user) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/CheckUserRegisterInJob`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+        data: {
+            jc_id: jc_id,
+            app_user: app_user
+        }
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        console.log(response);
+    });
+}
+
+export const ListRegister = (token, app_user) => {
+    console.log(app_user);
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/GetListJobRegister`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+        data: {
+            app_user: app_user,
+        }
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        console.log(response);
+    });
+}
+export const Get_Education = (token) => {
+
+    return axios({
+        method: "get",
+        url: `${BaseUrl}/GetAllEducation`,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    }).then(function (response) {
+        return response.data;
+    }).catch(function (response) {
+        console.log(response);
+    });
+}
+
+export const Register_Job = (token, FormData) => {
+    return axios({
+        method: "post",
+        url: `${BaseUrl}/registerJob`,
+        data: FormData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+}
+
+export const GetJob_BYID = (token, id) => {
+    return axios({
+        method: "get",
+        url: `${BaseUrl}/GetJobByID/${id}`,
+        data: FormData,
+        headers: {
+            "authorization": `Bearer ${token}`
+        },
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
 }
 
